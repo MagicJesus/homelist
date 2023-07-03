@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:homelist/application/auth/auth_cubit.dart';
+import 'package:homelist/application/status.dart';
 import 'package:homelist/presentation/constants.dart';
 import 'package:homelist/presentation/screens/home/home_screen.dart';
 import 'package:homelist/presentation/screens/login/log_in_screen.dart';
@@ -19,7 +20,7 @@ class NavigationService {
     BuildContext context,
     GoRouterState state,
   ) {
-    if (context.read<AuthCubit>().state.isAuthenticated) {
+    if (context.read<AuthCubit>().state.authStatus == Status.loaded) {
       return HomeScreen.routeName;
     } else {
       return LoginScreen.routeName;
@@ -33,7 +34,7 @@ class NavigationService {
       GoRoute(
         name: 'Login',
         path: LoginScreen.routeName,
-        builder: (context, state) => LoginScreen(),
+        builder: (context, state) => const LoginScreen(),
       ),
       GoRoute(
         name: 'Home',
