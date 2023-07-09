@@ -3,7 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:homelist/application/auth/auth_cubit.dart';
 import 'package:homelist/application/auth/auth_state.dart';
+import 'package:homelist/application/shared_list/bottom_nav_cubit.dart';
+import 'package:homelist/application/shared_list/bottom_nav_cubit_state.dart';
 import 'package:homelist/application/status.dart';
+import 'package:homelist/application/user/user_cubit.dart';
+import 'package:homelist/application/user/user_cubit_state.dart';
+import 'package:homelist/presentation/constants.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key, required this.title});
@@ -17,6 +22,8 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final PageController pageController = PageController();
+
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<AuthCubit, AuthState>(listener: (context, state) {
@@ -24,30 +31,90 @@ class _HomeScreenState extends State<HomeScreen> {
         GoRouter.of(context).refresh();
       }
     }, builder: (context, state) {
-      return Scaffold(
-        appBar: AppBar(
-          backgroundColor: Theme.of(context).colorScheme.primary,
-          title: Text(widget.title),
-        ),
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Text(
-                'Wellcome ${state.userCredential?.user?.email}',
-                style: Theme.of(context).textTheme.headlineMedium,
+      return BlocBuilder<UserCubit, UserCubitState>(
+          builder: (context, userState) {
+        return Scaffold(
+          appBar: AppBar(
+            titleTextStyle:
+                Theme.of(context).textTheme.headlineMedium!.copyWith(
+                      color: AppColors.textWhite,
+                    ),
+            backgroundColor: Theme.of(context).colorScheme.tertiary,
+            title: Text(widget.title),
+            actions: [
+              IconButton(
+                onPressed: () async {
+                  await context.read<AuthCubit>().signOut();
+                },
+                icon: const Icon(
+                  Icons.account_circle_rounded,
+                ),
+              )
+            ],
+          ),
+          body: PageView(
+            controller: pageController,
+            physics: const NeverScrollableScrollPhysics(),
+            children: [
+              Container(
+                color: Colors.amber,
+                height: 75,
+                child: const Center(
+                  child: Text("Home"),
+                ),
+              ),
+              const Center(
+                child: Text("Lists"),
+              ),
+              const Center(
+                child: Text("Budget"),
+              ),
+              const Center(
+                child: Text("Calendar"),
               ),
             ],
           ),
-        ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () async {
-            await context.read<AuthCubit>().signOut();
-          },
-          tooltip: 'Logout',
-          child: const Icon(Icons.logout),
-        ),
-      );
+          floatingActionButton: FloatingActionButton(
+            onPressed: () {},
+            shape: const CircleBorder(),
+            child: const Icon(Icons.add),
+          ),
+          floatingActionButtonLocation:
+              FloatingActionButtonLocation.miniEndFloat,
+          bottomNavigationBar: BlocBuilder<BottomNavCubit, BottomNavCubitState>(
+              builder: (context, navState) {
+            return NavigationBar(
+              destinations: const [
+                NavigationDestination(
+                  icon: Icon(Icons.home),
+                  label: "Home",
+                ),
+                NavigationDestination(
+                  icon: Icon(Icons.list),
+                  label: "Lists",
+                ),
+                NavigationDestination(
+                  icon: Icon(Icons.attach_money),
+                  label: "Budget",
+                ),
+                NavigationDestination(
+                  icon: Icon(Icons.calendar_month_outlined),
+                  label: "Calendar",
+                ),
+              ],
+              selectedIndex: navState.currentPageIndex,
+              onDestinationSelected: (index) {
+                pageController.jumpToPage(
+                  index,
+                );
+                context.read<BottomNavCubit>().changeIndex(
+                      index,
+                    );
+              },
+            );
+          }),
+        );
+      });
     });
   }
 }

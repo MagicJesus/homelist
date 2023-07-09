@@ -10,6 +10,5 @@ class AuthState with _$AuthState {
     required bool isAuthenticated,
     required bool staySignedIn,
     required Status authStatus,
-    UserCredential? userCredential,
   }) = _AuthState;
 }
