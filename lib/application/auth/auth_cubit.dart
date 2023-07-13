@@ -6,35 +6,38 @@ import 'package:homelist/application/auth/auth_state.dart';
 import 'package:homelist/application/core/preferences.dart';
 import 'package:homelist/application/status.dart';
 import 'package:homelist/repositories/auth/auth_repository.dart';
+import 'package:homelist/repositories/firestore/firestore_repository.dart';
 
 class AuthCubit extends Cubit<AuthState> {
-  final String _staySignedInPrefsKey = 'staySignedIn';
-
-  AuthCubit()
+  AuthCubit(this._firestoreRepository, this._authRepository)
       : super(
           const AuthState(
             isAuthenticated: false,
             authStatus: Status.initial,
             staySignedIn: false,
-            userCredential: null,
           ),
         ) {
-    _firebaseUserStreamSubscription =
-        FirebaseAuth.instance.authStateChanges().listen(
-      (User? user) {
+    _firebaseUserStreamSubscription = _authRepository.userStream.listen(
+      (User? user) async {
         if (user == null) {
-          print("User is not signed in");
-        } else {
           emit(
-            state.copyWith(isAuthenticated: true, authStatus: Status.loaded),
+            state.copyWith(
+              isAuthenticated: false,
+              authStatus: Status.initial,
+            ),
           );
+        } else {
+          // Emit succesful auth state + get user data from firestore
+          await _getUserData(user);
         }
       },
     );
     initialiseStaySignedIn();
   }
 
-  final _authRepository = AuthRepository();
+  final String _staySignedInPrefsKey = 'staySignedIn';
+  final FirestoreRepository _firestoreRepository;
+  final AuthRepository _authRepository;
   late final StreamSubscription _firebaseUserStreamSubscription;
 
   Future<void> authenticate({
@@ -49,11 +52,11 @@ class AuthCubit extends Cubit<AuthState> {
       password: password,
     );
 
-    if (result != null) {
+    if (result?.user != null) {
       emit(
         state.copyWith(
           isAuthenticated: true,
-          userCredential: result,
+          authStatus: Status.loaded,
         ),
       );
     } else {
@@ -61,6 +64,16 @@ class AuthCubit extends Cubit<AuthState> {
         state.copyWith(authStatus: Status.error),
       );
     }
+  }
+
+  Future<void> _getUserData(User user) async {
+    await _firestoreRepository.getUserData(user.uid);
+    emit(
+      state.copyWith(
+        isAuthenticated: true,
+        authStatus: Status.loaded,
+      ),
+    );
   }
 
   Future<void> signOut() async {
@@ -84,9 +97,12 @@ class AuthCubit extends Cubit<AuthState> {
     emit(state.copyWith(staySignedIn: value));
   }
 
+  void setUserData() {}
+
   void logOut() {
     emit(state.copyWith(
       isAuthenticated: false,
     ));
+    _firebaseUserStreamSubscription.cancel();
   }
 }
