@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:homelist/application/auth/auth_cubit.dart';
+import 'package:homelist/application/bottom_nav/bottom_nav_cubit.dart';
 import 'package:homelist/application/core/navigation.dart';
-import 'package:homelist/application/shared_list/bottom_nav_cubit.dart';
 import 'package:homelist/application/user/user_cubit.dart';
 import 'package:homelist/getit_config.dart';
 import 'package:homelist/presentation/constants.dart';

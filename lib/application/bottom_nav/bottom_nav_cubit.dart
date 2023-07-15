@@ -1,5 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:homelist/application/shared_list/bottom_nav_cubit_state.dart';
+import 'package:homelist/application/bottom_nav/bottom_nav_cubit_state.dart';
 
 class BottomNavCubit extends Cubit<BottomNavCubitState> {
   BottomNavCubit()
