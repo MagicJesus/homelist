@@ -1,8 +1,12 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:homelist/application/auth/auth_cubit.dart';
 import 'package:homelist/application/bottom_nav/bottom_nav_cubit.dart';
 import 'package:homelist/application/core/navigation.dart';
+import 'package:homelist/application/shared_lists/shared_list_cubit.dart';
+import 'package:homelist/application/status.dart';
 import 'package:homelist/application/user/user_cubit.dart';
 import 'package:homelist/getit_config.dart';
 import 'package:homelist/presentation/constants.dart';
@@ -32,16 +36,27 @@ class HomeList extends StatelessWidget {
           ),
           lazy: false,
         ),
+        BlocProvider(
+          create: (context) => SharedListCubit(),
+        ),
       ],
-      child: MaterialApp.router(
-        title: 'HomeList',
-        theme: appTheme,
-        debugShowCheckedModeBanner: false,
-        routeInformationParser: NavigationService.router.routeInformationParser,
-        routeInformationProvider:
-            NavigationService.router.routeInformationProvider,
-        routerDelegate: NavigationService.router.routerDelegate,
-      ),
+      child: Builder(builder: (context) {
+        log("BuuldingApp");
+        NavigationService.initRouter(
+          auth: context.select<AuthCubit, bool>(
+            (cubit) => cubit.state.authStatus == Status.loaded,
+          ),
+        );
+        final router = NavigationService.router;
+        return MaterialApp.router(
+          title: 'HomeList',
+          theme: appTheme,
+          debugShowCheckedModeBanner: false,
+          routeInformationParser: router.routeInformationParser,
+          routeInformationProvider: router.routeInformationProvider,
+          routerDelegate: router.routerDelegate,
+        );
+      }),
     );
   }
 }

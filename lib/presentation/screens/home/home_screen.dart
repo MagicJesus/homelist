@@ -9,6 +9,9 @@ import 'package:homelist/application/status.dart';
 import 'package:homelist/application/user/user_cubit.dart';
 import 'package:homelist/application/user/user_cubit_state.dart';
 import 'package:homelist/presentation/constants.dart';
+import 'package:homelist/presentation/screens/lists/lists_screen.dart';
+import 'package:homelist/presentation/screens/login/log_in_screen.dart';
+import 'package:homelist/presentation/widgets/common/homelist_appbar.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key, required this.title});
@@ -27,30 +30,18 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<AuthCubit, AuthState>(listener: (context, state) {
+      print("State changed");
       if (state.authStatus == Status.initial) {
+        print("dupsko");
+        context.go(LoginScreen.routeName);
         GoRouter.of(context).refresh();
       }
     }, builder: (context, state) {
       return BlocBuilder<UserCubit, UserCubitState>(
           builder: (context, userState) {
         return Scaffold(
-          appBar: AppBar(
-            titleTextStyle:
-                Theme.of(context).textTheme.headlineMedium!.copyWith(
-                      color: AppColors.textWhite,
-                    ),
-            backgroundColor: Theme.of(context).colorScheme.tertiary,
-            title: Text(widget.title),
-            actions: [
-              IconButton(
-                onPressed: () async {
-                  await context.read<AuthCubit>().signOut();
-                },
-                icon: const Icon(
-                  Icons.account_circle_rounded,
-                ),
-              )
-            ],
+          appBar: const HomeListAppBar(
+            title: Labels.homePageTitle,
           ),
           body: PageView(
             controller: pageController,
@@ -63,8 +54,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: Text("Home"),
                 ),
               ),
-              const Center(
-                child: Text("Lists"),
+              Center(
+                child: ListsScreen(),
               ),
               const Center(
                 child: Text("Budget"),
