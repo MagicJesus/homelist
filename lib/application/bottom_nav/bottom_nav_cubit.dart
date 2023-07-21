@@ -7,7 +7,7 @@ class BottomNavCubit extends Cubit<BottomNavCubitState> {
           BottomNavCubitState.initialState(),
         );
 
-  void changeIndex(int newIndex) {
+  Future<void> changeIndex(int newIndex) async {
     emit(
       state.copyWith(currentPageIndex: newIndex),
     );

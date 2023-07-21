@@ -6,6 +6,7 @@ part 'list_item.g.dart';
 @freezed
 class ListItem with _$ListItem {
   factory ListItem({
+    required String id,
     required String title,
     required bool completed,
     IconNames? iconName,
@@ -15,9 +16,14 @@ class ListItem with _$ListItem {
       _$ListItemFromJson(json);
 }
 
+@JsonEnum()
 enum IconNames {
+  @JsonValue(0)
   vegetables,
+  @JsonValue(1)
   fruits,
+  @JsonValue(2)
   dairy,
+  @JsonValue(3)
   todo,
 }

@@ -37,7 +37,9 @@ class HomeList extends StatelessWidget {
           lazy: false,
         ),
         BlocProvider(
-          create: (context) => SharedListCubit(),
+          create: (context) => SharedListCubit(
+            getIt<FirestoreRepository>(),
+          ),
         ),
       ],
       child: Builder(builder: (context) {

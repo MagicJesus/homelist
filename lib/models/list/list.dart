@@ -7,7 +7,8 @@ part 'list.g.dart';
 @freezed
 class SharedList with _$SharedList {
   factory SharedList({
-    required String id,
+    String? id,
+    required String userId,
     required String title,
     required List<ListItem?> items,
     required ListType type,
@@ -17,7 +18,10 @@ class SharedList with _$SharedList {
       _$SharedListFromJson(json);
 }
 
+@JsonEnum()
 enum ListType {
+  @JsonValue(0)
   todo,
+  @JsonValue(1)
   shopping,
 }

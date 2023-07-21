@@ -8,7 +8,8 @@ part of 'list.dart';
 
 _$_SharedList _$$_SharedListFromJson(Map<String, dynamic> json) =>
     _$_SharedList(
-      id: json['id'] as String,
+      id: json['id'] as String?,
+      userId: json['userId'] as String,
       title: json['title'] as String,
       items: (json['items'] as List<dynamic>)
           .map((e) =>
@@ -20,12 +21,13 @@ _$_SharedList _$$_SharedListFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$$_SharedListToJson(_$_SharedList instance) =>
     <String, dynamic>{
       'id': instance.id,
+      'userId': instance.userId,
       'title': instance.title,
       'items': instance.items,
       'type': _$ListTypeEnumMap[instance.type]!,
     };
 
 const _$ListTypeEnumMap = {
-  ListType.todo: 'todo',
-  ListType.shopping: 'shopping',
+  ListType.todo: 0,
+  ListType.shopping: 1,
 };

@@ -8,6 +8,7 @@ class Labels {
 class AppColors {
   static const textWhite = Color.fromARGB(255, 214, 214, 214);
   static const borderGrey = Color.fromARGB(255, 165, 180, 165);
+  static const hintTextColor = Color.fromARGB(206, 133, 133, 133);
 }
 
 final appTheme = ThemeData(

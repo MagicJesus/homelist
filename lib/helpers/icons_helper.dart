@@ -5,16 +5,16 @@ import 'package:homelist/models/list/list_item.dart';
 class IconsHelper {
   IconsHelper._();
 
-  static Image getIcon(IconNames iconName) {
+  static Image getIcon(IconNames? iconName) {
     switch (iconName) {
       case IconNames.vegetables:
-        return Assets.icons.vegetables.image();
+        return Assets.icons.vegetables.image(fit: BoxFit.contain);
       case IconNames.fruits:
-        return Assets.icons.fruits.image();
+        return Assets.icons.fruits.image(fit: BoxFit.contain);
       case IconNames.dairy:
-        return Assets.icons.dairyProducts.image();
+        return Assets.icons.dairyProducts.image(fit: BoxFit.contain);
       default:
-        return Assets.icons.vegetables.image();
+        return Assets.icons.vegetables.image(fit: BoxFit.contain);
     }
   }
 }

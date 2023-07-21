@@ -20,6 +20,7 @@ ListItem _$ListItemFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$ListItem {
+  String get id => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
   bool get completed => throw _privateConstructorUsedError;
   IconNames? get iconName => throw _privateConstructorUsedError;
@@ -35,7 +36,7 @@ abstract class $ListItemCopyWith<$Res> {
   factory $ListItemCopyWith(ListItem value, $Res Function(ListItem) then) =
       _$ListItemCopyWithImpl<$Res, ListItem>;
   @useResult
-  $Res call({String title, bool completed, IconNames? iconName});
+  $Res call({String id, String title, bool completed, IconNames? iconName});
 }
 
 /// @nodoc
@@ -51,11 +52,16 @@ class _$ListItemCopyWithImpl<$Res, $Val extends ListItem>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? id = null,
     Object? title = null,
     Object? completed = null,
     Object? iconName = freezed,
   }) {
     return _then(_value.copyWith(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
       title: null == title
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
@@ -79,7 +85,7 @@ abstract class _$$_ListItemCopyWith<$Res> implements $ListItemCopyWith<$Res> {
       __$$_ListItemCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String title, bool completed, IconNames? iconName});
+  $Res call({String id, String title, bool completed, IconNames? iconName});
 }
 
 /// @nodoc
@@ -93,11 +99,16 @@ class __$$_ListItemCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? id = null,
     Object? title = null,
     Object? completed = null,
     Object? iconName = freezed,
   }) {
     return _then(_$_ListItem(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
       title: null == title
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
@@ -117,11 +128,17 @@ class __$$_ListItemCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$_ListItem implements _ListItem {
-  _$_ListItem({required this.title, required this.completed, this.iconName});
+  _$_ListItem(
+      {required this.id,
+      required this.title,
+      required this.completed,
+      this.iconName});
 
   factory _$_ListItem.fromJson(Map<String, dynamic> json) =>
       _$$_ListItemFromJson(json);
 
+  @override
+  final String id;
   @override
   final String title;
   @override
@@ -131,7 +148,7 @@ class _$_ListItem implements _ListItem {
 
   @override
   String toString() {
-    return 'ListItem(title: $title, completed: $completed, iconName: $iconName)';
+    return 'ListItem(id: $id, title: $title, completed: $completed, iconName: $iconName)';
   }
 
   @override
@@ -139,6 +156,7 @@ class _$_ListItem implements _ListItem {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_ListItem &&
+            (identical(other.id, id) || other.id == id) &&
             (identical(other.title, title) || other.title == title) &&
             (identical(other.completed, completed) ||
                 other.completed == completed) &&
@@ -148,7 +166,7 @@ class _$_ListItem implements _ListItem {
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, title, completed, iconName);
+  int get hashCode => Object.hash(runtimeType, id, title, completed, iconName);
 
   @JsonKey(ignore: true)
   @override
@@ -166,12 +184,15 @@ class _$_ListItem implements _ListItem {
 
 abstract class _ListItem implements ListItem {
   factory _ListItem(
-      {required final String title,
+      {required final String id,
+      required final String title,
       required final bool completed,
       final IconNames? iconName}) = _$_ListItem;
 
   factory _ListItem.fromJson(Map<String, dynamic> json) = _$_ListItem.fromJson;
 
+  @override
+  String get id;
   @override
   String get title;
   @override
