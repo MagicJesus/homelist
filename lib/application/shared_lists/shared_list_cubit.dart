@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:homelist/application/shared_lists/shared_list_cubit_state.dart';
@@ -39,6 +40,7 @@ class SharedListCubit extends Cubit<SharedListCubitState> {
     final listStream = await _firestoreRepository.getUserListsStream(userId);
     _allListsSubscription = listStream.listen(
       (event) {
+        log(event.toString());
         emit(state.copyWith(
           allListsStatus: Status.loaded,
           allLists: event,
@@ -72,16 +74,17 @@ class SharedListCubit extends Cubit<SharedListCubitState> {
   Future<void> addNewList(
     String title,
     ListType listType,
-    String userId,
+    String ownerId,
   ) async {
     emit(
       state.copyWith(allListsStatus: Status.loading),
     );
     final newList = SharedList(
-      userId: userId,
+      ownerId: ownerId,
       title: title,
       items: [],
       type: listType,
+      allowedUsersIds: [],
     );
     await _firestoreRepository.createList(newList);
   }

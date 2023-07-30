@@ -8,10 +8,14 @@ class HomeListAppBar extends StatelessWidget implements PreferredSizeWidget {
     super.key,
     required this.title,
     this.smallTitle = false,
+    this.leading,
+    this.actions,
   });
 
   final String title;
   final bool smallTitle;
+  final Widget? leading;
+  final List<Widget>? actions;
 
   TextStyle _getTitleStyle(BuildContext context) {
     return smallTitle
@@ -27,18 +31,20 @@ class HomeListAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       titleTextStyle: _getTitleStyle(context),
-      backgroundColor: Theme.of(context).colorScheme.tertiary,
+      backgroundColor: Theme.of(context).colorScheme.primary,
       title: Text(title),
-      actions: [
-        IconButton(
-          onPressed: () async {
-            await context.read<AuthCubit>().signOut();
-          },
-          icon: const Icon(
-            Icons.account_circle_rounded,
-          ),
-        )
-      ],
+      leading: leading,
+      actions: actions ??
+          [
+            IconButton(
+              onPressed: () async {
+                await context.read<AuthCubit>().signOut();
+              },
+              icon: const Icon(
+                Icons.account_circle_rounded,
+              ),
+            )
+          ],
     );
   }
 

@@ -8,10 +8,11 @@ part 'list.g.dart';
 class SharedList with _$SharedList {
   factory SharedList({
     String? id,
-    required String userId,
+    required String ownerId,
     required String title,
     required List<ListItem?> items,
     required ListType type,
+    required List<String?> allowedUsersIds,
   }) = _SharedList;
 
   factory SharedList.fromJson(Map<String, Object?> json) =>

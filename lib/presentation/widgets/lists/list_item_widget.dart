@@ -11,21 +11,26 @@ class ListItemWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Container(
-          width: 64,
-          height: 64,
-          padding: const EdgeInsets.all(16),
-          child: IconsHelper.getIcon(listItem.iconName),
-        ),
-        Text(listItem.title.toString()),
-        Expanded(child: Container()),
-        Checkbox(
-          value: listItem.completed,
-          onChanged: onChecked,
-        ),
-      ],
+    return GestureDetector(
+      onTap: () {
+        onChecked(!listItem.completed);
+      },
+      child: Row(
+        children: [
+          Container(
+            width: 64,
+            height: 64,
+            padding: const EdgeInsets.all(16),
+            child: IconsHelper.getIcon(listItem.iconName),
+          ),
+          Text(listItem.title.toString()),
+          Expanded(child: Container()),
+          Checkbox(
+            value: listItem.completed,
+            onChanged: onChecked,
+          ),
+        ],
+      ),
     );
   }
 }

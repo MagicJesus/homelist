@@ -34,5 +34,20 @@ class AuthRepository {
     return _firebaseAuth.signOut();
   }
 
-  Future<void> signUp() async {}
+  Future<UserCredential?> createUserWithEmailAndPassword(
+    String email,
+    String password,
+  ) async {
+    try {
+      final result = await _firebaseAuth.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+
+      return result;
+    } catch (e) {
+      log(e.toString());
+    }
+    return null;
+  }
 }

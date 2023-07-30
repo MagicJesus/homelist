@@ -6,6 +6,7 @@ import 'package:homelist/presentation/constants.dart';
 import 'package:homelist/presentation/screens/home/home_screen.dart';
 import 'package:homelist/presentation/screens/lists/list_details_screen.dart';
 import 'package:homelist/presentation/screens/login/log_in_screen.dart';
+import 'package:homelist/presentation/screens/login/sign_up_screen.dart';
 
 class NavigationService {
   NavigationService._();
@@ -18,15 +19,20 @@ class NavigationService {
 
   static void initRouter({
     required auth,
+    required signUp,
   }) {
-    _router = _createRouter(auth: auth);
+    _router = _createRouter(auth: auth, signUp: signUp);
   }
 
   static FutureOr<String?> _redirect(
     BuildContext context,
     GoRouterState state, {
     required bool auth,
+    required bool signUp,
   }) {
+    if (signUp) {
+      return SignUpScreen.routeName;
+    }
     if (auth) {
       return null;
     } else {
@@ -36,6 +42,7 @@ class NavigationService {
 
   static GoRouter _createRouter({
     required bool auth,
+    required bool signUp,
   }) {
     return GoRouter(
       navigatorKey: _rootNavigatorKey,
@@ -44,6 +51,7 @@ class NavigationService {
           context,
           state,
           auth: auth,
+          signUp: signUp,
         );
       },
       routes: allRoutes,
@@ -67,6 +75,11 @@ class NavigationService {
       name: 'ListDetails',
       path: ListDetailsScreen.routeName,
       builder: (context, state) => const ListDetailsScreen(),
+    ),
+    GoRoute(
+      name: 'SignUp',
+      path: SignUpScreen.routeName,
+      builder: (context, state) => const SignUpScreen(),
     ),
   ];
 }

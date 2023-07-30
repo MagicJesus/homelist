@@ -40,8 +40,27 @@ class FirestoreRepository {
     );
   }
 
-  Future<Stream<List<SharedList>>> getUserListsStream(String userId) async {
-    return _listsCollection.where('userId', isEqualTo: userId).snapshots().map(
+  Future<Stream<List<SharedList>>> getUserListsStream(String ownerId) async {
+    return _listsCollection
+        .where('ownerId', isEqualTo: ownerId)
+        .snapshots()
+        .map(
+          (querySnapshots) => querySnapshots.docs
+              .map(
+                (e) => SharedList.fromJson(
+                  e.data(),
+                ),
+              )
+              .toList(),
+        );
+  }
+
+  Future<Stream<List<SharedList>>> getSharedListsStream(
+      String currentUserId) async {
+    return _listsCollection
+        .where('allowedUserIds', arrayContains: currentUserId)
+        .snapshots()
+        .map(
           (querySnapshots) => querySnapshots.docs
               .map(
                 (e) => SharedList.fromJson(

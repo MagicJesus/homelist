@@ -21,10 +21,11 @@ SharedList _$SharedListFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$SharedList {
   String? get id => throw _privateConstructorUsedError;
-  String get userId => throw _privateConstructorUsedError;
+  String get ownerId => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
   List<ListItem?> get items => throw _privateConstructorUsedError;
   ListType get type => throw _privateConstructorUsedError;
+  List<String?> get allowedUsersIds => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -40,10 +41,11 @@ abstract class $SharedListCopyWith<$Res> {
   @useResult
   $Res call(
       {String? id,
-      String userId,
+      String ownerId,
       String title,
       List<ListItem?> items,
-      ListType type});
+      ListType type,
+      List<String?> allowedUsersIds});
 }
 
 /// @nodoc
@@ -60,19 +62,20 @@ class _$SharedListCopyWithImpl<$Res, $Val extends SharedList>
   @override
   $Res call({
     Object? id = freezed,
-    Object? userId = null,
+    Object? ownerId = null,
     Object? title = null,
     Object? items = null,
     Object? type = null,
+    Object? allowedUsersIds = null,
   }) {
     return _then(_value.copyWith(
       id: freezed == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String?,
-      userId: null == userId
-          ? _value.userId
-          : userId // ignore: cast_nullable_to_non_nullable
+      ownerId: null == ownerId
+          ? _value.ownerId
+          : ownerId // ignore: cast_nullable_to_non_nullable
               as String,
       title: null == title
           ? _value.title
@@ -86,6 +89,10 @@ class _$SharedListCopyWithImpl<$Res, $Val extends SharedList>
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
               as ListType,
+      allowedUsersIds: null == allowedUsersIds
+          ? _value.allowedUsersIds
+          : allowedUsersIds // ignore: cast_nullable_to_non_nullable
+              as List<String?>,
     ) as $Val);
   }
 }
@@ -100,10 +107,11 @@ abstract class _$$_SharedListCopyWith<$Res>
   @useResult
   $Res call(
       {String? id,
-      String userId,
+      String ownerId,
       String title,
       List<ListItem?> items,
-      ListType type});
+      ListType type,
+      List<String?> allowedUsersIds});
 }
 
 /// @nodoc
@@ -118,19 +126,20 @@ class __$$_SharedListCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = freezed,
-    Object? userId = null,
+    Object? ownerId = null,
     Object? title = null,
     Object? items = null,
     Object? type = null,
+    Object? allowedUsersIds = null,
   }) {
     return _then(_$_SharedList(
       id: freezed == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String?,
-      userId: null == userId
-          ? _value.userId
-          : userId // ignore: cast_nullable_to_non_nullable
+      ownerId: null == ownerId
+          ? _value.ownerId
+          : ownerId // ignore: cast_nullable_to_non_nullable
               as String,
       title: null == title
           ? _value.title
@@ -144,6 +153,10 @@ class __$$_SharedListCopyWithImpl<$Res>
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
               as ListType,
+      allowedUsersIds: null == allowedUsersIds
+          ? _value._allowedUsersIds
+          : allowedUsersIds // ignore: cast_nullable_to_non_nullable
+              as List<String?>,
     ));
   }
 }
@@ -153,11 +166,13 @@ class __$$_SharedListCopyWithImpl<$Res>
 class _$_SharedList implements _SharedList {
   _$_SharedList(
       {this.id,
-      required this.userId,
+      required this.ownerId,
       required this.title,
       required final List<ListItem?> items,
-      required this.type})
-      : _items = items;
+      required this.type,
+      required final List<String?> allowedUsersIds})
+      : _items = items,
+        _allowedUsersIds = allowedUsersIds;
 
   factory _$_SharedList.fromJson(Map<String, dynamic> json) =>
       _$$_SharedListFromJson(json);
@@ -165,7 +180,7 @@ class _$_SharedList implements _SharedList {
   @override
   final String? id;
   @override
-  final String userId;
+  final String ownerId;
   @override
   final String title;
   final List<ListItem?> _items;
@@ -178,10 +193,17 @@ class _$_SharedList implements _SharedList {
 
   @override
   final ListType type;
+  final List<String?> _allowedUsersIds;
+  @override
+  List<String?> get allowedUsersIds {
+    if (_allowedUsersIds is EqualUnmodifiableListView) return _allowedUsersIds;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_allowedUsersIds);
+  }
 
   @override
   String toString() {
-    return 'SharedList(id: $id, userId: $userId, title: $title, items: $items, type: $type)';
+    return 'SharedList(id: $id, ownerId: $ownerId, title: $title, items: $items, type: $type, allowedUsersIds: $allowedUsersIds)';
   }
 
   @override
@@ -190,16 +212,24 @@ class _$_SharedList implements _SharedList {
         (other.runtimeType == runtimeType &&
             other is _$_SharedList &&
             (identical(other.id, id) || other.id == id) &&
-            (identical(other.userId, userId) || other.userId == userId) &&
+            (identical(other.ownerId, ownerId) || other.ownerId == ownerId) &&
             (identical(other.title, title) || other.title == title) &&
             const DeepCollectionEquality().equals(other._items, _items) &&
-            (identical(other.type, type) || other.type == type));
+            (identical(other.type, type) || other.type == type) &&
+            const DeepCollectionEquality()
+                .equals(other._allowedUsersIds, _allowedUsersIds));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, id, userId, title,
-      const DeepCollectionEquality().hash(_items), type);
+  int get hashCode => Object.hash(
+      runtimeType,
+      id,
+      ownerId,
+      title,
+      const DeepCollectionEquality().hash(_items),
+      type,
+      const DeepCollectionEquality().hash(_allowedUsersIds));
 
   @JsonKey(ignore: true)
   @override
@@ -218,10 +248,11 @@ class _$_SharedList implements _SharedList {
 abstract class _SharedList implements SharedList {
   factory _SharedList(
       {final String? id,
-      required final String userId,
+      required final String ownerId,
       required final String title,
       required final List<ListItem?> items,
-      required final ListType type}) = _$_SharedList;
+      required final ListType type,
+      required final List<String?> allowedUsersIds}) = _$_SharedList;
 
   factory _SharedList.fromJson(Map<String, dynamic> json) =
       _$_SharedList.fromJson;
@@ -229,13 +260,15 @@ abstract class _SharedList implements SharedList {
   @override
   String? get id;
   @override
-  String get userId;
+  String get ownerId;
   @override
   String get title;
   @override
   List<ListItem?> get items;
   @override
   ListType get type;
+  @override
+  List<String?> get allowedUsersIds;
   @override
   @JsonKey(ignore: true)
   _$$_SharedListCopyWith<_$_SharedList> get copyWith =>

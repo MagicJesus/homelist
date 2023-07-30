@@ -19,6 +19,7 @@ mixin _$AuthState {
   bool get isAuthenticated => throw _privateConstructorUsedError;
   bool get staySignedIn => throw _privateConstructorUsedError;
   Status get authStatus => throw _privateConstructorUsedError;
+  bool get signUp => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $AuthStateCopyWith<AuthState> get copyWith =>
@@ -30,7 +31,11 @@ abstract class $AuthStateCopyWith<$Res> {
   factory $AuthStateCopyWith(AuthState value, $Res Function(AuthState) then) =
       _$AuthStateCopyWithImpl<$Res, AuthState>;
   @useResult
-  $Res call({bool isAuthenticated, bool staySignedIn, Status authStatus});
+  $Res call(
+      {bool isAuthenticated,
+      bool staySignedIn,
+      Status authStatus,
+      bool signUp});
 }
 
 /// @nodoc
@@ -49,6 +54,7 @@ class _$AuthStateCopyWithImpl<$Res, $Val extends AuthState>
     Object? isAuthenticated = null,
     Object? staySignedIn = null,
     Object? authStatus = null,
+    Object? signUp = null,
   }) {
     return _then(_value.copyWith(
       isAuthenticated: null == isAuthenticated
@@ -63,6 +69,10 @@ class _$AuthStateCopyWithImpl<$Res, $Val extends AuthState>
           ? _value.authStatus
           : authStatus // ignore: cast_nullable_to_non_nullable
               as Status,
+      signUp: null == signUp
+          ? _value.signUp
+          : signUp // ignore: cast_nullable_to_non_nullable
+              as bool,
     ) as $Val);
   }
 }
@@ -74,7 +84,11 @@ abstract class _$$_AuthStateCopyWith<$Res> implements $AuthStateCopyWith<$Res> {
       __$$_AuthStateCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({bool isAuthenticated, bool staySignedIn, Status authStatus});
+  $Res call(
+      {bool isAuthenticated,
+      bool staySignedIn,
+      Status authStatus,
+      bool signUp});
 }
 
 /// @nodoc
@@ -91,6 +105,7 @@ class __$$_AuthStateCopyWithImpl<$Res>
     Object? isAuthenticated = null,
     Object? staySignedIn = null,
     Object? authStatus = null,
+    Object? signUp = null,
   }) {
     return _then(_$_AuthState(
       isAuthenticated: null == isAuthenticated
@@ -105,6 +120,10 @@ class __$$_AuthStateCopyWithImpl<$Res>
           ? _value.authStatus
           : authStatus // ignore: cast_nullable_to_non_nullable
               as Status,
+      signUp: null == signUp
+          ? _value.signUp
+          : signUp // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -115,7 +134,8 @@ class _$_AuthState implements _AuthState {
   const _$_AuthState(
       {required this.isAuthenticated,
       required this.staySignedIn,
-      required this.authStatus});
+      required this.authStatus,
+      required this.signUp});
 
   @override
   final bool isAuthenticated;
@@ -123,10 +143,12 @@ class _$_AuthState implements _AuthState {
   final bool staySignedIn;
   @override
   final Status authStatus;
+  @override
+  final bool signUp;
 
   @override
   String toString() {
-    return 'AuthState(isAuthenticated: $isAuthenticated, staySignedIn: $staySignedIn, authStatus: $authStatus)';
+    return 'AuthState(isAuthenticated: $isAuthenticated, staySignedIn: $staySignedIn, authStatus: $authStatus, signUp: $signUp)';
   }
 
   @override
@@ -139,12 +161,13 @@ class _$_AuthState implements _AuthState {
             (identical(other.staySignedIn, staySignedIn) ||
                 other.staySignedIn == staySignedIn) &&
             (identical(other.authStatus, authStatus) ||
-                other.authStatus == authStatus));
+                other.authStatus == authStatus) &&
+            (identical(other.signUp, signUp) || other.signUp == signUp));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, isAuthenticated, staySignedIn, authStatus);
+  int get hashCode => Object.hash(
+      runtimeType, isAuthenticated, staySignedIn, authStatus, signUp);
 
   @JsonKey(ignore: true)
   @override
@@ -157,7 +180,8 @@ abstract class _AuthState implements AuthState {
   const factory _AuthState(
       {required final bool isAuthenticated,
       required final bool staySignedIn,
-      required final Status authStatus}) = _$_AuthState;
+      required final Status authStatus,
+      required final bool signUp}) = _$_AuthState;
 
   @override
   bool get isAuthenticated;
@@ -165,6 +189,8 @@ abstract class _AuthState implements AuthState {
   bool get staySignedIn;
   @override
   Status get authStatus;
+  @override
+  bool get signUp;
   @override
   @JsonKey(ignore: true)
   _$$_AuthStateCopyWith<_$_AuthState> get copyWith =>

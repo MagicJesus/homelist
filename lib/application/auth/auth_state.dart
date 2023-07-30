@@ -9,5 +9,6 @@ class AuthState with _$AuthState {
     required bool isAuthenticated,
     required bool staySignedIn,
     required Status authStatus,
+    required bool signUp,
   }) = _AuthState;
 }

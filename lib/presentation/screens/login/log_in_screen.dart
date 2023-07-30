@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -143,33 +141,49 @@ class _LoginScreenState extends State<LoginScreen> {
                   }
                 },
                 child: BlocConsumer<AuthCubit, AuthState>(
-                    listener: (context, state) {
-                  if (state.authStatus == Status.loaded) {
-                    log("Going to homesxree");
-                    context.go(HomeScreen.routeName);
-                  }
-                }, builder: (context, state) {
-                  return Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: state.authStatus == Status.loading
-                        ? [
-                            const SizedBox(
-                              height: 12,
-                              width: 12,
-                              child: CircularProgressIndicator(
-                                strokeWidth: 2,
+                  listener: (context, state) {
+                    if (state.authStatus == Status.loaded) {
+                      context.go(HomeScreen.routeName);
+                    }
+                  },
+                  builder: (context, state) {
+                    return Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: state.authStatus == Status.loading
+                          ? [
+                              const SizedBox(
+                                height: 12,
+                                width: 12,
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2,
+                                ),
                               ),
-                            ),
-                          ]
-                        : [
-                            const Text("Log In"),
-                            const SizedBox(
-                              width: 8,
-                            ),
-                            const Icon(Icons.login),
-                          ],
-                  );
-                }),
+                            ]
+                          : [
+                              const Text("Log In"),
+                              const SizedBox(
+                                width: 8,
+                              ),
+                              const Icon(Icons.login),
+                            ],
+                    );
+                  },
+                ),
+              ),
+              const SizedBox(
+                height: 8,
+              ),
+              TextButton(
+                onPressed: () {
+                  context.read<AuthCubit>().signUp();
+                },
+                child: Text(
+                  "Sign Up",
+                  style: Theme.of(context)
+                      .textTheme
+                      .labelSmall!
+                      .copyWith(fontWeight: FontWeight.normal),
+                ),
               ),
               Expanded(
                 flex: 9,

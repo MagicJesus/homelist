@@ -32,6 +32,12 @@ class _ListDetailsScreenState extends State<ListDetailsScreen> {
           appBar: HomeListAppBar(
             title: state.currentList!.title,
             smallTitle: true,
+            actions: [
+              IconButton(
+                onPressed: () {},
+                icon: const Icon(Icons.share),
+              )
+            ],
           ),
           body: Column(
             crossAxisAlignment: CrossAxisAlignment.center,

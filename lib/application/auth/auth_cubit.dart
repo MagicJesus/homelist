@@ -1,10 +1,12 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:homelist/application/auth/auth_state.dart';
 import 'package:homelist/application/core/preferences.dart';
 import 'package:homelist/application/status.dart';
+import 'package:homelist/models/user/user.dart';
 import 'package:homelist/repositories/auth/auth_repository.dart';
 import 'package:homelist/repositories/firestore/firestore_repository.dart';
 
@@ -15,6 +17,7 @@ class AuthCubit extends Cubit<AuthState> {
             isAuthenticated: false,
             authStatus: Status.initial,
             staySignedIn: false,
+            signUp: false,
           ),
         ) {
     _firebaseUserStreamSubscription = _authRepository.userStream.listen(
@@ -23,6 +26,7 @@ class AuthCubit extends Cubit<AuthState> {
           emit(
             state.copyWith(
               isAuthenticated: false,
+              signUp: false,
               authStatus: Status.initial,
             ),
           );
@@ -72,6 +76,7 @@ class AuthCubit extends Cubit<AuthState> {
       state.copyWith(
         isAuthenticated: true,
         authStatus: Status.loaded,
+        signUp: false,
       ),
     );
   }
@@ -104,5 +109,38 @@ class AuthCubit extends Cubit<AuthState> {
       isAuthenticated: false,
     ));
     _firebaseUserStreamSubscription.cancel();
+  }
+
+  void signUp() {
+    emit(state.copyWith(signUp: true));
+  }
+
+  void removeSignUp() {
+    emit(state.copyWith(signUp: false));
+  }
+
+  Future<void> createUserWithEmailAndPassword({
+    required String email,
+    required String password,
+    required String firstName,
+    required String lastName,
+  }) async {
+    log('$firstName, $lastName, $email, $password');
+    emit(
+      state.copyWith(authStatus: Status.loading),
+    );
+    try {
+      final userData =
+          await _authRepository.createUserWithEmailAndPassword(email, password);
+      final newUser = UserData(
+        id: userData!.user!.uid,
+        firstName: firstName,
+        lastName: lastName,
+      );
+      await _firestoreRepository.createUser(newUser);
+      await authenticate(email: email, password: password);
+    } catch (e) {
+      log(e.toString());
+    }
   }
 }

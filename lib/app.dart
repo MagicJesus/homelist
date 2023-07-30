@@ -48,6 +48,9 @@ class HomeList extends StatelessWidget {
           auth: context.select<AuthCubit, bool>(
             (cubit) => cubit.state.authStatus == Status.loaded,
           ),
+          signUp: context.select<AuthCubit, bool>(
+            (cubit) => cubit.state.signUp,
+          ),
         );
         final router = NavigationService.router;
         return MaterialApp.router(
