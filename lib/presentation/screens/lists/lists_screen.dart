@@ -19,41 +19,42 @@ class ListsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: BlocBuilder<SharedListCubit, SharedListCubitState>(
-          builder: (context, listsState) {
-        return listsState.allListsStatus == Status.loading
-            ? const Center(
-                child: CircularProgressIndicator(),
-              )
-            : Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(
-                    height: 24,
-                  ),
-                  _ListsWidget(
-                    lists: listsState.todoLists,
-                    title: "Your Todo Lists",
-                    isTodo: true,
-                  ),
-                  const SizedBox(
-                    height: 8,
-                  ),
-                  const Divider(
-                    indent: 12,
-                    endIndent: 12,
-                  ),
-                  const SizedBox(
-                    height: 8,
-                  ),
-                  _ListsWidget(
-                    lists: listsState.shoppingLists,
-                    title: "Your Shopping Lists",
-                    isTodo: false,
-                  ),
-                ],
-              );
-      }),
+        builder: (context, listsState) {
+          return listsState.allListsStatus == Status.loading
+              ? const Center(
+                  child: CircularProgressIndicator(),
+                )
+              : Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(
+                      height: 24,
+                    ),
+                    _ListsWidget(
+                      lists: listsState.todoLists,
+                      title: "Your Todo Lists",
+                      isTodo: true,
+                    ),
+                    const SizedBox(
+                      height: 8,
+                    ),
+                    const Divider(
+                      indent: 12,
+                      endIndent: 12,
+                    ),
+                    const SizedBox(
+                      height: 8,
+                    ),
+                    _ListsWidget(
+                      lists: listsState.shoppingLists,
+                      title: "Your Shopping Lists",
+                      isTodo: false,
+                    ),
+                  ],
+                );
+        },
+      ),
     );
   }
 }

@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 import 'package:homelist/application/auth/auth_cubit.dart';
 import 'package:homelist/application/auth/auth_state.dart';
 import 'package:homelist/application/core/preferences.dart';
 import 'package:homelist/application/status.dart';
-import 'package:homelist/presentation/screens/home/home_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -140,12 +138,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     );
                   }
                 },
-                child: BlocConsumer<AuthCubit, AuthState>(
-                  listener: (context, state) {
-                    if (state.authStatus == Status.loaded) {
-                      context.go(HomeScreen.routeName);
-                    }
-                  },
+                child: BlocBuilder<AuthCubit, AuthState>(
                   builder: (context, state) {
                     return Row(
                       mainAxisSize: MainAxisSize.min,
