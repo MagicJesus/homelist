@@ -136,6 +136,7 @@ class AuthCubit extends Cubit<AuthState> {
         id: userData!.user!.uid,
         firstName: firstName,
         lastName: lastName,
+        email: email,
       );
       await _firestoreRepository.createUser(newUser);
       await authenticate(email: email, password: password);

@@ -92,28 +92,29 @@ class _AddListFormState extends State<AddListForm> {
           child: const Text("Cancel"),
         ),
         BlocBuilder<SharedListCubit, SharedListCubitState>(
-            builder: (context, state) {
-          return ElevatedButton(
-            onPressed: () async {
-              if (_formKey.currentState!.validate()) {
-                await context.read<SharedListCubit>().addNewList(
-                      titleController.value.text,
-                      listType,
-                      context.read<UserCubit>().state.userData!.id,
-                    );
-                if (context.mounted) {
-                  context.pop();
+          builder: (context, state) {
+            return ElevatedButton(
+              onPressed: () async {
+                if (_formKey.currentState!.validate()) {
+                  await context.read<SharedListCubit>().addNewList(
+                        titleController.value.text,
+                        listType,
+                        context.read<UserCubit>().state.userData!.id,
+                      );
+                  if (context.mounted) {
+                    context.pop();
+                  }
                 }
-              }
-            },
-            child: state.allListsStatus == Status.loading
-                ? const Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: CircularProgressIndicator(),
-                  )
-                : const Text("Add"),
-          );
-        }),
+              },
+              child: state.allListsStatus == Status.loading
+                  ? const Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: CircularProgressIndicator(),
+                    )
+                  : const Text("Add"),
+            );
+          },
+        ),
       ],
     );
   }

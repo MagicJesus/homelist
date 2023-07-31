@@ -1,15 +1,21 @@
 part of 'package:homelist/presentation/screens/lists/lists_screen.dart';
 
+enum ListsType {
+  todo,
+  shopping,
+  shared,
+}
+
 class _ListsWidget extends StatelessWidget {
   const _ListsWidget({
     required this.lists,
     required this.title,
-    required this.isTodo,
+    required this.listsType,
   });
 
   final List<SharedList> lists;
   final String title;
-  final bool isTodo;
+  final ListsType listsType;
 
   @override
   Widget build(BuildContext context) {
@@ -31,15 +37,15 @@ class _ListsWidget extends StatelessWidget {
         ),
         if (lists.isEmpty)
           _EmptyWidget(
-            isTodo: isTodo,
+            listsType: listsType,
           ),
         if (lists.isNotEmpty)
-          ...lists.map((todoList) {
+          ...lists.map((list) {
             return Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
               child: InkWell(
                 onTap: () {
-                  context.read<SharedListCubit>().changeCurrentList(todoList);
+                  context.read<SharedListCubit>().changeCurrentList(list);
                   context.push(ListDetailsScreen.routeName);
                 },
                 borderRadius: BorderRadius.circular(16),
@@ -54,7 +60,7 @@ class _ListsWidget extends StatelessWidget {
                   ),
                   child: Row(
                     children: [
-                      Text(todoList.title),
+                      Text(list.title),
                       Expanded(child: Container()),
                       const Icon(Icons.arrow_right),
                     ],
@@ -70,10 +76,32 @@ class _ListsWidget extends StatelessWidget {
 
 class _EmptyWidget extends StatelessWidget {
   const _EmptyWidget({
-    required this.isTodo,
+    required this.listsType,
   });
 
-  final bool isTodo;
+  final ListsType listsType;
+
+  String _getLabel() {
+    switch (listsType) {
+      case ListsType.todo:
+        return "No Todo Lists Yet :C";
+      case ListsType.shopping:
+        return "No Shopping Lists Yet :C";
+      case ListsType.shared:
+        return '"No Shared Lists Yet :C"';
+    }
+  }
+
+  IconData _getIcon() {
+    switch (listsType) {
+      case ListsType.todo:
+        return Icons.task;
+      case ListsType.shopping:
+        return Icons.shopping_bag_outlined;
+      case ListsType.shared:
+        return Icons.share;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -96,14 +124,14 @@ class _EmptyWidget extends StatelessWidget {
           Align(
             alignment: Alignment.bottomCenter,
             child: Text(
-              isTodo ? "No Todo Lists Yet :C" : "No Shopping Lists Yet :C",
+              _getLabel(),
               style: const TextStyle(fontWeight: FontWeight.bold),
             ),
           ),
           Align(
             alignment: Alignment.center,
             child: Icon(
-              isTodo ? Icons.task : Icons.shopping_bag_outlined,
+              _getIcon(),
               size: 64,
             ),
           ),

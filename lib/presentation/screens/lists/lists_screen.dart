@@ -34,7 +34,7 @@ class ListsScreen extends StatelessWidget {
                     _ListsWidget(
                       lists: listsState.todoLists,
                       title: "Your Todo Lists",
-                      isTodo: true,
+                      listsType: ListsType.todo,
                     ),
                     const SizedBox(
                       height: 8,
@@ -49,7 +49,19 @@ class ListsScreen extends StatelessWidget {
                     _ListsWidget(
                       lists: listsState.shoppingLists,
                       title: "Your Shopping Lists",
-                      isTodo: false,
+                      listsType: ListsType.shopping,
+                    ),
+                    const Divider(
+                      indent: 12,
+                      endIndent: 12,
+                    ),
+                    const SizedBox(
+                      height: 8,
+                    ),
+                    _ListsWidget(
+                      lists: listsState.sharedLists,
+                      title: "Lists Shared with You",
+                      listsType: ListsType.shared,
                     ),
                   ],
                 );

@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:developer';
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:homelist/application/user/user_cubit_state.dart';
 import 'package:homelist/models/user/user.dart';
@@ -29,15 +28,5 @@ class UserCubit extends Cubit<UserCubitState> {
 
   Future<void> getUserData(String uid) async {
     await _firestoreRepository.getUserData(uid);
-  }
-
-  Future<void> createUser(User firebaseUser) async {
-    final userData = UserData(
-      id: firebaseUser.uid,
-      firstName: firebaseUser.displayName ?? 'John',
-      lastName: firebaseUser.displayName ?? 'Doe',
-    );
-
-    await _firestoreRepository.createUser(userData);
   }
 }

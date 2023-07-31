@@ -62,63 +62,74 @@ class _LoginScreenState extends State<LoginScreen> {
               const SizedBox(
                 height: 24,
               ),
-              ConstrainedBox(
-                constraints: const BoxConstraints(maxWidth: 600),
-                child: TextFormField(
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter some text';
-                    }
-                    return null;
-                  },
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(16),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  ConstrainedBox(
+                    constraints: const BoxConstraints(maxWidth: 600),
+                    child: TextFormField(
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter some text';
+                        }
+                        return null;
+                      },
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                      ),
+                      controller: emailController,
                     ),
                   ),
-                  controller: emailController,
-                ),
-              ),
-              const SizedBox(
-                height: 16,
-              ),
-              ConstrainedBox(
-                constraints: const BoxConstraints(maxWidth: 600),
-                child: TextFormField(
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter some text';
-                    }
-                    return null;
-                  },
-                  obscureText: true,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(16),
+                  const SizedBox(
+                    height: 16,
+                  ),
+                  ConstrainedBox(
+                    constraints: const BoxConstraints(maxWidth: 600),
+                    child: TextFormField(
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter some text';
+                        }
+                        return null;
+                      },
+                      obscureText: true,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                      ),
+                      controller: passwordController,
                     ),
                   ),
-                  controller: passwordController,
-                ),
+                  const SizedBox(
+                    height: 16,
+                  ),
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      BlocBuilder<AuthCubit, AuthState>(
+                        builder: (context, state) {
+                          return Checkbox(
+                            value: state.staySignedIn,
+                            onChanged: (value) {
+                              if (value != null) {
+                                context
+                                    .read<AuthCubit>()
+                                    .setStaySignedIn(value);
+                              }
+                            },
+                          );
+                        },
+                      ),
+                      const Text("Remember credentials?"),
+                    ],
+                  ),
+                ],
               ),
               const SizedBox(
                 height: 24,
-              ),
-              Row(
-                children: [
-                  BlocBuilder<AuthCubit, AuthState>(
-                    builder: (context, state) {
-                      return Checkbox(
-                        value: state.staySignedIn,
-                        onChanged: (value) {
-                          if (value != null) {
-                            context.read<AuthCubit>().setStaySignedIn(value);
-                          }
-                        },
-                      );
-                    },
-                  ),
-                  const Text("Remember credentials?"),
-                ],
               ),
               ElevatedButton(
                 onPressed: () async {

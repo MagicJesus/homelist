@@ -102,7 +102,13 @@ class _HomeScreenState extends State<HomeScreen> {
                       );
                       if (index == 1) {
                         context.read<SharedListCubit>().loadUserListsStream(
-                            context.read<UserCubit>().state.userData!.id);
+                              context.read<UserCubit>().state.userData!.id,
+                            );
+                        context
+                            .read<SharedListCubit>()
+                            .loadListsSharedWithUserStream(
+                              context.read<UserCubit>().state.userData!.id,
+                            );
                       }
                       if (context.mounted) {
                         await context.read<BottomNavCubit>().changeIndex(

@@ -17,8 +17,11 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$SharedListCubitState {
   List<SharedList> get allLists => throw _privateConstructorUsedError;
+  List<SharedList> get sharedLists => throw _privateConstructorUsedError;
+  List<UserData> get usersToShare => throw _privateConstructorUsedError;
   SharedList? get currentList => throw _privateConstructorUsedError;
   Status get allListsStatus => throw _privateConstructorUsedError;
+  Status get sharedListsStatus => throw _privateConstructorUsedError;
   Status get currentListStatus => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -34,8 +37,11 @@ abstract class $SharedListCubitStateCopyWith<$Res> {
   @useResult
   $Res call(
       {List<SharedList> allLists,
+      List<SharedList> sharedLists,
+      List<UserData> usersToShare,
       SharedList? currentList,
       Status allListsStatus,
+      Status sharedListsStatus,
       Status currentListStatus});
 
   $SharedListCopyWith<$Res>? get currentList;
@@ -56,8 +62,11 @@ class _$SharedListCubitStateCopyWithImpl<$Res,
   @override
   $Res call({
     Object? allLists = null,
+    Object? sharedLists = null,
+    Object? usersToShare = null,
     Object? currentList = freezed,
     Object? allListsStatus = null,
+    Object? sharedListsStatus = null,
     Object? currentListStatus = null,
   }) {
     return _then(_value.copyWith(
@@ -65,6 +74,14 @@ class _$SharedListCubitStateCopyWithImpl<$Res,
           ? _value.allLists
           : allLists // ignore: cast_nullable_to_non_nullable
               as List<SharedList>,
+      sharedLists: null == sharedLists
+          ? _value.sharedLists
+          : sharedLists // ignore: cast_nullable_to_non_nullable
+              as List<SharedList>,
+      usersToShare: null == usersToShare
+          ? _value.usersToShare
+          : usersToShare // ignore: cast_nullable_to_non_nullable
+              as List<UserData>,
       currentList: freezed == currentList
           ? _value.currentList
           : currentList // ignore: cast_nullable_to_non_nullable
@@ -72,6 +89,10 @@ class _$SharedListCubitStateCopyWithImpl<$Res,
       allListsStatus: null == allListsStatus
           ? _value.allListsStatus
           : allListsStatus // ignore: cast_nullable_to_non_nullable
+              as Status,
+      sharedListsStatus: null == sharedListsStatus
+          ? _value.sharedListsStatus
+          : sharedListsStatus // ignore: cast_nullable_to_non_nullable
               as Status,
       currentListStatus: null == currentListStatus
           ? _value.currentListStatus
@@ -103,8 +124,11 @@ abstract class _$$_SharedListCubitStateCopyWith<$Res>
   @useResult
   $Res call(
       {List<SharedList> allLists,
+      List<SharedList> sharedLists,
+      List<UserData> usersToShare,
       SharedList? currentList,
       Status allListsStatus,
+      Status sharedListsStatus,
       Status currentListStatus});
 
   @override
@@ -123,8 +147,11 @@ class __$$_SharedListCubitStateCopyWithImpl<$Res>
   @override
   $Res call({
     Object? allLists = null,
+    Object? sharedLists = null,
+    Object? usersToShare = null,
     Object? currentList = freezed,
     Object? allListsStatus = null,
+    Object? sharedListsStatus = null,
     Object? currentListStatus = null,
   }) {
     return _then(_$_SharedListCubitState(
@@ -132,6 +159,14 @@ class __$$_SharedListCubitStateCopyWithImpl<$Res>
           ? _value._allLists
           : allLists // ignore: cast_nullable_to_non_nullable
               as List<SharedList>,
+      sharedLists: null == sharedLists
+          ? _value._sharedLists
+          : sharedLists // ignore: cast_nullable_to_non_nullable
+              as List<SharedList>,
+      usersToShare: null == usersToShare
+          ? _value._usersToShare
+          : usersToShare // ignore: cast_nullable_to_non_nullable
+              as List<UserData>,
       currentList: freezed == currentList
           ? _value.currentList
           : currentList // ignore: cast_nullable_to_non_nullable
@@ -139,6 +174,10 @@ class __$$_SharedListCubitStateCopyWithImpl<$Res>
       allListsStatus: null == allListsStatus
           ? _value.allListsStatus
           : allListsStatus // ignore: cast_nullable_to_non_nullable
+              as Status,
+      sharedListsStatus: null == sharedListsStatus
+          ? _value.sharedListsStatus
+          : sharedListsStatus // ignore: cast_nullable_to_non_nullable
               as Status,
       currentListStatus: null == currentListStatus
           ? _value.currentListStatus
@@ -153,10 +192,15 @@ class __$$_SharedListCubitStateCopyWithImpl<$Res>
 class _$_SharedListCubitState extends _SharedListCubitState {
   _$_SharedListCubitState(
       {required final List<SharedList> allLists,
+      required final List<SharedList> sharedLists,
+      required final List<UserData> usersToShare,
       required this.currentList,
       required this.allListsStatus,
+      required this.sharedListsStatus,
       required this.currentListStatus})
       : _allLists = allLists,
+        _sharedLists = sharedLists,
+        _usersToShare = usersToShare,
         super._();
 
   final List<SharedList> _allLists;
@@ -167,16 +211,34 @@ class _$_SharedListCubitState extends _SharedListCubitState {
     return EqualUnmodifiableListView(_allLists);
   }
 
+  final List<SharedList> _sharedLists;
+  @override
+  List<SharedList> get sharedLists {
+    if (_sharedLists is EqualUnmodifiableListView) return _sharedLists;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_sharedLists);
+  }
+
+  final List<UserData> _usersToShare;
+  @override
+  List<UserData> get usersToShare {
+    if (_usersToShare is EqualUnmodifiableListView) return _usersToShare;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_usersToShare);
+  }
+
   @override
   final SharedList? currentList;
   @override
   final Status allListsStatus;
   @override
+  final Status sharedListsStatus;
+  @override
   final Status currentListStatus;
 
   @override
   String toString() {
-    return 'SharedListCubitState(allLists: $allLists, currentList: $currentList, allListsStatus: $allListsStatus, currentListStatus: $currentListStatus)';
+    return 'SharedListCubitState(allLists: $allLists, sharedLists: $sharedLists, usersToShare: $usersToShare, currentList: $currentList, allListsStatus: $allListsStatus, sharedListsStatus: $sharedListsStatus, currentListStatus: $currentListStatus)';
   }
 
   @override
@@ -185,10 +247,16 @@ class _$_SharedListCubitState extends _SharedListCubitState {
         (other.runtimeType == runtimeType &&
             other is _$_SharedListCubitState &&
             const DeepCollectionEquality().equals(other._allLists, _allLists) &&
+            const DeepCollectionEquality()
+                .equals(other._sharedLists, _sharedLists) &&
+            const DeepCollectionEquality()
+                .equals(other._usersToShare, _usersToShare) &&
             (identical(other.currentList, currentList) ||
                 other.currentList == currentList) &&
             (identical(other.allListsStatus, allListsStatus) ||
                 other.allListsStatus == allListsStatus) &&
+            (identical(other.sharedListsStatus, sharedListsStatus) ||
+                other.sharedListsStatus == sharedListsStatus) &&
             (identical(other.currentListStatus, currentListStatus) ||
                 other.currentListStatus == currentListStatus));
   }
@@ -197,8 +265,11 @@ class _$_SharedListCubitState extends _SharedListCubitState {
   int get hashCode => Object.hash(
       runtimeType,
       const DeepCollectionEquality().hash(_allLists),
+      const DeepCollectionEquality().hash(_sharedLists),
+      const DeepCollectionEquality().hash(_usersToShare),
       currentList,
       allListsStatus,
+      sharedListsStatus,
       currentListStatus);
 
   @JsonKey(ignore: true)
@@ -212,17 +283,26 @@ class _$_SharedListCubitState extends _SharedListCubitState {
 abstract class _SharedListCubitState extends SharedListCubitState {
   factory _SharedListCubitState(
       {required final List<SharedList> allLists,
+      required final List<SharedList> sharedLists,
+      required final List<UserData> usersToShare,
       required final SharedList? currentList,
       required final Status allListsStatus,
+      required final Status sharedListsStatus,
       required final Status currentListStatus}) = _$_SharedListCubitState;
   _SharedListCubitState._() : super._();
 
   @override
   List<SharedList> get allLists;
   @override
+  List<SharedList> get sharedLists;
+  @override
+  List<UserData> get usersToShare;
+  @override
   SharedList? get currentList;
   @override
   Status get allListsStatus;
+  @override
+  Status get sharedListsStatus;
   @override
   Status get currentListStatus;
   @override

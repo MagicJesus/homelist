@@ -9,6 +9,7 @@ class UserData with _$UserData {
     required String id,
     required String firstName,
     required String lastName,
+    required String email,
   }) = _UserData;
 
   factory UserData.fromJson(Map<String, Object?> json) =>

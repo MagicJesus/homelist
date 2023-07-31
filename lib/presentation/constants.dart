@@ -12,13 +12,19 @@ class AppColors {
 }
 
 final appTheme = ThemeData(
-  colorScheme: ColorScheme.fromSeed(
-    seedColor: const Color.fromARGB(255, 179, 255, 0),
-  ),
-  iconButtonTheme: IconButtonThemeData(
-    style: IconButton.styleFrom(
-      foregroundColor: Colors.white,
+    colorScheme: ColorScheme.fromSeed(
+      seedColor: const Color.fromARGB(255, 179, 255, 0),
     ),
-  ),
-  useMaterial3: true,
-);
+    iconButtonTheme: IconButtonThemeData(
+      style: IconButton.styleFrom(
+        foregroundColor: Colors.white,
+      ),
+    ),
+    useMaterial3: true,
+    inputDecorationTheme: InputDecorationTheme(
+      hintStyle: const TextStyle(color: AppColors.hintTextColor),
+      contentPadding: const EdgeInsets.symmetric(horizontal: 8),
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(16),
+      ),
+    ));

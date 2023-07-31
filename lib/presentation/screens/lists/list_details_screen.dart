@@ -4,6 +4,7 @@ import 'package:homelist/application/shared_lists/shared_list_cubit.dart';
 import 'package:homelist/application/shared_lists/shared_list_cubit_state.dart';
 import 'package:homelist/presentation/widgets/common/homelist_appbar.dart';
 import 'package:homelist/presentation/widgets/lists/list_item_widget.dart';
+import 'package:homelist/presentation/widgets/lists/share_list_widget.dart';
 
 class ListDetailsScreen extends StatefulWidget {
   const ListDetailsScreen({
@@ -34,7 +35,14 @@ class _ListDetailsScreenState extends State<ListDetailsScreen> {
             smallTitle: true,
             actions: [
               IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) {
+                      return const ShareListWidget();
+                    },
+                  );
+                },
                 icon: const Icon(Icons.share),
               )
             ],

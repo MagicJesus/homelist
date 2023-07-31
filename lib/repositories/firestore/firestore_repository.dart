@@ -8,8 +8,12 @@ import 'package:homelist/models/user/user.dart';
 
 class FirestoreRepository {
   final database = FirebaseFirestore.instance;
-  final _listsCollection =
-      FirebaseFirestore.instance.collection(_listsCollectionKey);
+  final _listsCollection = FirebaseFirestore.instance.collection(
+    _listsCollectionKey,
+  );
+  final _usersCollection = FirebaseFirestore.instance.collection(
+    _usersCollectionKey,
+  );
   final StreamController<UserData?> userDataStream = StreamController();
 
   static const String _usersCollectionKey = 'users';
@@ -56,9 +60,10 @@ class FirestoreRepository {
   }
 
   Future<Stream<List<SharedList>>> getSharedListsStream(
-      String currentUserId) async {
+    String currentUserId,
+  ) async {
     return _listsCollection
-        .where('allowedUserIds', arrayContains: currentUserId)
+        .where('allowedUsersIds', arrayContains: currentUserId)
         .snapshots()
         .map(
           (querySnapshots) => querySnapshots.docs
@@ -80,6 +85,34 @@ class FirestoreRepository {
         querySnapshot.data() as Map<String, Object?>,
       );
     });
+  }
+
+  Stream<List<UserData>> getUsersToShareStream(
+    String currentUserId,
+    SharedList currentList,
+  ) {
+    return _usersCollection
+        .where(
+          'id',
+          whereNotIn: [
+            currentUserId,
+            ...currentList.allowedUsersIds,
+          ],
+        )
+        .snapshots()
+        .map(
+          (querySnapshot) {
+            return querySnapshot.docs.map(
+              (userData) {
+                final user = UserData.fromJson(
+                  userData.data(),
+                );
+
+                return user;
+              },
+            ).toList();
+          },
+        );
   }
 
   Future<void> createList(SharedList newList) async {
@@ -122,24 +155,45 @@ class FirestoreRepository {
     }
   }
 
-  Future<void> editListItem(SharedList currentList, ListItem editedItem) async {
+  Future<void> editListItem(
+    SharedList currentList,
+    ListItem editedItem,
+  ) async {
     try {
-      final currentListDocumentRef =
-          database.collection(_listsCollectionKey).doc(currentList.id);
+      final currentListDocumentRef = database
+          .collection(
+            _listsCollectionKey,
+          )
+          .doc(
+            currentList.id,
+          );
+
       database.runTransaction(
         (transaction) {
           return transaction.get(currentListDocumentRef).then(
             (currentListDocument) {
               List items = currentListDocument.get('items') as List;
-              final castItems = items.map((e) => ListItem.fromJson(e)).toList();
-              final currentItem = castItems
-                  .firstWhere((element) => element.id == editedItem.id);
+              final castItems = items
+                  .map(
+                    (e) => ListItem.fromJson(e),
+                  )
+                  .toList();
+
+              final currentItem = castItems.firstWhere(
+                (element) => element.id == editedItem.id,
+              );
+
               final currentItemIndex = castItems.indexOf(currentItem);
 
               castItems.replaceRange(
-                  currentItemIndex, currentItemIndex + 1, [editedItem]);
+                currentItemIndex,
+                currentItemIndex + 1,
+                [editedItem],
+              );
 
-              final itemsToUpdate = castItems.map((e) => e.toJson());
+              final itemsToUpdate = castItems.map(
+                (e) => e.toJson(),
+              );
 
               transaction.update(
                 currentListDocumentRef,
@@ -150,7 +204,51 @@ class FirestoreRepository {
         },
       );
     } catch (e) {
-      log(e.toString());
+      log(
+        e.toString(),
+      );
+    }
+  }
+
+  Future<void> shareListToUsers(
+    SharedList currentList,
+    List<String> usersToShareWith,
+  ) async {
+    try {
+      final currentListDocumentRef = database
+          .collection(
+            _listsCollectionKey,
+          )
+          .doc(
+            currentList.id,
+          );
+      database.runTransaction(
+        (transaction) {
+          return transaction.get(currentListDocumentRef).then(
+            (currentListDocument) {
+              final currentList = SharedList.fromJson(
+                currentListDocument.data() as Map<String, Object?>,
+              );
+
+              final updatedAllowedUsersList = [
+                ...currentList.allowedUsersIds,
+                ...usersToShareWith
+              ];
+
+              final updatedAllowedUsersListDistinct =
+                  updatedAllowedUsersList.toSet().toList();
+
+              transaction.update(currentListDocumentRef, {
+                'allowedUsersIds': updatedAllowedUsersListDistinct,
+              });
+            },
+          );
+        },
+      );
+    } catch (e) {
+      log(
+        e.toString(),
+      );
     }
   }
 }

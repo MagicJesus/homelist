@@ -1,6 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:homelist/application/status.dart';
 import 'package:homelist/models/list/list.dart';
+import 'package:homelist/models/user/user.dart';
 
 part 'shared_list_cubit_state.freezed.dart';
 
@@ -10,17 +11,23 @@ class SharedListCubitState with _$SharedListCubitState {
 
   factory SharedListCubitState({
     required List<SharedList> allLists,
+    required List<SharedList> sharedLists,
+    required List<UserData> usersToShare,
     required SharedList? currentList,
     required Status allListsStatus,
+    required Status sharedListsStatus,
     required Status currentListStatus,
   }) = _SharedListCubitState;
 
   factory SharedListCubitState.initialState() {
     return SharedListCubitState(
-      currentListStatus: Status.initial,
+      sharedLists: [],
+      sharedListsStatus: Status.initial,
       currentList: null,
-      allListsStatus: Status.initial,
+      currentListStatus: Status.initial,
       allLists: [],
+      allListsStatus: Status.initial,
+      usersToShare: [],
     );
   }
 

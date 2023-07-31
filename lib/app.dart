@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:homelist/application/auth/auth_cubit.dart';
@@ -43,7 +41,6 @@ class HomeList extends StatelessWidget {
         ),
       ],
       child: Builder(builder: (context) {
-        log("BuuldingApp");
         NavigationService.initRouter(
           auth: context.select<AuthCubit, bool>(
             (cubit) => cubit.state.authStatus == Status.loaded,
