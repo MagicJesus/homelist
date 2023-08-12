@@ -84,6 +84,7 @@ class _ListDetailsScreenState extends State<ListDetailsScreen> {
                   children: [
                     ElevatedButton(
                       onPressed: () {
+                        // showDialog(context: context, builder: builder);
                         context.read<SharedListCubit>().addNewListItem();
                       },
                       child: const Text("Add item"),
