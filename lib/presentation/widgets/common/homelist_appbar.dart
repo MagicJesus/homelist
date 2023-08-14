@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:homelist/application/auth/auth_cubit.dart';
+import 'package:homelist/application/bottom_nav/bottom_nav_cubit.dart';
 import 'package:homelist/presentation/constants.dart';
 
 class HomeListAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -38,6 +39,7 @@ class HomeListAppBar extends StatelessWidget implements PreferredSizeWidget {
           [
             IconButton(
               onPressed: () async {
+                context.read<BottomNavCubit>().initialState();
                 await context.read<AuthCubit>().signOut();
               },
               icon: const Icon(

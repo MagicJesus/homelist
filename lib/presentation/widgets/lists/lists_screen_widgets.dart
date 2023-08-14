@@ -61,7 +61,9 @@ class _ListsWidget extends StatelessWidget {
                   child: Row(
                     children: [
                       Text(list.title),
-                      Expanded(child: Container()),
+                      Expanded(
+                        child: Container(),
+                      ),
                       const Icon(Icons.arrow_right),
                     ],
                   ),

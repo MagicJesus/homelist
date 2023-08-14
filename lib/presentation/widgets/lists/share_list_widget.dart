@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:homelist/application/shared_lists/shared_list_cubit.dart';
 import 'package:homelist/application/shared_lists/shared_list_cubit_state.dart';
 import 'package:homelist/application/user/user_cubit.dart';
@@ -46,6 +47,7 @@ class _ShareListWidgetState extends State<ShareListWidget> {
                   context
                       .read<SharedListCubit>()
                       .shareListToUsers(selectedUsers);
+                  context.pop();
                 },
           child: const Text('Share'),
         )
@@ -54,6 +56,7 @@ class _ShareListWidgetState extends State<ShareListWidget> {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
+          //TODO Add user searching logic
           const TextField(),
           BlocBuilder<SharedListCubit, SharedListCubitState>(
             builder: ((context, state) {

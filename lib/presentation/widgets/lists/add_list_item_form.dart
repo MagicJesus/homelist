@@ -4,19 +4,20 @@ import 'package:go_router/go_router.dart';
 import 'package:homelist/application/shared_lists/shared_list_cubit.dart';
 import 'package:homelist/application/shared_lists/shared_list_cubit_state.dart';
 import 'package:homelist/application/status.dart';
-import 'package:homelist/application/user/user_cubit.dart';
-import 'package:homelist/models/list/list.dart';
+import 'package:homelist/helpers/icons_helper.dart';
+import 'package:homelist/models/list/list_item.dart';
 import 'package:homelist/presentation/constants.dart';
+import 'package:uuid/uuid.dart';
 
-class AddListForm extends StatefulWidget {
-  const AddListForm({super.key});
+class AddListItemForm extends StatefulWidget {
+  const AddListItemForm({super.key});
 
   @override
-  State<AddListForm> createState() => _AddListFormState();
+  State<AddListItemForm> createState() => _AddListItemFormState();
 }
 
-class _AddListFormState extends State<AddListForm> {
-  ListType listType = ListType.todo;
+class _AddListItemFormState extends State<AddListItemForm> {
+  IconNames iconName = IconNames.vegetables;
 
   final _formKey = GlobalKey<FormState>();
 
@@ -27,7 +28,7 @@ class _AddListFormState extends State<AddListForm> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text('Add a new List'),
+      title: const Text('Add a new item'),
       contentPadding:
           const EdgeInsets.only(left: 32, top: 32, right: 32, bottom: 16),
       alignment: Alignment.center,
@@ -38,25 +39,48 @@ class _AddListFormState extends State<AddListForm> {
           children: [
             DropdownButtonFormField(
               decoration: InputDecoration(
+                label: const Text('Icon'),
                 contentPadding: const EdgeInsets.symmetric(horizontal: 8),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(16),
                 ),
               ),
-              value: listType,
-              items: const [
-                DropdownMenuItem<ListType>(
-                  value: ListType.todo,
-                  child: Text('To-Do'),
+              value: iconName,
+              items: [
+                DropdownMenuItem<IconNames>(
+                  value: IconNames.vegetables,
+                  child: ConstrainedBox(
+                    constraints: const BoxConstraints(
+                      maxHeight: 50,
+                      maxWidth: 50,
+                    ),
+                    child: IconsHelper.getIcon(IconNames.vegetables),
+                  ),
                 ),
-                DropdownMenuItem<ListType>(
-                  value: ListType.shopping,
-                  child: Text('Shopping'),
+                DropdownMenuItem<IconNames>(
+                  value: IconNames.fruits,
+                  child: ConstrainedBox(
+                    constraints: const BoxConstraints(
+                      maxHeight: 50,
+                      maxWidth: 50,
+                    ),
+                    child: IconsHelper.getIcon(IconNames.fruits),
+                  ),
+                ),
+                DropdownMenuItem<IconNames>(
+                  value: IconNames.dairy,
+                  child: ConstrainedBox(
+                    constraints: const BoxConstraints(
+                      maxHeight: 50,
+                      maxWidth: 50,
+                    ),
+                    child: IconsHelper.getIcon(IconNames.dairy),
+                  ),
                 ),
               ],
               onChanged: (value) {
                 if (value != null) {
-                  listType = value;
+                  iconName = value;
                 }
               },
             ),
@@ -64,6 +88,7 @@ class _AddListFormState extends State<AddListForm> {
               height: 12,
             ),
             TextFormField(
+              autofocus: true,
               controller: titleController,
               validator: (value) {
                 if (value == null || value.isEmpty) {
@@ -72,8 +97,7 @@ class _AddListFormState extends State<AddListForm> {
                 return null;
               },
               decoration: InputDecoration(
-                label: const Text('Title'),
-                hintText: 'Enter a list title',
+                label: const Text('What do you need?'),
                 hintStyle: const TextStyle(color: AppColors.hintTextColor),
                 contentPadding: const EdgeInsets.symmetric(horizontal: 8),
                 border: OutlineInputBorder(
@@ -96,11 +120,13 @@ class _AddListFormState extends State<AddListForm> {
             return ElevatedButton(
               onPressed: () async {
                 if (_formKey.currentState!.validate()) {
-                  await context.read<SharedListCubit>().addNewList(
-                        titleController.value.text,
-                        listType,
-                        context.read<UserCubit>().state.userData!.id,
-                      );
+                  final newItem = ListItem(
+                    id: const Uuid().v1(),
+                    title: titleController.text,
+                    completed: false,
+                    iconName: iconName,
+                  );
+                  context.read<SharedListCubit>().addNewListItem(newItem);
                   if (context.mounted) {
                     context.pop();
                   }

@@ -6,7 +6,6 @@ import 'package:homelist/application/status.dart';
 import 'package:homelist/models/list/list.dart';
 import 'package:homelist/models/list/list_item.dart';
 import 'package:homelist/repositories/firestore/firestore_repository.dart';
-import 'package:uuid/uuid.dart';
 
 class SharedListCubit extends Cubit<SharedListCubitState> {
   SharedListCubit(this._firestoreRepository)
@@ -139,15 +138,10 @@ class SharedListCubit extends Cubit<SharedListCubitState> {
     await _firestoreRepository.createList(newList);
   }
 
-  Future<void> addNewListItem() async {
+  Future<void> addNewListItem(ListItem newItem) async {
     await _firestoreRepository.addListItem(
       state.currentList!,
-      ListItem(
-        id: const Uuid().v1(),
-        title: 'NewItem',
-        completed: false,
-        iconName: IconNames.fruits,
-      ),
+      newItem,
     );
   }
 
@@ -155,6 +149,13 @@ class SharedListCubit extends Cubit<SharedListCubitState> {
     await _firestoreRepository.editListItem(
       state.currentList!,
       editedItem,
+    );
+  }
+
+  Future<void> removeListItem(ListItem itemToDelete) async {
+    await _firestoreRepository.removeListItem(
+      state.currentList!,
+      itemToDelete,
     );
   }
 }

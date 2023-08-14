@@ -12,4 +12,8 @@ class BottomNavCubit extends Cubit<BottomNavCubitState> {
       state.copyWith(currentPageIndex: newIndex),
     );
   }
+
+  Future<void> initialState() async {
+    emit(BottomNavCubitState.initialState());
+  }
 }

@@ -132,8 +132,13 @@ class FirestoreRepository {
 
   Future<void> addListItem(SharedList currentList, ListItem newListItem) async {
     try {
-      final currentListDocumentRef =
-          database.collection(_listsCollectionKey).doc(currentList.id);
+      final currentListDocumentRef = database
+          .collection(
+            _listsCollectionKey,
+          )
+          .doc(
+            currentList.id,
+          );
       database.runTransaction(
         (transaction) {
           return transaction.get(currentListDocumentRef).then(
@@ -208,6 +213,44 @@ class FirestoreRepository {
         e.toString(),
       );
     }
+  }
+
+  Future<void> removeListItem(
+    SharedList currentList,
+    ListItem itemToDelete,
+  ) async {
+    final currentListDocumentRef = database
+        .collection(
+          _listsCollectionKey,
+        )
+        .doc(
+          currentList.id,
+        );
+
+    database.runTransaction(
+      (transaction) {
+        return transaction.get(currentListDocumentRef).then(
+          (currentListDocument) {
+            List items = currentListDocument.get('items') as List;
+            final castItems = items
+                .map(
+                  (e) => ListItem.fromJson(e),
+                )
+                .toList();
+            castItems.remove(itemToDelete);
+
+            final itemsToUpdate = castItems.map(
+              (e) => e.toJson(),
+            );
+
+            transaction.update(
+              currentListDocumentRef,
+              {'items': itemsToUpdate},
+            );
+          },
+        );
+      },
+    );
   }
 
   Future<void> shareListToUsers(

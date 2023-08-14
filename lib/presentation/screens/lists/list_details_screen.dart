@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:homelist/application/shared_lists/shared_list_cubit.dart';
 import 'package:homelist/application/shared_lists/shared_list_cubit_state.dart';
+import 'package:homelist/application/user/user_cubit.dart';
 import 'package:homelist/presentation/widgets/common/homelist_appbar.dart';
+import 'package:homelist/presentation/widgets/lists/add_list_item_form.dart';
 import 'package:homelist/presentation/widgets/lists/list_item_widget.dart';
 import 'package:homelist/presentation/widgets/lists/share_list_widget.dart';
 
@@ -26,26 +28,29 @@ class _ListDetailsScreenState extends State<ListDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<SharedListCubit, SharedListCubitState>(
-      listener: (context, state) {},
+    final currentUserId = context.read<UserCubit>().state.userData!.id;
+
+    return BlocBuilder<SharedListCubit, SharedListCubitState>(
       builder: (context, state) {
         return Scaffold(
           appBar: HomeListAppBar(
             title: state.currentList!.title,
             smallTitle: true,
-            actions: [
-              IconButton(
-                onPressed: () {
-                  showDialog(
-                    context: context,
-                    builder: (context) {
-                      return const ShareListWidget();
-                    },
-                  );
-                },
-                icon: const Icon(Icons.share),
-              )
-            ],
+            actions: currentUserId == state.currentList!.ownerId
+                ? [
+                    IconButton(
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return const ShareListWidget();
+                          },
+                        );
+                      },
+                      icon: const Icon(Icons.share),
+                    )
+                  ]
+                : [],
           ),
           body: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -84,8 +89,12 @@ class _ListDetailsScreenState extends State<ListDetailsScreen> {
                   children: [
                     ElevatedButton(
                       onPressed: () {
-                        // showDialog(context: context, builder: builder);
-                        context.read<SharedListCubit>().addNewListItem();
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return const AddListItemForm();
+                          },
+                        );
                       },
                       child: const Text("Add item"),
                     ),
