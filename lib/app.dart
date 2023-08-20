@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:homelist/application/auth/auth_cubit.dart';
 import 'package:homelist/application/bottom_nav/bottom_nav_cubit.dart';
+import 'package:homelist/application/budget/budget_cubit.dart';
 import 'package:homelist/application/core/navigation.dart';
 import 'package:homelist/application/shared_lists/shared_list_cubit.dart';
 import 'package:homelist/application/status.dart';
@@ -9,6 +10,7 @@ import 'package:homelist/application/user/user_cubit.dart';
 import 'package:homelist/getit_config.dart';
 import 'package:homelist/presentation/constants.dart';
 import 'package:homelist/repositories/auth/auth_repository.dart';
+import 'package:homelist/repositories/firestore/expenses_repository.dart';
 import 'package:homelist/repositories/firestore/firestore_repository.dart';
 
 class HomeList extends StatelessWidget {
@@ -37,6 +39,11 @@ class HomeList extends StatelessWidget {
         BlocProvider(
           create: (context) => SharedListCubit(
             getIt<FirestoreRepository>(),
+          ),
+        ),
+        BlocProvider(
+          create: (context) => BudgetCubit(
+            getIt<ExpensesRepository>(),
           ),
         ),
       ],

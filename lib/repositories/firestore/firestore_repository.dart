@@ -36,7 +36,6 @@ class FirestoreRepository {
   }
 
   Future<void> getUserData(String uid) async {
-    log("Getting User Data in Repository");
     final ref = database.collection(_usersCollectionKey).doc(uid);
     final userData = await ref.get();
     userDataStream.add(

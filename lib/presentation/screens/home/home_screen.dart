@@ -4,10 +4,12 @@ import 'package:homelist/application/auth/auth_cubit.dart';
 import 'package:homelist/application/auth/auth_state.dart';
 import 'package:homelist/application/bottom_nav/bottom_nav_cubit.dart';
 import 'package:homelist/application/bottom_nav/bottom_nav_cubit_state.dart';
+import 'package:homelist/application/budget/budget_cubit.dart';
 import 'package:homelist/application/shared_lists/shared_list_cubit.dart';
 import 'package:homelist/application/user/user_cubit.dart';
 import 'package:homelist/application/user/user_cubit_state.dart';
 import 'package:homelist/presentation/constants.dart';
+import 'package:homelist/presentation/screens/budget/budget_screen.dart';
 import 'package:homelist/presentation/screens/lists/lists_screen.dart';
 import 'package:homelist/presentation/widgets/common/homelist_appbar.dart';
 import 'package:homelist/presentation/widgets/lists/add_list_widget.dart';
@@ -25,6 +27,10 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final PageController pageController = PageController();
+
+  bool _showFloatingActionButton(BuildContext context) {
+    return context.read<BottomNavCubit>().state.currentPageIndex != 2;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,29 +54,31 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                   const ListsScreen(),
-                  const Center(
-                    child: Text("Budget"),
-                  ),
+                  BudgetScreen(),
                   const Center(
                     child: Text("Calendar"),
                   ),
                 ],
               ),
-              floatingActionButton: FloatingActionButton(
-                onPressed: () {
-                  final currentIndex =
-                      context.read<BottomNavCubit>().state.currentPageIndex;
-                  if (currentIndex == 1) {
-                    showDialog<AddListForm>(
-                        context: context,
-                        builder: (context) {
-                          return const AddListForm();
-                        });
-                  }
-                },
-                shape: const CircleBorder(),
-                child: const Icon(Icons.add),
-              ),
+              floatingActionButton: _showFloatingActionButton(context)
+                  ? FloatingActionButton(
+                      onPressed: () {
+                        final currentIndex = context
+                            .read<BottomNavCubit>()
+                            .state
+                            .currentPageIndex;
+                        if (currentIndex == 1) {
+                          showDialog<AddListForm>(
+                              context: context,
+                              builder: (context) {
+                                return const AddListForm();
+                              });
+                        }
+                      },
+                      shape: const CircleBorder(),
+                      child: const Icon(Icons.add),
+                    )
+                  : null,
               floatingActionButtonLocation:
                   FloatingActionButtonLocation.miniEndFloat,
               bottomNavigationBar:
@@ -100,7 +108,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       pageController.jumpToPage(
                         index,
                       );
-                      if (index == 1) {
+                      if (index == BottomNavPage.lists.getPageIndex()) {
                         context.read<SharedListCubit>().loadUserListsStream(
                               context.read<UserCubit>().state.userData!.id,
                             );
@@ -110,11 +118,17 @@ class _HomeScreenState extends State<HomeScreen> {
                               context.read<UserCubit>().state.userData!.id,
                             );
                       }
+                      if (index == BottomNavPage.budget.getPageIndex()) {
+                        await context.read<BudgetCubit>().getAllExpenseGroups(
+                              context.read<UserCubit>().state.userData!,
+                            );
+                      }
                       if (context.mounted) {
                         await context.read<BottomNavCubit>().changeIndex(
                               index,
                             );
                       }
+                      setState(() {});
                     },
                   );
                 },

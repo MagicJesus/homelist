@@ -14,3 +14,24 @@ class BottomNavCubitState with _$BottomNavCubitState {
     );
   }
 }
+
+enum BottomNavPage {
+  lists,
+  budget,
+  calendar,
+}
+
+extension BottomPageIndex on BottomNavPage {
+  int getPageIndex() {
+    switch (this) {
+      case BottomNavPage.lists:
+        return 1;
+      case BottomNavPage.budget:
+        return 2;
+      case BottomNavPage.calendar:
+        return 3;
+      default:
+        return 0;
+    }
+  }
+}

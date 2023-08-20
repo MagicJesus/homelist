@@ -41,14 +41,13 @@ class _ListsWidget extends StatelessWidget {
           ),
         if (lists.isNotEmpty)
           ...lists.map((list) {
-            return Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+            return Card(
               child: InkWell(
                 onTap: () {
                   context.read<SharedListCubit>().changeCurrentList(list);
                   context.push(ListDetailsScreen.routeName);
                 },
-                borderRadius: BorderRadius.circular(16),
+                borderRadius: BorderRadius.circular(10),
                 splashColor: Colors.amber,
                 child: Container(
                   padding: const EdgeInsets.all(12),
@@ -56,7 +55,7 @@ class _ListsWidget extends StatelessWidget {
                     border: Border.all(
                       color: AppColors.borderGrey,
                     ),
-                    borderRadius: BorderRadius.circular(16),
+                    borderRadius: BorderRadius.circular(10),
                   ),
                   child: Row(
                     children: [
