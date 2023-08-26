@@ -10,6 +10,7 @@ class UserData with _$UserData {
     required String firstName,
     required String lastName,
     required String email,
+    String? avatarImage,
   }) = _UserData;
 
   factory UserData.fromJson(Map<String, Object?> json) =>

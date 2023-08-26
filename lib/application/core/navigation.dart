@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:homelist/presentation/constants.dart';
+import 'package:homelist/presentation/screens/budget/expense_group_screen.dart';
 import 'package:homelist/presentation/screens/home/home_screen.dart';
 import 'package:homelist/presentation/screens/lists/list_details_screen.dart';
 import 'package:homelist/presentation/screens/login/log_in_screen.dart';
@@ -80,6 +81,11 @@ class NavigationService {
       name: 'SignUp',
       path: SignUpScreen.routeName,
       builder: (context, state) => const SignUpScreen(),
+    ),
+    GoRoute(
+      name: 'ExpenseGroup',
+      path: ExpenseGroupScreen.routeName,
+      builder: (context, state) => const ExpenseGroupScreen(),
     ),
   ];
 }

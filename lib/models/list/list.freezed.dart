@@ -25,7 +25,7 @@ mixin _$SharedList {
   String get title => throw _privateConstructorUsedError;
   List<ListItem?> get items => throw _privateConstructorUsedError;
   ListType get type => throw _privateConstructorUsedError;
-  List<String?> get allowedUsersIds => throw _privateConstructorUsedError;
+  List<String> get allowedUsersIds => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -45,7 +45,7 @@ abstract class $SharedListCopyWith<$Res> {
       String title,
       List<ListItem?> items,
       ListType type,
-      List<String?> allowedUsersIds});
+      List<String> allowedUsersIds});
 }
 
 /// @nodoc
@@ -92,7 +92,7 @@ class _$SharedListCopyWithImpl<$Res, $Val extends SharedList>
       allowedUsersIds: null == allowedUsersIds
           ? _value.allowedUsersIds
           : allowedUsersIds // ignore: cast_nullable_to_non_nullable
-              as List<String?>,
+              as List<String>,
     ) as $Val);
   }
 }
@@ -111,7 +111,7 @@ abstract class _$$_SharedListCopyWith<$Res>
       String title,
       List<ListItem?> items,
       ListType type,
-      List<String?> allowedUsersIds});
+      List<String> allowedUsersIds});
 }
 
 /// @nodoc
@@ -156,7 +156,7 @@ class __$$_SharedListCopyWithImpl<$Res>
       allowedUsersIds: null == allowedUsersIds
           ? _value._allowedUsersIds
           : allowedUsersIds // ignore: cast_nullable_to_non_nullable
-              as List<String?>,
+              as List<String>,
     ));
   }
 }
@@ -170,7 +170,7 @@ class _$_SharedList implements _SharedList {
       required this.title,
       required final List<ListItem?> items,
       required this.type,
-      required final List<String?> allowedUsersIds})
+      required final List<String> allowedUsersIds})
       : _items = items,
         _allowedUsersIds = allowedUsersIds;
 
@@ -193,9 +193,9 @@ class _$_SharedList implements _SharedList {
 
   @override
   final ListType type;
-  final List<String?> _allowedUsersIds;
+  final List<String> _allowedUsersIds;
   @override
-  List<String?> get allowedUsersIds {
+  List<String> get allowedUsersIds {
     if (_allowedUsersIds is EqualUnmodifiableListView) return _allowedUsersIds;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_allowedUsersIds);
@@ -252,7 +252,7 @@ abstract class _SharedList implements SharedList {
       required final String title,
       required final List<ListItem?> items,
       required final ListType type,
-      required final List<String?> allowedUsersIds}) = _$_SharedList;
+      required final List<String> allowedUsersIds}) = _$_SharedList;
 
   factory _SharedList.fromJson(Map<String, dynamic> json) =
       _$_SharedList.fromJson;
@@ -268,7 +268,7 @@ abstract class _SharedList implements SharedList {
   @override
   ListType get type;
   @override
-  List<String?> get allowedUsersIds;
+  List<String> get allowedUsersIds;
   @override
   @JsonKey(ignore: true)
   _$$_SharedListCopyWith<_$_SharedList> get copyWith =>

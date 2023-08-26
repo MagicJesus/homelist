@@ -1,24 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:homelist/application/shared_lists/shared_list_cubit.dart';
-import 'package:homelist/application/shared_lists/shared_list_cubit_state.dart';
 import 'package:homelist/application/user/user_cubit.dart';
+import 'package:homelist/application/user/user_cubit_state.dart';
 
-class ShareListWidget extends StatefulWidget {
-  const ShareListWidget({super.key});
+class ShareToUsersDialog extends StatefulWidget {
+  const ShareToUsersDialog({
+    required this.onShare,
+    this.usersToExclude,
+    super.key,
+  });
+
+  final List<String>? usersToExclude;
+  final void Function(List<String>) onShare;
 
   @override
-  State<ShareListWidget> createState() => _ShareListWidgetState();
+  State<ShareToUsersDialog> createState() => _ShareToUsersDialogState();
 }
 
-class _ShareListWidgetState extends State<ShareListWidget> {
+class _ShareToUsersDialogState extends State<ShareToUsersDialog> {
   List<String> selectedUsers = [];
 
   @override
   void initState() {
-    final currentUserId = context.read<UserCubit>().state.userData!.id;
-    context.read<SharedListCubit>().loadUsersToShareStream(currentUserId);
+    context.read<UserCubit>().getUsersToShareStream([
+      ...?widget.usersToExclude,
+    ]);
     super.initState();
   }
 
@@ -44,9 +51,7 @@ class _ShareListWidgetState extends State<ShareListWidget> {
           onPressed: selectedUsers.isEmpty
               ? null
               : () {
-                  context
-                      .read<SharedListCubit>()
-                      .shareListToUsers(selectedUsers);
+                  widget.onShare(selectedUsers);
                   context.pop();
                 },
           child: const Text('Share'),
@@ -56,9 +61,7 @@ class _ShareListWidgetState extends State<ShareListWidget> {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
-          //TODO Add user searching logic
-          const TextField(),
-          BlocBuilder<SharedListCubit, SharedListCubitState>(
+          BlocBuilder<UserCubit, UserCubitState>(
             builder: ((context, state) {
               final userListResults = state.usersToShare;
               return SingleChildScrollView(

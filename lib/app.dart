@@ -12,6 +12,7 @@ import 'package:homelist/presentation/constants.dart';
 import 'package:homelist/repositories/auth/auth_repository.dart';
 import 'package:homelist/repositories/firestore/expenses_repository.dart';
 import 'package:homelist/repositories/firestore/firestore_repository.dart';
+import 'package:homelist/repositories/firestore/users_repository.dart';
 
 class HomeList extends StatelessWidget {
   const HomeList({super.key});
@@ -33,6 +34,7 @@ class HomeList extends StatelessWidget {
         BlocProvider<UserCubit>(
           create: (context) => UserCubit(
             getIt<FirestoreRepository>(),
+            getIt<UsersRepository>(),
           ),
           lazy: false,
         ),

@@ -17,6 +17,7 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$UserCubitState {
   UserData? get userData => throw _privateConstructorUsedError;
+  List<UserData> get usersToShare => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $UserCubitStateCopyWith<UserCubitState> get copyWith =>
@@ -29,7 +30,7 @@ abstract class $UserCubitStateCopyWith<$Res> {
           UserCubitState value, $Res Function(UserCubitState) then) =
       _$UserCubitStateCopyWithImpl<$Res, UserCubitState>;
   @useResult
-  $Res call({UserData? userData});
+  $Res call({UserData? userData, List<UserData> usersToShare});
 
   $UserDataCopyWith<$Res>? get userData;
 }
@@ -48,12 +49,17 @@ class _$UserCubitStateCopyWithImpl<$Res, $Val extends UserCubitState>
   @override
   $Res call({
     Object? userData = freezed,
+    Object? usersToShare = null,
   }) {
     return _then(_value.copyWith(
       userData: freezed == userData
           ? _value.userData
           : userData // ignore: cast_nullable_to_non_nullable
               as UserData?,
+      usersToShare: null == usersToShare
+          ? _value.usersToShare
+          : usersToShare // ignore: cast_nullable_to_non_nullable
+              as List<UserData>,
     ) as $Val);
   }
 
@@ -78,7 +84,7 @@ abstract class _$$_UserCubitStateCopyWith<$Res>
       __$$_UserCubitStateCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({UserData? userData});
+  $Res call({UserData? userData, List<UserData> usersToShare});
 
   @override
   $UserDataCopyWith<$Res>? get userData;
@@ -96,12 +102,17 @@ class __$$_UserCubitStateCopyWithImpl<$Res>
   @override
   $Res call({
     Object? userData = freezed,
+    Object? usersToShare = null,
   }) {
     return _then(_$_UserCubitState(
       userData: freezed == userData
           ? _value.userData
           : userData // ignore: cast_nullable_to_non_nullable
               as UserData?,
+      usersToShare: null == usersToShare
+          ? _value._usersToShare
+          : usersToShare // ignore: cast_nullable_to_non_nullable
+              as List<UserData>,
     ));
   }
 }
@@ -109,14 +120,23 @@ class __$$_UserCubitStateCopyWithImpl<$Res>
 /// @nodoc
 
 class _$_UserCubitState implements _UserCubitState {
-  _$_UserCubitState({required this.userData});
+  _$_UserCubitState(
+      {required this.userData, required final List<UserData> usersToShare})
+      : _usersToShare = usersToShare;
 
   @override
   final UserData? userData;
+  final List<UserData> _usersToShare;
+  @override
+  List<UserData> get usersToShare {
+    if (_usersToShare is EqualUnmodifiableListView) return _usersToShare;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_usersToShare);
+  }
 
   @override
   String toString() {
-    return 'UserCubitState(userData: $userData)';
+    return 'UserCubitState(userData: $userData, usersToShare: $usersToShare)';
   }
 
   @override
@@ -125,11 +145,14 @@ class _$_UserCubitState implements _UserCubitState {
         (other.runtimeType == runtimeType &&
             other is _$_UserCubitState &&
             (identical(other.userData, userData) ||
-                other.userData == userData));
+                other.userData == userData) &&
+            const DeepCollectionEquality()
+                .equals(other._usersToShare, _usersToShare));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, userData);
+  int get hashCode => Object.hash(runtimeType, userData,
+      const DeepCollectionEquality().hash(_usersToShare));
 
   @JsonKey(ignore: true)
   @override
@@ -139,11 +162,14 @@ class _$_UserCubitState implements _UserCubitState {
 }
 
 abstract class _UserCubitState implements UserCubitState {
-  factory _UserCubitState({required final UserData? userData}) =
-      _$_UserCubitState;
+  factory _UserCubitState(
+      {required final UserData? userData,
+      required final List<UserData> usersToShare}) = _$_UserCubitState;
 
   @override
   UserData? get userData;
+  @override
+  List<UserData> get usersToShare;
   @override
   @JsonKey(ignore: true)
   _$$_UserCubitStateCopyWith<_$_UserCubitState> get copyWith =>

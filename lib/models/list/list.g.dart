@@ -19,7 +19,7 @@ _$_SharedList _$$_SharedListFromJson(Map<String, dynamic> json) =>
           .toList(),
       type: $enumDecode(_$ListTypeEnumMap, json['type']),
       allowedUsersIds: (json['allowedUsersIds'] as List<dynamic>)
-          .map((e) => e as String?)
+          .map((e) => e as String)
           .toList(),
     );
 

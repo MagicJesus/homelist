@@ -24,6 +24,7 @@ mixin _$UserData {
   String get firstName => throw _privateConstructorUsedError;
   String get lastName => throw _privateConstructorUsedError;
   String get email => throw _privateConstructorUsedError;
+  String? get avatarImage => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -36,7 +37,12 @@ abstract class $UserDataCopyWith<$Res> {
   factory $UserDataCopyWith(UserData value, $Res Function(UserData) then) =
       _$UserDataCopyWithImpl<$Res, UserData>;
   @useResult
-  $Res call({String id, String firstName, String lastName, String email});
+  $Res call(
+      {String id,
+      String firstName,
+      String lastName,
+      String email,
+      String? avatarImage});
 }
 
 /// @nodoc
@@ -56,6 +62,7 @@ class _$UserDataCopyWithImpl<$Res, $Val extends UserData>
     Object? firstName = null,
     Object? lastName = null,
     Object? email = null,
+    Object? avatarImage = freezed,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -74,6 +81,10 @@ class _$UserDataCopyWithImpl<$Res, $Val extends UserData>
           ? _value.email
           : email // ignore: cast_nullable_to_non_nullable
               as String,
+      avatarImage: freezed == avatarImage
+          ? _value.avatarImage
+          : avatarImage // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
   }
 }
@@ -85,7 +96,12 @@ abstract class _$$_UserDataCopyWith<$Res> implements $UserDataCopyWith<$Res> {
       __$$_UserDataCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String id, String firstName, String lastName, String email});
+  $Res call(
+      {String id,
+      String firstName,
+      String lastName,
+      String email,
+      String? avatarImage});
 }
 
 /// @nodoc
@@ -103,6 +119,7 @@ class __$$_UserDataCopyWithImpl<$Res>
     Object? firstName = null,
     Object? lastName = null,
     Object? email = null,
+    Object? avatarImage = freezed,
   }) {
     return _then(_$_UserData(
       id: null == id
@@ -121,6 +138,10 @@ class __$$_UserDataCopyWithImpl<$Res>
           ? _value.email
           : email // ignore: cast_nullable_to_non_nullable
               as String,
+      avatarImage: freezed == avatarImage
+          ? _value.avatarImage
+          : avatarImage // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -132,7 +153,8 @@ class _$_UserData implements _UserData {
       {required this.id,
       required this.firstName,
       required this.lastName,
-      required this.email});
+      required this.email,
+      this.avatarImage});
 
   factory _$_UserData.fromJson(Map<String, dynamic> json) =>
       _$$_UserDataFromJson(json);
@@ -145,10 +167,12 @@ class _$_UserData implements _UserData {
   final String lastName;
   @override
   final String email;
+  @override
+  final String? avatarImage;
 
   @override
   String toString() {
-    return 'UserData(id: $id, firstName: $firstName, lastName: $lastName, email: $email)';
+    return 'UserData(id: $id, firstName: $firstName, lastName: $lastName, email: $email, avatarImage: $avatarImage)';
   }
 
   @override
@@ -161,12 +185,15 @@ class _$_UserData implements _UserData {
                 other.firstName == firstName) &&
             (identical(other.lastName, lastName) ||
                 other.lastName == lastName) &&
-            (identical(other.email, email) || other.email == email));
+            (identical(other.email, email) || other.email == email) &&
+            (identical(other.avatarImage, avatarImage) ||
+                other.avatarImage == avatarImage));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, id, firstName, lastName, email);
+  int get hashCode =>
+      Object.hash(runtimeType, id, firstName, lastName, email, avatarImage);
 
   @JsonKey(ignore: true)
   @override
@@ -187,7 +214,8 @@ abstract class _UserData implements UserData {
       {required final String id,
       required final String firstName,
       required final String lastName,
-      required final String email}) = _$_UserData;
+      required final String email,
+      final String? avatarImage}) = _$_UserData;
 
   factory _UserData.fromJson(Map<String, dynamic> json) = _$_UserData.fromJson;
 
@@ -199,6 +227,8 @@ abstract class _UserData implements UserData {
   String get lastName;
   @override
   String get email;
+  @override
+  String? get avatarImage;
   @override
   @JsonKey(ignore: true)
   _$$_UserDataCopyWith<_$_UserData> get copyWith =>

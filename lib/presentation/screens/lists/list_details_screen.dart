@@ -6,7 +6,7 @@ import 'package:homelist/application/user/user_cubit.dart';
 import 'package:homelist/presentation/widgets/common/homelist_appbar.dart';
 import 'package:homelist/presentation/widgets/lists/add_list_item_form.dart';
 import 'package:homelist/presentation/widgets/lists/list_item_widget.dart';
-import 'package:homelist/presentation/widgets/lists/share_list_widget.dart';
+import 'package:homelist/presentation/widgets/lists/share_to_users_dialog.dart';
 
 class ListDetailsScreen extends StatefulWidget {
   const ListDetailsScreen({
@@ -43,7 +43,15 @@ class _ListDetailsScreenState extends State<ListDetailsScreen> {
                         showDialog(
                           context: context,
                           builder: (context) {
-                            return const ShareListWidget();
+                            return ShareToUsersDialog(
+                              onShare: (List<String> usersToShare) {
+                                context
+                                    .read<SharedListCubit>()
+                                    .shareListToUsers(usersToShare);
+                              },
+                              usersToExclude:
+                                  state.currentList!.allowedUsersIds,
+                            );
                           },
                         );
                       },

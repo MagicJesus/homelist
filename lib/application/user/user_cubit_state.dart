@@ -7,11 +7,13 @@ part 'user_cubit_state.freezed.dart';
 class UserCubitState with _$UserCubitState {
   factory UserCubitState({
     required UserData? userData,
+    required List<UserData> usersToShare,
   }) = _UserCubitState;
 
   factory UserCubitState.initial() {
     return UserCubitState(
       userData: null,
+      usersToShare: [],
     );
   }
 }

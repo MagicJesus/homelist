@@ -1,7 +1,10 @@
+import 'dart:async';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:homelist/application/budget/budget_cubit_state.dart';
 import 'package:homelist/application/status.dart';
 import 'package:homelist/models/expenses/expense/expense.dart';
+import 'package:homelist/models/expenses/expense_group/expense_group.dart';
 import 'package:homelist/models/user/user.dart';
 import 'package:homelist/repositories/firestore/expenses_repository.dart';
 
@@ -12,6 +15,35 @@ class BudgetCubit extends Cubit<BudgetCubitState> {
         );
 
   final ExpensesRepository _expensesRepository;
+  StreamSubscription? _currentExpenseGroupStreamSubscription;
+
+  void setCurrentExpenseGroup(ExpenseGroup? expenseGroup) {
+    emit(
+      state.copyWith(currentExpenseGroup: expenseGroup),
+    );
+    listenToCurrentExpenseGroupStream();
+  }
+
+  Future<void> listenToCurrentExpenseGroupStream() async {
+    if (_currentExpenseGroupStreamSubscription != null) {
+      _currentExpenseGroupStreamSubscription!.cancel();
+    }
+
+    final currentExpenseGroup = state.currentExpenseGroup!;
+
+    final stream = await _expensesRepository.getCurrentExpenseGroupStream(
+      currentExpenseGroup,
+    );
+    _currentExpenseGroupStreamSubscription = stream.listen(
+      (event) {
+        emit(
+          state.copyWith(
+            currentExpenseGroup: event,
+          ),
+        );
+      },
+    );
+  }
 
   Future<void> getAllExpenseGroups(UserData currentUser) async {
     emit(

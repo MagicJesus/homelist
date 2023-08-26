@@ -12,7 +12,7 @@ class SharedList with _$SharedList {
     required String title,
     required List<ListItem?> items,
     required ListType type,
-    required List<String?> allowedUsersIds,
+    required List<String> allowedUsersIds,
   }) = _SharedList;
 
   factory SharedList.fromJson(Map<String, Object?> json) =>

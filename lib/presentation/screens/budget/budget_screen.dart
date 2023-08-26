@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:homelist/application/budget/budget_cubit.dart';
 import 'package:homelist/application/budget/budget_cubit_state.dart';
+import 'package:homelist/application/user/user_cubit.dart';
+import 'package:homelist/models/expenses/expense_group/expense_group.dart';
 import 'package:homelist/presentation/widgets/budget/expense_group_tile.dart';
+import 'package:homelist/presentation/widgets/budget/expense_tile.dart';
 import 'package:homelist/presentation/widgets/common/circle.dart';
 
 class BudgetScreen extends StatelessWidget {
@@ -10,8 +13,23 @@ class BudgetScreen extends StatelessWidget {
 
   final GlobalKey headerExpandedKey = GlobalKey();
 
-  double _getUserTotalExpensesBalance() {
-    return 0;
+  double _getUserTotalExpensesBalance(BuildContext context) {
+    final allCurrentUserExpenses =
+        context.read<BudgetCubit>().state.allCurrentUserExpenses;
+    final currentUserId = context.read<UserCubit>().state.userData!.id;
+    double balance = 0;
+
+    for (var expense in allCurrentUserExpenses) {
+      if (expense.lenderId == currentUserId) {
+        balance += expense.amount;
+      } else if (expense.borrowerId == currentUserId) {
+        balance -= expense.amount;
+      } else {
+        continue;
+      }
+    }
+
+    return balance;
   }
 
   double getDistanceFromTop() {
@@ -21,6 +39,14 @@ class BudgetScreen extends StatelessWidget {
     } else {
       return 0;
     }
+  }
+
+  ExpenseGroup getExpenseGroupForExpense(
+    String expenseGroupId,
+    BuildContext context,
+  ) {
+    final expenseGroups = context.read<BudgetCubit>().state.allExpenseGroups;
+    return expenseGroups.firstWhere((element) => element.id == expenseGroupId);
   }
 
   @override
@@ -42,7 +68,7 @@ class BudgetScreen extends StatelessWidget {
               Align(
                 alignment: Alignment.center,
                 child: _TotalExpenseBalanceWidget(
-                  totalExpenses: _getUserTotalExpensesBalance(),
+                  totalExpenses: _getUserTotalExpensesBalance(context),
                 ),
               ),
             ],
@@ -71,7 +97,26 @@ class BudgetScreen extends StatelessWidget {
                   flex: 8,
                   child: TabBarView(
                     children: [
-                      const Text('Expenses'),
+                      BlocBuilder<BudgetCubit, BudgetCubitState>(
+                        builder: ((context, state) {
+                          return Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                              children: [
+                                ...state.allCurrentUserExpenses.map(
+                                  (expense) => ExpenseTile(
+                                    expense: expense,
+                                    expenseGroup: getExpenseGroupForExpense(
+                                      expense.expenseGroupId,
+                                      context,
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
+                          );
+                        }),
+                      ),
                       BlocBuilder<BudgetCubit, BudgetCubitState>(
                         builder: ((context, state) {
                           return Padding(
