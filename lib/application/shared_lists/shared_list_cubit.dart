@@ -5,6 +5,7 @@ import 'package:homelist/application/shared_lists/shared_list_cubit_state.dart';
 import 'package:homelist/application/status.dart';
 import 'package:homelist/models/list/list.dart';
 import 'package:homelist/models/list/list_item.dart';
+import 'package:homelist/models/user/user.dart';
 import 'package:homelist/repositories/firestore/firestore_repository.dart';
 
 class SharedListCubit extends Cubit<SharedListCubitState> {
@@ -113,7 +114,7 @@ class SharedListCubit extends Cubit<SharedListCubitState> {
     );
   }
 
-  Future<void> shareListToUsers(List<String> usersToShareWith) async {
+  Future<void> shareListToUsers(List<UserData> usersToShareWith) async {
     _firestoreRepository.shareListToUsers(
       state.currentList!,
       usersToShareWith,

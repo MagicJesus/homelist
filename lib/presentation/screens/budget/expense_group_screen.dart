@@ -20,24 +20,7 @@ class ExpenseGroupScreen extends StatelessWidget {
         return Scaffold(
           appBar: HomeListAppBar(
             title: currentExpenseGroup.groupName,
-            actions: [
-              IconButton(
-                onPressed: () {
-                  showDialog(
-                    context: context,
-                    builder: (context) {
-                      return ShareToUsersDialog(
-                        onShare: (List<String> usersToShare) {},
-                        usersToExclude: state.currentExpenseGroup!.members
-                            .map((UserData user) => user.id)
-                            .toList(),
-                      );
-                    },
-                  );
-                },
-                icon: const Icon(Icons.share),
-              )
-            ],
+            actions: const [],
           ),
           body: Padding(
             padding: const EdgeInsets.all(16.0),
@@ -65,7 +48,13 @@ class ExpenseGroupScreen extends StatelessWidget {
                                 context: context,
                                 builder: (context) {
                                   return ShareToUsersDialog(
-                                    onShare: (List<String> usersToShare) {},
+                                    onShare: (List<UserData> usersToShare) {
+                                      context
+                                          .read<BudgetCubit>()
+                                          .addUsersToExpenseGroup(
+                                            usersToShare,
+                                          );
+                                    },
                                     usersToExclude: state
                                         .currentExpenseGroup!.members
                                         .map((UserData user) => user.id)

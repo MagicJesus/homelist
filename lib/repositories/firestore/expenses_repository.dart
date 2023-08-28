@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:homelist/models/expenses/expense_group/expense_group.dart';
@@ -45,12 +46,48 @@ class ExpensesRepository {
     return expenseGroups;
   }
 
+  Future<void> addUsersToExpenseGroup(
+    ExpenseGroup currentExpenseGroup,
+    List<UserData> usersToShareWith,
+  ) async {
+    try {
+      final currentExpenseGroupDocumentRef = database
+          .collection(
+            _expenseGroupsCollectionKey,
+          )
+          .doc(
+            currentExpenseGroup.id,
+          );
+      database.runTransaction(
+        (transaction) {
+          return transaction.get(currentExpenseGroupDocumentRef).then(
+            (_) {
+              final updatedMembersList = [
+                ...currentExpenseGroup.members,
+                ...usersToShareWith
+              ];
+
+              final updatedMembersListDistinct =
+                  updatedMembersList.toSet().toList().map(
+                        (e) => e.toJson(),
+                      );
+
+              transaction.update(currentExpenseGroupDocumentRef, {
+                'members': updatedMembersListDistinct,
+              });
+            },
+          );
+        },
+      );
+    } catch (e) {
+      log(
+        e.toString(),
+      );
+    }
+  }
+
   Future<void> addExpenseGroup(
     String currentUserId,
     String newGroupName,
-  ) async {}
-
-  Future<void> addExpenseGroupMember(
-    String newGroupMemberId,
   ) async {}
 }

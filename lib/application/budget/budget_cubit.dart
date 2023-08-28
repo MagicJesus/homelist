@@ -66,4 +66,11 @@ class BudgetCubit extends Cubit<BudgetCubitState> {
       allCurrentUserExpenses: allCurrentUserExpenses,
     ));
   }
+
+  Future<void> addUsersToExpenseGroup(List<UserData> usersToShareWith) async {
+    _expensesRepository.addUsersToExpenseGroup(
+      state.currentExpenseGroup!,
+      usersToShareWith,
+    );
+  }
 }

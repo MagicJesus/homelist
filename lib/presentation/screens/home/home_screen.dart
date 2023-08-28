@@ -11,6 +11,7 @@ import 'package:homelist/application/user/user_cubit_state.dart';
 import 'package:homelist/presentation/constants.dart';
 import 'package:homelist/presentation/screens/budget/budget_screen.dart';
 import 'package:homelist/presentation/screens/lists/lists_screen.dart';
+import 'package:homelist/presentation/widgets/budget/add_group_form.dart';
 import 'package:homelist/presentation/widgets/common/homelist_appbar.dart';
 import 'package:homelist/presentation/widgets/lists/add_list_widget.dart';
 
@@ -60,25 +61,30 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ],
               ),
-              floatingActionButton: _showFloatingActionButton(context)
-                  ? FloatingActionButton(
-                      onPressed: () {
-                        final currentIndex = context
-                            .read<BottomNavCubit>()
-                            .state
-                            .currentPageIndex;
-                        if (currentIndex == 1) {
-                          showDialog<AddListForm>(
-                              context: context,
-                              builder: (context) {
-                                return const AddListForm();
-                              });
-                        }
+              floatingActionButton: FloatingActionButton(
+                onPressed: () {
+                  final currentIndex =
+                      context.read<BottomNavCubit>().state.currentPageIndex;
+                  if (currentIndex == 1) {
+                    showDialog<AddListForm>(
+                      context: context,
+                      builder: (context) {
+                        return const AddListForm();
                       },
-                      shape: const CircleBorder(),
-                      child: const Icon(Icons.add),
-                    )
-                  : null,
+                    );
+                  }
+                  if (currentIndex == 2) {
+                    showDialog<AddGroupForm>(
+                      context: context,
+                      builder: (context) {
+                        return const AddGroupForm();
+                      },
+                    );
+                  }
+                },
+                shape: const CircleBorder(),
+                child: const Icon(Icons.add),
+              ),
               floatingActionButtonLocation:
                   FloatingActionButtonLocation.miniEndFloat,
               bottomNavigationBar:

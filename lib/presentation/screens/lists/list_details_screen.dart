@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:homelist/application/shared_lists/shared_list_cubit.dart';
 import 'package:homelist/application/shared_lists/shared_list_cubit_state.dart';
 import 'package:homelist/application/user/user_cubit.dart';
+import 'package:homelist/models/user/user.dart';
 import 'package:homelist/presentation/widgets/common/homelist_appbar.dart';
 import 'package:homelist/presentation/widgets/lists/add_list_item_form.dart';
 import 'package:homelist/presentation/widgets/lists/list_item_widget.dart';
@@ -44,7 +45,7 @@ class _ListDetailsScreenState extends State<ListDetailsScreen> {
                           context: context,
                           builder: (context) {
                             return ShareToUsersDialog(
-                              onShare: (List<String> usersToShare) {
+                              onShare: (List<UserData> usersToShare) {
                                 context
                                     .read<SharedListCubit>()
                                     .shareListToUsers(usersToShare);

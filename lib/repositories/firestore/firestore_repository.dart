@@ -254,7 +254,7 @@ class FirestoreRepository {
 
   Future<void> shareListToUsers(
     SharedList currentList,
-    List<String> usersToShareWith,
+    List<UserData> usersToShareWith,
   ) async {
     try {
       final currentListDocumentRef = database
@@ -274,7 +274,7 @@ class FirestoreRepository {
 
               final updatedAllowedUsersList = [
                 ...currentList.allowedUsersIds,
-                ...usersToShareWith
+                ...usersToShareWith.map((e) => e.id)
               ];
 
               final updatedAllowedUsersListDistinct =

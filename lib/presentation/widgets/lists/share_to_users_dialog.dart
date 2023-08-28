@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:homelist/application/user/user_cubit.dart';
 import 'package:homelist/application/user/user_cubit_state.dart';
+import 'package:homelist/models/user/user.dart';
 
 class ShareToUsersDialog extends StatefulWidget {
   const ShareToUsersDialog({
@@ -12,14 +13,14 @@ class ShareToUsersDialog extends StatefulWidget {
   });
 
   final List<String>? usersToExclude;
-  final void Function(List<String>) onShare;
+  final void Function(List<UserData>) onShare;
 
   @override
   State<ShareToUsersDialog> createState() => _ShareToUsersDialogState();
 }
 
 class _ShareToUsersDialogState extends State<ShareToUsersDialog> {
-  List<String> selectedUsers = [];
+  List<UserData> selectedUsers = [];
 
   @override
   void initState() {
@@ -29,7 +30,7 @@ class _ShareToUsersDialogState extends State<ShareToUsersDialog> {
     super.initState();
   }
 
-  void selectUser(String selectedUserId) {
+  void selectUser(UserData selectedUserId) {
     if (isSelected(selectedUserId)) {
       selectedUsers.remove(selectedUserId);
     } else {
@@ -38,7 +39,7 @@ class _ShareToUsersDialogState extends State<ShareToUsersDialog> {
     setState(() {});
   }
 
-  bool isSelected(String selectedUserId) {
+  bool isSelected(UserData selectedUserId) {
     return selectedUsers.contains(selectedUserId);
   }
 
@@ -96,9 +97,9 @@ class _ShareToUsersDialogState extends State<ShareToUsersDialog> {
                               Column(
                                 children: [
                                   Checkbox(
-                                    value: isSelected(user.id),
+                                    value: isSelected(user),
                                     onChanged: (_) {
-                                      selectUser(user.id);
+                                      selectUser(user);
                                     },
                                   )
                                 ],
