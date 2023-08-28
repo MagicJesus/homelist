@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:homelist/application/budget/budget_cubit.dart';
 import 'package:homelist/application/shared_lists/shared_list_cubit.dart';
 import 'package:homelist/application/shared_lists/shared_list_cubit_state.dart';
 import 'package:homelist/application/status.dart';
+import 'package:homelist/application/user/user_cubit.dart';
 import 'package:homelist/models/list/list_item.dart';
 import 'package:homelist/presentation/constants.dart';
 
@@ -19,7 +21,7 @@ class _AddGroupFormState extends State<AddGroupForm> {
 
   final _formKey = GlobalKey<FormState>();
 
-  final titleController = TextEditingController.fromValue(
+  final groupNameController = TextEditingController.fromValue(
     const TextEditingValue(text: ''),
   );
 
@@ -37,7 +39,7 @@ class _AddGroupFormState extends State<AddGroupForm> {
           children: [
             TextFormField(
               autofocus: true,
-              controller: titleController,
+              controller: groupNameController,
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return 'Please enter some text';
@@ -68,7 +70,10 @@ class _AddGroupFormState extends State<AddGroupForm> {
             return ElevatedButton(
               onPressed: () async {
                 if (_formKey.currentState!.validate()) {
-                  // Add creating group functionality
+                  context.read<BudgetCubit>().addExpenseGroup(
+                        groupNameController.text,
+                        context.read<UserCubit>().state.userData!,
+                      );
                   if (context.mounted) {
                     context.pop();
                   }

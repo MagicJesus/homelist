@@ -15,22 +15,29 @@ import 'package:homelist/presentation/widgets/budget/add_group_form.dart';
 import 'package:homelist/presentation/widgets/common/homelist_appbar.dart';
 import 'package:homelist/presentation/widgets/lists/add_list_widget.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key, required this.title});
+class NavigationScreen extends StatefulWidget {
+  const NavigationScreen({super.key, required this.title});
 
   static const routeName = '/';
 
   final String title;
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<NavigationScreen> createState() => _NavigationScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _NavigationScreenState extends State<NavigationScreen> {
   final PageController pageController = PageController();
 
-  bool _showFloatingActionButton(BuildContext context) {
-    return context.read<BottomNavCubit>().state.currentPageIndex != 2;
+  @override
+  void initState() {
+    super.initState();
+    context.read<SharedListCubit>().loadUserListsStream(
+          context.read<UserCubit>().state.userData!.id,
+        );
+    context.read<SharedListCubit>().loadListsSharedWithUserStream(
+          context.read<UserCubit>().state.userData!.id,
+        );
   }
 
   @override
@@ -47,13 +54,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 controller: pageController,
                 physics: const NeverScrollableScrollPhysics(),
                 children: [
-                  Container(
-                    color: Colors.amber,
-                    height: 75,
-                    child: Center(
-                      child: Text(userState.userData?.id ?? ''),
-                    ),
-                  ),
                   const ListsScreen(),
                   BudgetScreen(),
                   const Center(
@@ -65,7 +65,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 onPressed: () {
                   final currentIndex =
                       context.read<BottomNavCubit>().state.currentPageIndex;
-                  if (currentIndex == 1) {
+                  if (currentIndex == 0) {
                     showDialog<AddListForm>(
                       context: context,
                       builder: (context) {
@@ -73,7 +73,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       },
                     );
                   }
-                  if (currentIndex == 2) {
+                  if (currentIndex == 1) {
                     showDialog<AddGroupForm>(
                       context: context,
                       builder: (context) {
@@ -92,10 +92,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 builder: (context, navState) {
                   return NavigationBar(
                     destinations: const [
-                      NavigationDestination(
-                        icon: Icon(Icons.home),
-                        label: "Home",
-                      ),
                       NavigationDestination(
                         icon: Icon(Icons.list),
                         label: "Lists",

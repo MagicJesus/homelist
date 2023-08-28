@@ -25,11 +25,11 @@ extension BottomPageIndex on BottomNavPage {
   int getPageIndex() {
     switch (this) {
       case BottomNavPage.lists:
-        return 1;
+        return 0;
       case BottomNavPage.budget:
-        return 2;
+        return 1;
       case BottomNavPage.calendar:
-        return 3;
+        return 2;
       default:
         return 0;
     }

@@ -87,7 +87,29 @@ class ExpensesRepository {
   }
 
   Future<void> addExpenseGroup(
-    String currentUserId,
     String newGroupName,
-  ) async {}
+    UserData currentUser,
+  ) async {
+    final newExpenseGroupDocument = _expenseGroupsCollection.doc();
+
+    final newExpenseGroup = ExpenseGroup(
+      id: newExpenseGroupDocument.id,
+      groupName: newGroupName,
+      members: [currentUser],
+      expenses: [],
+    );
+
+    final jsonObject = newExpenseGroup.toJson();
+    jsonObject['members'] = [
+      ...newExpenseGroup.members.map((member) => member.toJson())
+    ];
+
+    newExpenseGroupDocument
+        .set(
+          jsonObject,
+        )
+        .onError(
+          (error, stackTrace) => log('$error $stackTrace'),
+        );
+  }
 }

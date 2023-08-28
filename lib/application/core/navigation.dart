@@ -67,8 +67,8 @@ class NavigationService {
     ),
     GoRoute(
       name: 'Home',
-      path: HomeScreen.routeName,
-      builder: (context, state) => const HomeScreen(
+      path: NavigationScreen.routeName,
+      builder: (context, state) => const NavigationScreen(
         title: Labels.homePageTitle,
       ),
     ),

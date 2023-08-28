@@ -73,4 +73,14 @@ class BudgetCubit extends Cubit<BudgetCubitState> {
       usersToShareWith,
     );
   }
+
+  Future<void> addExpenseGroup(
+    String newGroupName,
+    UserData currentUser,
+  ) async {
+    _expensesRepository.addExpenseGroup(
+      newGroupName,
+      currentUser,
+    );
+  }
 }
