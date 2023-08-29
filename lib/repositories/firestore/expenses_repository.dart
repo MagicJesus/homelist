@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:homelist/models/expenses/expense/expense.dart';
 import 'package:homelist/models/expenses/expense_group/expense_group.dart';
 import 'package:homelist/models/user/user.dart';
 
@@ -111,5 +112,35 @@ class ExpensesRepository {
         .onError(
           (error, stackTrace) => log('$error $stackTrace'),
         );
+  }
+
+  Future<void> addExpense(
+    Expense newExpense,
+    ExpenseGroup currentExpenseGroup,
+  ) async {
+    final currentExpenseGroupRef = _expenseGroupsCollection.doc(
+      currentExpenseGroup.id,
+    );
+
+    database.runTransaction(
+      (transaction) => transaction.get(currentExpenseGroupRef).then(
+        (currentExpenseGroupSnapshot) {
+          final expenseGroupObject = ExpenseGroup.fromJson(
+            currentExpenseGroupSnapshot.data() as Map<String, Object?>,
+          );
+
+          List<Map<String, dynamic>> expenses =
+              [...expenseGroupObject.expenses, newExpense]
+                  .map(
+                    (expense) => expense.toJson(),
+                  )
+                  .toList();
+
+          transaction.update(currentExpenseGroupRef, {
+            'expenses': expenses,
+          });
+        },
+      ),
+    );
   }
 }

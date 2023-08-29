@@ -8,6 +8,7 @@ import 'package:homelist/presentation/screens/home/home_screen.dart';
 import 'package:homelist/presentation/screens/lists/list_details_screen.dart';
 import 'package:homelist/presentation/screens/login/log_in_screen.dart';
 import 'package:homelist/presentation/screens/login/sign_up_screen.dart';
+import 'package:homelist/presentation/widgets/budget/add_expense_form.dart';
 
 class NavigationService {
   NavigationService._();
@@ -86,6 +87,11 @@ class NavigationService {
       name: 'ExpenseGroup',
       path: ExpenseGroupScreen.routeName,
       builder: (context, state) => const ExpenseGroupScreen(),
+    ),
+    GoRoute(
+      name: 'AddExpense',
+      path: AddExpenseFormScreen.routeName,
+      builder: (context, state) => const AddExpenseFormScreen(),
     ),
   ];
 }

@@ -12,7 +12,9 @@ _$_Expense _$$_ExpenseFromJson(Map<String, dynamic> json) => _$_Expense(
       id: json['id'] as String,
       amount: (json['amount'] as num).toDouble(),
       lenderId: json['lenderId'] as String,
-      borrowerId: json['borrowerId'] as String,
+      borrowerIds: (json['borrowerIds'] as List<dynamic>)
+          .map((e) => e as String)
+          .toList(),
       expenseGroupId: json['expenseGroupId'] as String,
     );
 
@@ -21,6 +23,6 @@ Map<String, dynamic> _$$_ExpenseToJson(_$_Expense instance) =>
       'id': instance.id,
       'amount': instance.amount,
       'lenderId': instance.lenderId,
-      'borrowerId': instance.borrowerId,
+      'borrowerIds': instance.borrowerIds,
       'expenseGroupId': instance.expenseGroupId,
     };

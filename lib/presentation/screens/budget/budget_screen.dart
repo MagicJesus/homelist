@@ -22,7 +22,7 @@ class BudgetScreen extends StatelessWidget {
     for (var expense in allCurrentUserExpenses) {
       if (expense.lenderId == currentUserId) {
         balance += expense.amount;
-      } else if (expense.borrowerId == currentUserId) {
+      } else if (expense.borrowerIds.contains(currentUserId)) {
         balance -= expense.amount;
       } else {
         continue;
@@ -58,11 +58,12 @@ class BudgetScreen extends StatelessWidget {
           flex: 4,
           child: Stack(
             children: [
-              const Align(
+              Align(
                 alignment: Alignment.center,
                 child: Circle(
                   radius: 55,
-                  strokeWidth: 8,
+                  strokeWidth: 14,
+                  color: Theme.of(context).colorScheme.secondaryContainer,
                 ),
               ),
               Align(

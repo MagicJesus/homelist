@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:homelist/application/budget/budget_cubit.dart';
 import 'package:homelist/application/budget/budget_cubit_state.dart';
 import 'package:homelist/models/user/user.dart';
+import 'package:homelist/presentation/widgets/budget/add_expense_form.dart';
 import 'package:homelist/presentation/widgets/budget/expense_tile.dart';
 import 'package:homelist/presentation/widgets/common/homelist_appbar.dart';
 import 'package:homelist/presentation/widgets/lists/share_to_users_dialog.dart';
@@ -21,6 +23,13 @@ class ExpenseGroupScreen extends StatelessWidget {
           appBar: HomeListAppBar(
             title: currentExpenseGroup.groupName,
             actions: const [],
+          ),
+          floatingActionButton: FloatingActionButton(
+            onPressed: () {
+              context.push(AddExpenseFormScreen.routeName);
+            },
+            shape: const CircleBorder(),
+            child: const Icon(Icons.add),
           ),
           body: Padding(
             padding: const EdgeInsets.all(16.0),

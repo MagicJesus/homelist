@@ -13,43 +13,57 @@ class ExpenseTile extends StatelessWidget {
   final Expense expense;
   final ExpenseGroup expenseGroup;
 
-  UserData getUserFromGroup(String userId) {
-    return expenseGroup.members.firstWhere((element) => element.id == userId);
+  List<UserData> getUserFromGroup(List<String> userIds) {
+    return expenseGroup.members
+        .where(
+          (element) => userIds.contains(element.id),
+        )
+        .toList();
+  }
+
+  String getBorrowersText(List<UserData> borrowers) {
+    if (borrowers.length == 1) {
+      return '${borrowers.first.firstName} ${borrowers.first.lastName}';
+    } else {
+      return '${borrowers.length} people ';
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    final lender = getUserFromGroup(expense.lenderId);
-    final borrower = getUserFromGroup(expense.borrowerId);
-    return GestureDetector(
-      onTap: () {
-        print(expenseGroup.id);
-      },
-      child: Card(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Row(
-            children: [
-              Expanded(
-                flex: 2,
-                child: Text(
-                  '${lender.firstName} ${lender.lastName}',
+    final lender = getUserFromGroup([expense.lenderId]).first;
+    final borrowers = getUserFromGroup(expense.borrowerIds);
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Row(
+          children: [
+            RichText(
+              text: TextSpan(
+                style: const TextStyle(color: Colors.black),
+                text: '${lender.firstName} ${lender.lastName}  ',
+                children: [
+                  const TextSpan(
+                    text: 'lent  ',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  TextSpan(
+                    text: getBorrowersText(borrowers),
+                  ),
+                ],
+              ),
+            ),
+            Expanded(
+              child: Text(
+                '${expense.amount} PLN',
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
                 ),
               ),
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 12.0),
-                child: Icon(Icons.arrow_right_alt_rounded),
-              ),
-              Expanded(
-                flex: 2,
-                child: Text(
-                  '${borrower.firstName} ${borrower.lastName}',
-                ),
-              ),
-              Expanded(child: Text('${expense.amount} PLN')),
-              const Icon(Icons.arrow_right)
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

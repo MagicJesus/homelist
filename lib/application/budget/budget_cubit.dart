@@ -55,7 +55,8 @@ class BudgetCubit extends Cubit<BudgetCubitState> {
 
     for (var expenseGroup in allExpenseGroups) {
       for (var expense in expenseGroup.expenses) {
-        if ([expense.borrowerId, expense.lenderId].contains(currentUser.id)) {
+        if ([...expense.borrowerIds, expense.lenderId]
+            .contains(currentUser.id)) {
           allCurrentUserExpenses.add(expense);
         }
       }
@@ -81,6 +82,15 @@ class BudgetCubit extends Cubit<BudgetCubitState> {
     _expensesRepository.addExpenseGroup(
       newGroupName,
       currentUser,
+    );
+  }
+
+  Future<void> addExpense(
+    Expense newExpense,
+  ) async {
+    _expensesRepository.addExpense(
+      newExpense,
+      state.currentExpenseGroup!,
     );
   }
 }

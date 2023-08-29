@@ -23,7 +23,7 @@ mixin _$Expense {
   String get id => throw _privateConstructorUsedError;
   double get amount => throw _privateConstructorUsedError;
   String get lenderId => throw _privateConstructorUsedError;
-  String get borrowerId => throw _privateConstructorUsedError;
+  List<String> get borrowerIds => throw _privateConstructorUsedError;
   String get expenseGroupId => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -40,7 +40,7 @@ abstract class $ExpenseCopyWith<$Res> {
       {String id,
       double amount,
       String lenderId,
-      String borrowerId,
+      List<String> borrowerIds,
       String expenseGroupId});
 }
 
@@ -60,7 +60,7 @@ class _$ExpenseCopyWithImpl<$Res, $Val extends Expense>
     Object? id = null,
     Object? amount = null,
     Object? lenderId = null,
-    Object? borrowerId = null,
+    Object? borrowerIds = null,
     Object? expenseGroupId = null,
   }) {
     return _then(_value.copyWith(
@@ -76,10 +76,10 @@ class _$ExpenseCopyWithImpl<$Res, $Val extends Expense>
           ? _value.lenderId
           : lenderId // ignore: cast_nullable_to_non_nullable
               as String,
-      borrowerId: null == borrowerId
-          ? _value.borrowerId
-          : borrowerId // ignore: cast_nullable_to_non_nullable
-              as String,
+      borrowerIds: null == borrowerIds
+          ? _value.borrowerIds
+          : borrowerIds // ignore: cast_nullable_to_non_nullable
+              as List<String>,
       expenseGroupId: null == expenseGroupId
           ? _value.expenseGroupId
           : expenseGroupId // ignore: cast_nullable_to_non_nullable
@@ -99,7 +99,7 @@ abstract class _$$_ExpenseCopyWith<$Res> implements $ExpenseCopyWith<$Res> {
       {String id,
       double amount,
       String lenderId,
-      String borrowerId,
+      List<String> borrowerIds,
       String expenseGroupId});
 }
 
@@ -116,7 +116,7 @@ class __$$_ExpenseCopyWithImpl<$Res>
     Object? id = null,
     Object? amount = null,
     Object? lenderId = null,
-    Object? borrowerId = null,
+    Object? borrowerIds = null,
     Object? expenseGroupId = null,
   }) {
     return _then(_$_Expense(
@@ -132,10 +132,10 @@ class __$$_ExpenseCopyWithImpl<$Res>
           ? _value.lenderId
           : lenderId // ignore: cast_nullable_to_non_nullable
               as String,
-      borrowerId: null == borrowerId
-          ? _value.borrowerId
-          : borrowerId // ignore: cast_nullable_to_non_nullable
-              as String,
+      borrowerIds: null == borrowerIds
+          ? _value._borrowerIds
+          : borrowerIds // ignore: cast_nullable_to_non_nullable
+              as List<String>,
       expenseGroupId: null == expenseGroupId
           ? _value.expenseGroupId
           : expenseGroupId // ignore: cast_nullable_to_non_nullable
@@ -151,8 +151,9 @@ class _$_Expense implements _Expense {
       {required this.id,
       required this.amount,
       required this.lenderId,
-      required this.borrowerId,
-      required this.expenseGroupId});
+      required final List<String> borrowerIds,
+      required this.expenseGroupId})
+      : _borrowerIds = borrowerIds;
 
   factory _$_Expense.fromJson(Map<String, dynamic> json) =>
       _$$_ExpenseFromJson(json);
@@ -163,14 +164,20 @@ class _$_Expense implements _Expense {
   final double amount;
   @override
   final String lenderId;
+  final List<String> _borrowerIds;
   @override
-  final String borrowerId;
+  List<String> get borrowerIds {
+    if (_borrowerIds is EqualUnmodifiableListView) return _borrowerIds;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_borrowerIds);
+  }
+
   @override
   final String expenseGroupId;
 
   @override
   String toString() {
-    return 'Expense(id: $id, amount: $amount, lenderId: $lenderId, borrowerId: $borrowerId, expenseGroupId: $expenseGroupId)';
+    return 'Expense(id: $id, amount: $amount, lenderId: $lenderId, borrowerIds: $borrowerIds, expenseGroupId: $expenseGroupId)';
   }
 
   @override
@@ -182,16 +189,16 @@ class _$_Expense implements _Expense {
             (identical(other.amount, amount) || other.amount == amount) &&
             (identical(other.lenderId, lenderId) ||
                 other.lenderId == lenderId) &&
-            (identical(other.borrowerId, borrowerId) ||
-                other.borrowerId == borrowerId) &&
+            const DeepCollectionEquality()
+                .equals(other._borrowerIds, _borrowerIds) &&
             (identical(other.expenseGroupId, expenseGroupId) ||
                 other.expenseGroupId == expenseGroupId));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType, id, amount, lenderId, borrowerId, expenseGroupId);
+  int get hashCode => Object.hash(runtimeType, id, amount, lenderId,
+      const DeepCollectionEquality().hash(_borrowerIds), expenseGroupId);
 
   @JsonKey(ignore: true)
   @override
@@ -212,7 +219,7 @@ abstract class _Expense implements Expense {
       {required final String id,
       required final double amount,
       required final String lenderId,
-      required final String borrowerId,
+      required final List<String> borrowerIds,
       required final String expenseGroupId}) = _$_Expense;
 
   factory _Expense.fromJson(Map<String, dynamic> json) = _$_Expense.fromJson;
@@ -224,7 +231,7 @@ abstract class _Expense implements Expense {
   @override
   String get lenderId;
   @override
-  String get borrowerId;
+  List<String> get borrowerIds;
   @override
   String get expenseGroupId;
   @override

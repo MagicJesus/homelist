@@ -13,7 +13,7 @@ class AppColors {
 
 final appTheme = ThemeData(
     colorScheme: ColorScheme.fromSeed(
-      seedColor: const Color.fromARGB(255, 179, 255, 0),
+      seedColor: const Color.fromARGB(255, 178, 27, 247),
     ),
     iconButtonTheme: IconButtonThemeData(
       style: IconButton.styleFrom(

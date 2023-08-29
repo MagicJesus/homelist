@@ -9,7 +9,7 @@ class Expense with _$Expense {
     required String id,
     required double amount,
     required String lenderId,
-    required String borrowerId,
+    required List<String> borrowerIds,
     required String expenseGroupId,
   }) = _Expense;
 

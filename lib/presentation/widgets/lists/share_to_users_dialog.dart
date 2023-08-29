@@ -78,7 +78,10 @@ class _ShareToUsersDialogState extends State<ShareToUsersDialog> {
                             vertical: 4,
                           ),
                           decoration: BoxDecoration(
-                            color: Colors.amberAccent,
+                            color: Theme.of(context)
+                                .colorScheme
+                                .primary
+                                .withOpacity(0.5),
                             borderRadius: BorderRadius.circular(16),
                           ),
                           child: Row(
