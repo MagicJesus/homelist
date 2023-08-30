@@ -16,12 +16,19 @@ class BudgetCubit extends Cubit<BudgetCubitState> {
 
   final ExpensesRepository _expensesRepository;
   StreamSubscription? _currentExpenseGroupStreamSubscription;
+  StreamSubscription? _allExpenseGroupsStreamSubscription;
 
   void setCurrentExpenseGroup(ExpenseGroup? expenseGroup) {
     emit(
       state.copyWith(currentExpenseGroup: expenseGroup),
     );
     listenToCurrentExpenseGroupStream();
+  }
+
+  void setCurrentExpense(Expense? expense) {
+    emit(
+      state.copyWith(currentExpense: expense),
+    );
   }
 
   Future<void> listenToCurrentExpenseGroupStream() async {
@@ -41,6 +48,36 @@ class BudgetCubit extends Cubit<BudgetCubitState> {
             currentExpenseGroup: event,
           ),
         );
+      },
+    );
+  }
+
+  Future<void> listenToAllExpenseGroupsStream(
+    UserData currentUser,
+  ) async {
+    if (_allExpenseGroupsStreamSubscription != null) {
+      _allExpenseGroupsStreamSubscription!.cancel();
+    }
+
+    final stream =
+        await _expensesRepository.getAllExpenseGroupsStream(currentUser);
+    _currentExpenseGroupStreamSubscription = stream.listen(
+      (allExpenseGroups) {
+        List<Expense> allCurrentUserExpenses = [];
+
+        for (var expenseGroup in allExpenseGroups) {
+          for (var expense in expenseGroup.expenses) {
+            if ([...expense.borrowerIds, expense.lenderId]
+                .contains(currentUser.id)) {
+              allCurrentUserExpenses.add(expense);
+            }
+          }
+        }
+
+        emit(state.copyWith(
+          allExpenseGroups: allExpenseGroups,
+          allCurrentUserExpenses: allCurrentUserExpenses,
+        ));
       },
     );
   }

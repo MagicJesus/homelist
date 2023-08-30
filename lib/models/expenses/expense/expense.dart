@@ -7,6 +7,7 @@ part 'expense.g.dart';
 class Expense with _$Expense {
   factory Expense({
     required String id,
+    required String title,
     required double amount,
     required String lenderId,
     required List<String> borrowerIds,

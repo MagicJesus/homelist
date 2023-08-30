@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:homelist/application/user/user_cubit.dart';
 import 'package:homelist/application/user/user_cubit_state.dart';
+import 'package:homelist/generated/assets.gen.dart';
 import 'package:homelist/models/user/user.dart';
 
 class ShareToUsersDialog extends StatefulWidget {
@@ -69,49 +70,84 @@ class _ShareToUsersDialogState extends State<ShareToUsersDialog> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    ...userListResults.map(
-                      (user) {
-                        return Container(
-                          margin: const EdgeInsets.only(top: 8),
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 16,
-                            vertical: 4,
-                          ),
-                          decoration: BoxDecoration(
-                            color: Theme.of(context)
-                                .colorScheme
-                                .primary
-                                .withOpacity(0.5),
-                            borderRadius: BorderRadius.circular(16),
-                          ),
-                          child: Row(
-                            children: [
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    '${user.firstName} '
-                                    '${user.lastName}',
-                                  ),
-                                  Text(user.email),
-                                ],
+                    if (userListResults.isNotEmpty)
+                      ...userListResults.map(
+                        (user) {
+                          return GestureDetector(
+                            onTap: () {
+                              selectUser(user);
+                            },
+                            child: Container(
+                              margin: const EdgeInsets.only(top: 8),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 16,
+                                vertical: 4,
                               ),
-                              Expanded(child: Container()),
-                              Column(
+                              decoration: BoxDecoration(
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .tertiaryContainer,
+                                borderRadius: BorderRadius.circular(16),
+                              ),
+                              child: Row(
                                 children: [
-                                  Checkbox(
-                                    value: isSelected(user),
-                                    onChanged: (_) {
-                                      selectUser(user);
-                                    },
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        '${user.firstName} '
+                                        '${user.lastName}',
+                                        style: TextStyle(
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .onTertiaryContainer,
+                                        ),
+                                      ),
+                                      Text(
+                                        user.email,
+                                        style: TextStyle(
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .onTertiaryContainer,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Expanded(child: Container()),
+                                  Column(
+                                    children: [
+                                      Checkbox(
+                                        value: isSelected(user),
+                                        onChanged: (_) {
+                                          selectUser(user);
+                                        },
+                                      )
+                                    ],
                                   )
                                 ],
-                              )
-                            ],
+                              ),
+                            ),
+                          );
+                        },
+                      ).toList(),
+                    if (userListResults.isEmpty)
+                      Column(
+                        children: [
+                          Assets.icons.noResults.image(width: 128, height: 128),
+                          const SizedBox(
+                            height: 8,
                           ),
-                        );
-                      },
-                    ).toList(),
+                          Text(
+                            'There are no users that you can share this list with.',
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyLarge!
+                                .copyWith(fontWeight: FontWeight.bold),
+                            textAlign: TextAlign.center,
+                          ),
+                        ],
+                      )
                   ],
                 ),
               );

@@ -24,6 +24,9 @@ class _AddExpenseFormScreenState extends State<AddExpenseFormScreen> {
 
   final _formKey = GlobalKey<FormState>();
 
+  final titleController = TextEditingController.fromValue(
+    const TextEditingValue(text: ''),
+  );
   final amountController = TextEditingController.fromValue(
     const TextEditingValue(text: ''),
   );
@@ -43,6 +46,7 @@ class _AddExpenseFormScreenState extends State<AddExpenseFormScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final currentUser = context.read<UserCubit>().state.userData!;
     return BlocBuilder<BudgetCubit, BudgetCubitState>(
         builder: (context, state) {
       return Scaffold(
@@ -56,6 +60,30 @@ class _AddExpenseFormScreenState extends State<AddExpenseFormScreen> {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
+                    TextFormField(
+                      autofocus: true,
+                      controller: titleController,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter some text';
+                        }
+                        return null;
+                      },
+                      keyboardType: TextInputType.text,
+                      decoration: InputDecoration(
+                        label: const Text('What did you pay for?'),
+                        hintStyle:
+                            const TextStyle(color: AppColors.hintTextColor),
+                        contentPadding:
+                            const EdgeInsets.symmetric(horizontal: 8),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 8,
+                    ),
                     TextFormField(
                       autofocus: true,
                       controller: amountController,
@@ -82,45 +110,49 @@ class _AddExpenseFormScreenState extends State<AddExpenseFormScreen> {
               ),
               ...state.currentExpenseGroup!.members.map(
                 (user) {
-                  return Container(
-                    margin: const EdgeInsets.only(top: 8),
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 16,
-                      vertical: 4,
-                    ),
-                    decoration: BoxDecoration(
-                      color: Theme.of(context)
-                          .colorScheme
-                          .primary
-                          .withOpacity(0.5),
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    child: Row(
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              '${user.firstName} '
-                              '${user.lastName}',
-                            ),
-                            Text(user.email),
-                          ],
-                        ),
-                        Expanded(child: Container()),
-                        Column(
-                          children: [
-                            Checkbox(
-                              value: isSelected(user.id),
-                              onChanged: (_) {
-                                selectUser(user.id);
-                              },
-                            )
-                          ],
-                        )
-                      ],
-                    ),
-                  );
+                  if (user.id != currentUser.id) {
+                    return Container(
+                      margin: const EdgeInsets.only(top: 8),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 4,
+                      ),
+                      decoration: BoxDecoration(
+                        color: Theme.of(context)
+                            .colorScheme
+                            .primary
+                            .withOpacity(0.5),
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      child: Row(
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                '${user.firstName} '
+                                '${user.lastName}',
+                              ),
+                              Text(user.email),
+                            ],
+                          ),
+                          Expanded(child: Container()),
+                          Column(
+                            children: [
+                              Checkbox(
+                                value: isSelected(user.id),
+                                onChanged: (_) {
+                                  selectUser(user.id);
+                                },
+                              )
+                            ],
+                          )
+                        ],
+                      ),
+                    );
+                  } else {
+                    return const SizedBox.shrink();
+                  }
                 },
               ).toList(),
               Row(
@@ -142,6 +174,7 @@ class _AddExpenseFormScreenState extends State<AddExpenseFormScreen> {
                           context.read<BudgetCubit>().addExpense(
                                 Expense(
                                   id: const Uuid().v1(),
+                                  title: titleController.text,
                                   amount: double.parse(amountController.text),
                                   lenderId: context
                                       .read<UserCubit>()

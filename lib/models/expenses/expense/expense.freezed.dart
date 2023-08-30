@@ -21,6 +21,7 @@ Expense _$ExpenseFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$Expense {
   String get id => throw _privateConstructorUsedError;
+  String get title => throw _privateConstructorUsedError;
   double get amount => throw _privateConstructorUsedError;
   String get lenderId => throw _privateConstructorUsedError;
   List<String> get borrowerIds => throw _privateConstructorUsedError;
@@ -38,6 +39,7 @@ abstract class $ExpenseCopyWith<$Res> {
   @useResult
   $Res call(
       {String id,
+      String title,
       double amount,
       String lenderId,
       List<String> borrowerIds,
@@ -58,6 +60,7 @@ class _$ExpenseCopyWithImpl<$Res, $Val extends Expense>
   @override
   $Res call({
     Object? id = null,
+    Object? title = null,
     Object? amount = null,
     Object? lenderId = null,
     Object? borrowerIds = null,
@@ -67,6 +70,10 @@ class _$ExpenseCopyWithImpl<$Res, $Val extends Expense>
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      title: null == title
+          ? _value.title
+          : title // ignore: cast_nullable_to_non_nullable
               as String,
       amount: null == amount
           ? _value.amount
@@ -97,6 +104,7 @@ abstract class _$$_ExpenseCopyWith<$Res> implements $ExpenseCopyWith<$Res> {
   @useResult
   $Res call(
       {String id,
+      String title,
       double amount,
       String lenderId,
       List<String> borrowerIds,
@@ -114,6 +122,7 @@ class __$$_ExpenseCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = null,
+    Object? title = null,
     Object? amount = null,
     Object? lenderId = null,
     Object? borrowerIds = null,
@@ -123,6 +132,10 @@ class __$$_ExpenseCopyWithImpl<$Res>
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      title: null == title
+          ? _value.title
+          : title // ignore: cast_nullable_to_non_nullable
               as String,
       amount: null == amount
           ? _value.amount
@@ -149,6 +162,7 @@ class __$$_ExpenseCopyWithImpl<$Res>
 class _$_Expense implements _Expense {
   _$_Expense(
       {required this.id,
+      required this.title,
       required this.amount,
       required this.lenderId,
       required final List<String> borrowerIds,
@@ -160,6 +174,8 @@ class _$_Expense implements _Expense {
 
   @override
   final String id;
+  @override
+  final String title;
   @override
   final double amount;
   @override
@@ -177,7 +193,7 @@ class _$_Expense implements _Expense {
 
   @override
   String toString() {
-    return 'Expense(id: $id, amount: $amount, lenderId: $lenderId, borrowerIds: $borrowerIds, expenseGroupId: $expenseGroupId)';
+    return 'Expense(id: $id, title: $title, amount: $amount, lenderId: $lenderId, borrowerIds: $borrowerIds, expenseGroupId: $expenseGroupId)';
   }
 
   @override
@@ -186,6 +202,7 @@ class _$_Expense implements _Expense {
         (other.runtimeType == runtimeType &&
             other is _$_Expense &&
             (identical(other.id, id) || other.id == id) &&
+            (identical(other.title, title) || other.title == title) &&
             (identical(other.amount, amount) || other.amount == amount) &&
             (identical(other.lenderId, lenderId) ||
                 other.lenderId == lenderId) &&
@@ -197,7 +214,7 @@ class _$_Expense implements _Expense {
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, id, amount, lenderId,
+  int get hashCode => Object.hash(runtimeType, id, title, amount, lenderId,
       const DeepCollectionEquality().hash(_borrowerIds), expenseGroupId);
 
   @JsonKey(ignore: true)
@@ -217,6 +234,7 @@ class _$_Expense implements _Expense {
 abstract class _Expense implements Expense {
   factory _Expense(
       {required final String id,
+      required final String title,
       required final double amount,
       required final String lenderId,
       required final List<String> borrowerIds,
@@ -226,6 +244,8 @@ abstract class _Expense implements Expense {
 
   @override
   String get id;
+  @override
+  String get title;
   @override
   double get amount;
   @override

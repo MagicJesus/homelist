@@ -19,6 +19,10 @@ class $AssetsIconsGen {
   /// File path: assets/icons/fruits.png
   AssetGenImage get fruits => const AssetGenImage('assets/icons/fruits.png');
 
+  /// File path: assets/icons/no-results.png
+  AssetGenImage get noResults =>
+      const AssetGenImage('assets/icons/no-results.png');
+
   /// File path: assets/icons/todo.png
   AssetGenImage get todo => const AssetGenImage('assets/icons/todo.png');
 
@@ -27,7 +31,8 @@ class $AssetsIconsGen {
       const AssetGenImage('assets/icons/vegetables.png');
 
   /// List of all assets
-  List<AssetGenImage> get values => [dairyProducts, fruits, todo, vegetables];
+  List<AssetGenImage> get values =>
+      [dairyProducts, fruits, noResults, todo, vegetables];
 }
 
 class Assets {

@@ -4,39 +4,60 @@ import 'package:homelist/application/shared_lists/shared_list_cubit.dart';
 import 'package:homelist/helpers/icons_helper.dart';
 import 'package:homelist/models/list/list_item.dart';
 
-class ListItemWidget extends StatelessWidget {
+class ListItemWidget extends StatefulWidget {
   const ListItemWidget(
       {super.key, required this.listItem, required this.onChecked});
 
   final ListItem listItem;
   final void Function(bool?) onChecked;
 
+  @override
+  State<ListItemWidget> createState() => _ListItemWidgetState();
+}
+
+class _ListItemWidgetState extends State<ListItemWidget> {
+  late bool isCompleted;
+
+  @override
+  void initState() {
+    super.initState();
+    isCompleted = widget.listItem.completed;
+  }
+
   void _deleteItem(BuildContext context) {
-    context.read<SharedListCubit>().removeListItem(listItem);
+    context.read<SharedListCubit>().removeListItem(widget.listItem);
   }
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        onChecked(!listItem.completed);
+        widget.onChecked(!widget.listItem.completed);
+        setState(() {
+          isCompleted = !isCompleted;
+        });
       },
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Checkbox(
-            value: listItem.completed,
-            onChanged: onChecked,
+            value: isCompleted,
+            onChanged: (value) {
+              widget.onChecked(value);
+              setState(() {
+                isCompleted = value!;
+              });
+            },
           ),
           SizedBox(
             width: 32,
             height: 32,
-            child: IconsHelper.getIcon(listItem.iconName),
+            child: IconsHelper.getIcon(widget.listItem.iconName),
           ),
           const SizedBox(
             width: 12,
           ),
-          Text(listItem.title.toString()),
+          Text(widget.listItem.title.toString()),
           Expanded(child: Container()),
           IconButton(
             onPressed: () {

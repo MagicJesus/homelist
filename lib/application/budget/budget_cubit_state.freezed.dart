@@ -21,6 +21,7 @@ mixin _$BudgetCubitState {
       throw _privateConstructorUsedError;
   Status get allExpenseGroupsStatus => throw _privateConstructorUsedError;
   ExpenseGroup? get currentExpenseGroup => throw _privateConstructorUsedError;
+  Expense? get currentExpense => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $BudgetCubitStateCopyWith<BudgetCubitState> get copyWith =>
@@ -37,9 +38,11 @@ abstract class $BudgetCubitStateCopyWith<$Res> {
       {List<ExpenseGroup> allExpenseGroups,
       List<Expense> allCurrentUserExpenses,
       Status allExpenseGroupsStatus,
-      ExpenseGroup? currentExpenseGroup});
+      ExpenseGroup? currentExpenseGroup,
+      Expense? currentExpense});
 
   $ExpenseGroupCopyWith<$Res>? get currentExpenseGroup;
+  $ExpenseCopyWith<$Res>? get currentExpense;
 }
 
 /// @nodoc
@@ -59,6 +62,7 @@ class _$BudgetCubitStateCopyWithImpl<$Res, $Val extends BudgetCubitState>
     Object? allCurrentUserExpenses = null,
     Object? allExpenseGroupsStatus = null,
     Object? currentExpenseGroup = freezed,
+    Object? currentExpense = freezed,
   }) {
     return _then(_value.copyWith(
       allExpenseGroups: null == allExpenseGroups
@@ -77,6 +81,10 @@ class _$BudgetCubitStateCopyWithImpl<$Res, $Val extends BudgetCubitState>
           ? _value.currentExpenseGroup
           : currentExpenseGroup // ignore: cast_nullable_to_non_nullable
               as ExpenseGroup?,
+      currentExpense: freezed == currentExpense
+          ? _value.currentExpense
+          : currentExpense // ignore: cast_nullable_to_non_nullable
+              as Expense?,
     ) as $Val);
   }
 
@@ -89,6 +97,18 @@ class _$BudgetCubitStateCopyWithImpl<$Res, $Val extends BudgetCubitState>
 
     return $ExpenseGroupCopyWith<$Res>(_value.currentExpenseGroup!, (value) {
       return _then(_value.copyWith(currentExpenseGroup: value) as $Val);
+    });
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $ExpenseCopyWith<$Res>? get currentExpense {
+    if (_value.currentExpense == null) {
+      return null;
+    }
+
+    return $ExpenseCopyWith<$Res>(_value.currentExpense!, (value) {
+      return _then(_value.copyWith(currentExpense: value) as $Val);
     });
   }
 }
@@ -105,10 +125,13 @@ abstract class _$$_BudgetCubitStateCopyWith<$Res>
       {List<ExpenseGroup> allExpenseGroups,
       List<Expense> allCurrentUserExpenses,
       Status allExpenseGroupsStatus,
-      ExpenseGroup? currentExpenseGroup});
+      ExpenseGroup? currentExpenseGroup,
+      Expense? currentExpense});
 
   @override
   $ExpenseGroupCopyWith<$Res>? get currentExpenseGroup;
+  @override
+  $ExpenseCopyWith<$Res>? get currentExpense;
 }
 
 /// @nodoc
@@ -126,6 +149,7 @@ class __$$_BudgetCubitStateCopyWithImpl<$Res>
     Object? allCurrentUserExpenses = null,
     Object? allExpenseGroupsStatus = null,
     Object? currentExpenseGroup = freezed,
+    Object? currentExpense = freezed,
   }) {
     return _then(_$_BudgetCubitState(
       allExpenseGroups: null == allExpenseGroups
@@ -144,6 +168,10 @@ class __$$_BudgetCubitStateCopyWithImpl<$Res>
           ? _value.currentExpenseGroup
           : currentExpenseGroup // ignore: cast_nullable_to_non_nullable
               as ExpenseGroup?,
+      currentExpense: freezed == currentExpense
+          ? _value.currentExpense
+          : currentExpense // ignore: cast_nullable_to_non_nullable
+              as Expense?,
     ));
   }
 }
@@ -155,7 +183,8 @@ class _$_BudgetCubitState implements _BudgetCubitState {
       {required final List<ExpenseGroup> allExpenseGroups,
       required final List<Expense> allCurrentUserExpenses,
       required this.allExpenseGroupsStatus,
-      this.currentExpenseGroup})
+      this.currentExpenseGroup,
+      this.currentExpense})
       : _allExpenseGroups = allExpenseGroups,
         _allCurrentUserExpenses = allCurrentUserExpenses;
 
@@ -181,10 +210,12 @@ class _$_BudgetCubitState implements _BudgetCubitState {
   final Status allExpenseGroupsStatus;
   @override
   final ExpenseGroup? currentExpenseGroup;
+  @override
+  final Expense? currentExpense;
 
   @override
   String toString() {
-    return 'BudgetCubitState(allExpenseGroups: $allExpenseGroups, allCurrentUserExpenses: $allCurrentUserExpenses, allExpenseGroupsStatus: $allExpenseGroupsStatus, currentExpenseGroup: $currentExpenseGroup)';
+    return 'BudgetCubitState(allExpenseGroups: $allExpenseGroups, allCurrentUserExpenses: $allCurrentUserExpenses, allExpenseGroupsStatus: $allExpenseGroupsStatus, currentExpenseGroup: $currentExpenseGroup, currentExpense: $currentExpense)';
   }
 
   @override
@@ -199,7 +230,9 @@ class _$_BudgetCubitState implements _BudgetCubitState {
             (identical(other.allExpenseGroupsStatus, allExpenseGroupsStatus) ||
                 other.allExpenseGroupsStatus == allExpenseGroupsStatus) &&
             (identical(other.currentExpenseGroup, currentExpenseGroup) ||
-                other.currentExpenseGroup == currentExpenseGroup));
+                other.currentExpenseGroup == currentExpenseGroup) &&
+            (identical(other.currentExpense, currentExpense) ||
+                other.currentExpense == currentExpense));
   }
 
   @override
@@ -208,7 +241,8 @@ class _$_BudgetCubitState implements _BudgetCubitState {
       const DeepCollectionEquality().hash(_allExpenseGroups),
       const DeepCollectionEquality().hash(_allCurrentUserExpenses),
       allExpenseGroupsStatus,
-      currentExpenseGroup);
+      currentExpenseGroup,
+      currentExpense);
 
   @JsonKey(ignore: true)
   @override
@@ -222,7 +256,8 @@ abstract class _BudgetCubitState implements BudgetCubitState {
       {required final List<ExpenseGroup> allExpenseGroups,
       required final List<Expense> allCurrentUserExpenses,
       required final Status allExpenseGroupsStatus,
-      final ExpenseGroup? currentExpenseGroup}) = _$_BudgetCubitState;
+      final ExpenseGroup? currentExpenseGroup,
+      final Expense? currentExpense}) = _$_BudgetCubitState;
 
   @override
   List<ExpenseGroup> get allExpenseGroups;
@@ -232,6 +267,8 @@ abstract class _BudgetCubitState implements BudgetCubitState {
   Status get allExpenseGroupsStatus;
   @override
   ExpenseGroup? get currentExpenseGroup;
+  @override
+  Expense? get currentExpense;
   @override
   @JsonKey(ignore: true)
   _$$_BudgetCubitStateCopyWith<_$_BudgetCubitState> get copyWith =>

@@ -1,17 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:homelist/application/budget/budget_cubit.dart';
+import 'package:homelist/helpers/expeses_helper.dart';
 import 'package:homelist/models/expenses/expense/expense.dart';
 import 'package:homelist/models/expenses/expense_group/expense_group.dart';
 import 'package:homelist/models/user/user.dart';
+import 'package:homelist/presentation/constants.dart';
+import 'package:homelist/presentation/screens/budget/expense_details_screen.dart';
 
 class ExpenseTile extends StatelessWidget {
   const ExpenseTile({
     super.key,
     required this.expense,
     required this.expenseGroup,
+    required this.currentUser,
   });
 
   final Expense expense;
   final ExpenseGroup expenseGroup;
+  final UserData currentUser;
 
   List<UserData> getUserFromGroup(List<String> userIds) {
     return expenseGroup.members
@@ -21,51 +29,105 @@ class ExpenseTile extends StatelessWidget {
         .toList();
   }
 
-  String getBorrowersText(List<UserData> borrowers) {
-    if (borrowers.length == 1) {
-      return '${borrowers.first.firstName} ${borrowers.first.lastName}';
+  String getLendersName(BuildContext context, UserData lender) {
+    if (lender.id == currentUser.id) {
+      return 'You';
     } else {
-      return '${borrowers.length} people ';
+      return '${lender.firstName} ${lender.lastName}';
     }
+  }
+
+  Widget getCurrentUserShareInExpense() {
+    final userShare = ExpensesHelper.userShare(expense, currentUser.id);
+    bool isLender = userShare > 0;
+    return _UserShareWidget(isLender: isLender, amount: userShare);
+  }
+
+  ExpenseGroup getExpenseGroupForExpense(
+    String expenseGroupId,
+    BuildContext context,
+  ) {
+    final expenseGroups = context.read<BudgetCubit>().state.allExpenseGroups;
+    return expenseGroups.firstWhere((element) => element.id == expenseGroupId);
   }
 
   @override
   Widget build(BuildContext context) {
     final lender = getUserFromGroup([expense.lenderId]).first;
-    final borrowers = getUserFromGroup(expense.borrowerIds);
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Row(
-          children: [
-            RichText(
-              text: TextSpan(
-                style: const TextStyle(color: Colors.black),
-                text: '${lender.firstName} ${lender.lastName}  ',
+    return GestureDetector(
+      onTap: () {
+        context.read<BudgetCubit>()
+          ..setCurrentExpense(expense)
+          ..setCurrentExpenseGroup(
+            getExpenseGroupForExpense(
+              expense.expenseGroupId,
+              context,
+            ),
+          );
+        context.push(
+          ExpenseDetailsScreen.routeName,
+        );
+      },
+      child: Card(
+        color: Theme.of(context).colorScheme.background,
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Row(
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const TextSpan(
-                    text: 'lent  ',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                    ),
+                  Text(
+                    expense.title,
+                    style: Theme.of(context)
+                        .textTheme
+                        .titleMedium!
+                        .copyWith(fontSize: 18),
                   ),
-                  TextSpan(
-                    text: getBorrowersText(borrowers),
+                  Text(
+                    '${getLendersName(context, lender)} paid ${expense.amount} PLN',
                   ),
                 ],
               ),
-            ),
-            Expanded(
-              child: Text(
-                '${expense.amount} PLN',
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                ),
+              const Expanded(
+                child: SizedBox.shrink(),
               ),
-            ),
-          ],
+              getCurrentUserShareInExpense(),
+            ],
+          ),
         ),
       ),
+    );
+  }
+}
+
+class _UserShareWidget extends StatelessWidget {
+  const _UserShareWidget({
+    required this.isLender,
+    required this.amount,
+  });
+
+  final bool isLender;
+  final double amount;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: [
+        Text(
+          isLender ? 'You lent' : 'You borrowed',
+          style: Theme.of(context).textTheme.labelSmall!.copyWith(
+                color: isLender ? AppColors.loanGreen : AppColors.debtRed,
+              ),
+        ),
+        Text(
+          '${amount.toStringAsFixed(2).replaceAll('-', '')} PLN',
+          style: TextStyle(
+            color: isLender ? AppColors.loanGreen : AppColors.debtRed,
+          ),
+        ),
+      ],
     );
   }
 }

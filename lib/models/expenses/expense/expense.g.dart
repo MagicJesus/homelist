@@ -10,6 +10,7 @@ part of 'expense.dart';
 
 _$_Expense _$$_ExpenseFromJson(Map<String, dynamic> json) => _$_Expense(
       id: json['id'] as String,
+      title: json['title'] as String,
       amount: (json['amount'] as num).toDouble(),
       lenderId: json['lenderId'] as String,
       borrowerIds: (json['borrowerIds'] as List<dynamic>)
@@ -21,6 +22,7 @@ _$_Expense _$$_ExpenseFromJson(Map<String, dynamic> json) => _$_Expense(
 Map<String, dynamic> _$$_ExpenseToJson(_$_Expense instance) =>
     <String, dynamic>{
       'id': instance.id,
+      'title': instance.title,
       'amount': instance.amount,
       'lenderId': instance.lenderId,
       'borrowerIds': instance.borrowerIds,

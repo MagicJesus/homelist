@@ -12,6 +12,7 @@ class BudgetCubitState with _$BudgetCubitState {
     required List<Expense> allCurrentUserExpenses,
     required Status allExpenseGroupsStatus,
     ExpenseGroup? currentExpenseGroup,
+    Expense? currentExpense,
   }) = _BudgetCubitState;
 
   factory BudgetCubitState.initialState() {

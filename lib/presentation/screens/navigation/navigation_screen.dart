@@ -10,6 +10,7 @@ import 'package:homelist/application/user/user_cubit.dart';
 import 'package:homelist/application/user/user_cubit_state.dart';
 import 'package:homelist/presentation/constants.dart';
 import 'package:homelist/presentation/screens/budget/budget_screen.dart';
+import 'package:homelist/presentation/screens/calendar/calendar_screen.dart';
 import 'package:homelist/presentation/screens/lists/lists_screen.dart';
 import 'package:homelist/presentation/widgets/budget/add_group_form.dart';
 import 'package:homelist/presentation/widgets/common/homelist_appbar.dart';
@@ -56,9 +57,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
                 children: [
                   const ListsScreen(),
                   BudgetScreen(),
-                  const Center(
-                    child: Text("Calendar"),
-                  ),
+                  const CalendarScreen(),
                 ],
               ),
               floatingActionButton: FloatingActionButton(
@@ -121,7 +120,9 @@ class _NavigationScreenState extends State<NavigationScreen> {
                             );
                       }
                       if (index == BottomNavPage.budget.getPageIndex()) {
-                        await context.read<BudgetCubit>().getAllExpenseGroups(
+                        await context
+                            .read<BudgetCubit>()
+                            .listenToAllExpenseGroupsStream(
                               context.read<UserCubit>().state.userData!,
                             );
                       }

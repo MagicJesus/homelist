@@ -3,8 +3,9 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:homelist/presentation/constants.dart';
+import 'package:homelist/presentation/screens/budget/expense_details_screen.dart';
 import 'package:homelist/presentation/screens/budget/expense_group_screen.dart';
-import 'package:homelist/presentation/screens/home/home_screen.dart';
+import 'package:homelist/presentation/screens/navigation/navigation_screen.dart';
 import 'package:homelist/presentation/screens/lists/list_details_screen.dart';
 import 'package:homelist/presentation/screens/login/log_in_screen.dart';
 import 'package:homelist/presentation/screens/login/sign_up_screen.dart';
@@ -92,6 +93,11 @@ class NavigationService {
       name: 'AddExpense',
       path: AddExpenseFormScreen.routeName,
       builder: (context, state) => const AddExpenseFormScreen(),
+    ),
+    GoRoute(
+      name: 'ExpenseDetailsScreen',
+      path: ExpenseDetailsScreen.routeName,
+      builder: (context, state) => const ExpenseDetailsScreen(),
     ),
   ];
 }

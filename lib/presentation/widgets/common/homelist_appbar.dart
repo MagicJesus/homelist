@@ -33,7 +33,14 @@ class HomeListAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       titleTextStyle: _getTitleStyle(context),
       backgroundColor: Theme.of(context).colorScheme.primary,
-      title: Text(title),
+      title: Text(
+        title,
+        style: Theme.of(context).textTheme.headlineLarge!.copyWith(
+              fontWeight: FontWeight.w500,
+              color: Theme.of(context).colorScheme.onPrimary,
+            ),
+      ),
+      centerTitle: true,
       leading: leading,
       actions: actions ??
           [

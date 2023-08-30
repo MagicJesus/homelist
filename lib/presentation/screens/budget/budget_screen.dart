@@ -3,7 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:homelist/application/budget/budget_cubit.dart';
 import 'package:homelist/application/budget/budget_cubit_state.dart';
 import 'package:homelist/application/user/user_cubit.dart';
+import 'package:homelist/helpers/expeses_helper.dart';
 import 'package:homelist/models/expenses/expense_group/expense_group.dart';
+import 'package:homelist/presentation/constants.dart';
 import 'package:homelist/presentation/widgets/budget/expense_group_tile.dart';
 import 'package:homelist/presentation/widgets/budget/expense_tile.dart';
 import 'package:homelist/presentation/widgets/common/circle.dart';
@@ -17,28 +19,14 @@ class BudgetScreen extends StatelessWidget {
     final allCurrentUserExpenses =
         context.read<BudgetCubit>().state.allCurrentUserExpenses;
     final currentUserId = context.read<UserCubit>().state.userData!.id;
+
     double balance = 0;
 
     for (var expense in allCurrentUserExpenses) {
-      if (expense.lenderId == currentUserId) {
-        balance += expense.amount;
-      } else if (expense.borrowerIds.contains(currentUserId)) {
-        balance -= expense.amount;
-      } else {
-        continue;
-      }
+      balance += ExpensesHelper.userShare(expense, currentUserId);
     }
 
     return balance;
-  }
-
-  double getDistanceFromTop() {
-    if (headerExpandedKey.currentContext != null &&
-        headerExpandedKey.currentContext!.mounted) {
-      return headerExpandedKey.currentContext!.size!.height / 2;
-    } else {
-      return 0;
-    }
   }
 
   ExpenseGroup getExpenseGroupForExpense(
@@ -102,18 +90,25 @@ class BudgetScreen extends StatelessWidget {
                         builder: ((context, state) {
                           return Padding(
                             padding: const EdgeInsets.all(8.0),
-                            child: Column(
-                              children: [
-                                ...state.allCurrentUserExpenses.map(
-                                  (expense) => ExpenseTile(
-                                    expense: expense,
-                                    expenseGroup: getExpenseGroupForExpense(
-                                      expense.expenseGroupId,
-                                      context,
+                            child: SingleChildScrollView(
+                              child: Column(
+                                children: [
+                                  ...state.allCurrentUserExpenses.map(
+                                    (expense) => ExpenseTile(
+                                      expense: expense,
+                                      expenseGroup: getExpenseGroupForExpense(
+                                        expense.expenseGroupId,
+                                        context,
+                                      ),
+                                      currentUser: context
+                                          .read<UserCubit>()
+                                          .state
+                                          .userData!,
                                     ),
                                   ),
-                                )
-                              ],
+                                  const SizedBox(height: 80),
+                                ],
+                              ),
                             ),
                           );
                         }),
@@ -122,14 +117,16 @@ class BudgetScreen extends StatelessWidget {
                         builder: ((context, state) {
                           return Padding(
                             padding: const EdgeInsets.all(8.0),
-                            child: Column(
-                              children: [
-                                ...state.allExpenseGroups.map(
-                                  (expenseGroup) => ExpenseGroupTile(
-                                    expenseGroup: expenseGroup,
-                                  ),
-                                )
-                              ],
+                            child: SingleChildScrollView(
+                              child: Column(
+                                children: [
+                                  ...state.allExpenseGroups.map(
+                                    (expenseGroup) => ExpenseGroupTile(
+                                      expenseGroup: expenseGroup,
+                                    ),
+                                  )
+                                ],
+                              ),
                             ),
                           );
                         }),
@@ -156,14 +153,14 @@ class _TotalExpenseBalanceWidget extends StatelessWidget {
       case 0:
         return const TextStyle(fontSize: 48);
       case > 0:
-        return TextStyle(
+        return const TextStyle(
           fontSize: 48,
-          color: Colors.greenAccent.shade400,
+          color: AppColors.loanGreen,
         );
       case < 0:
-        return TextStyle(
+        return const TextStyle(
           fontSize: 48,
-          color: Colors.redAccent.shade400,
+          color: AppColors.debtRed,
         );
       default:
         return null;
@@ -197,7 +194,7 @@ class _TotalExpenseBalanceWidget extends StatelessWidget {
         ),
         totalExpenses != 0
             ? Text(
-                totalExpenses.toString().replaceAll('-', ''),
+                totalExpenses.toStringAsFixed(2).replaceAll('-', ''),
                 style: _getExpensesHeadingStyle(),
               )
             : const SizedBox.shrink(),

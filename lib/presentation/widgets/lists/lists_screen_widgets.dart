@@ -20,7 +20,7 @@ class _ListsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -29,7 +29,7 @@ class _ListsWidget extends StatelessWidget {
             style: Theme.of(context)
                 .textTheme
                 .headlineSmall!
-                .copyWith(fontWeight: FontWeight.w900),
+                .copyWith(fontWeight: FontWeight.w500),
           ),
         ),
         const SizedBox(
@@ -40,36 +40,11 @@ class _ListsWidget extends StatelessWidget {
             listsType: listsType,
           ),
         if (lists.isNotEmpty)
-          ...lists.map((list) {
-            return Card(
-              child: InkWell(
-                onTap: () {
-                  context.read<SharedListCubit>().changeCurrentList(list);
-                  context.push(ListDetailsScreen.routeName);
-                },
-                borderRadius: BorderRadius.circular(10),
-                splashColor: Colors.amber,
-                child: Container(
-                  padding: const EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      color: AppColors.borderGrey,
-                    ),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Row(
-                    children: [
-                      Text(list.title),
-                      Expanded(
-                        child: Container(),
-                      ),
-                      const Icon(Icons.arrow_right),
-                    ],
-                  ),
-                ),
-              ),
-            );
-          }).toList(),
+          ...lists.map(
+            (list) {
+              return SharedListTile(list: list);
+            },
+          ).toList(),
       ],
     );
   }
@@ -141,63 +116,3 @@ class _EmptyWidget extends StatelessWidget {
     );
   }
 }
-
-// class _ShoppingLists extends StatelessWidget {
-//   const _ShoppingLists({
-//     required this.shoppingLists,
-//   });
-
-//   final List<SharedList> shoppingLists;
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Column(
-//       crossAxisAlignment: CrossAxisAlignment.start,
-//       children: [
-//         Padding(
-//           padding: const EdgeInsets.symmetric(horizontal: 16),
-//           child: Text(
-//             "Your Shopping Lists",
-//             style: Theme.of(context)
-//                 .textTheme
-//                 .headlineSmall!
-//                 .copyWith(fontWeight: FontWeight.w900),
-//           ),
-//         ),
-//         const SizedBox(
-//           height: 12,
-//         ),
-//         if (shoppingLists.isEmpty) const Text('data'),
-//         ...shoppingLists.map((todoList) {
-//           return Padding(
-//             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-//             child: InkWell(
-//               onTap: () {
-//                 context.read<SharedListCubit>().changeCurrentList(todoList);
-//                 context.push(ListDetailsScreen.routeName);
-//               },
-//               borderRadius: BorderRadius.circular(16),
-//               splashColor: Colors.amber,
-//               child: Container(
-//                 padding: const EdgeInsets.all(12),
-//                 decoration: BoxDecoration(
-//                   border: Border.all(
-//                     color: AppColors.borderGrey,
-//                   ),
-//                   borderRadius: BorderRadius.circular(16),
-//                 ),
-//                 child: Row(
-//                   children: [
-//                     Text(todoList.title),
-//                     Expanded(child: Container()),
-//                     const Icon(Icons.arrow_right),
-//                   ],
-//                 ),
-//               ),
-//             ),
-//           );
-//         }).toList(),
-//       ],
-//     );
-//   }
-// }
