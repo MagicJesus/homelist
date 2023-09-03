@@ -10,14 +10,18 @@ import 'package:homelist/presentation/widgets/budget/expense_group_tile.dart';
 import 'package:homelist/presentation/widgets/budget/expense_tile.dart';
 import 'package:homelist/presentation/widgets/common/circle.dart';
 
-class BudgetScreen extends StatelessWidget {
-  BudgetScreen({super.key});
+class BudgetScreen extends StatefulWidget {
+  const BudgetScreen({super.key});
 
+  @override
+  State<BudgetScreen> createState() => _BudgetScreenState();
+}
+
+class _BudgetScreenState extends State<BudgetScreen> {
   final GlobalKey headerExpandedKey = GlobalKey();
 
-  double _getUserTotalExpensesBalance(BuildContext context) {
-    final allCurrentUserExpenses =
-        context.read<BudgetCubit>().state.allCurrentUserExpenses;
+  double _getUserTotalExpensesBalance(BudgetCubitState state) {
+    final allCurrentUserExpenses = state.allCurrentUserExpenses;
     final currentUserId = context.read<UserCubit>().state.userData!.id;
 
     double balance = 0;
@@ -39,6 +43,7 @@ class BudgetScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final currentUser = context.read<UserCubit>().state.userData!;
     return Column(
       children: [
         Expanded(
@@ -56,9 +61,12 @@ class BudgetScreen extends StatelessWidget {
               ),
               Align(
                 alignment: Alignment.center,
-                child: _TotalExpenseBalanceWidget(
-                  totalExpenses: _getUserTotalExpensesBalance(context),
-                ),
+                child: BlocBuilder<BudgetCubit, BudgetCubitState>(
+                    builder: (context, state) {
+                  return _TotalExpenseBalanceWidget(
+                    totalExpenses: _getUserTotalExpensesBalance(state),
+                  );
+                }),
               ),
             ],
           ),
@@ -94,17 +102,16 @@ class BudgetScreen extends StatelessWidget {
                               child: Column(
                                 children: [
                                   ...state.allCurrentUserExpenses.map(
-                                    (expense) => ExpenseTile(
-                                      expense: expense,
-                                      expenseGroup: getExpenseGroupForExpense(
-                                        expense.expenseGroupId,
-                                        context,
-                                      ),
-                                      currentUser: context
-                                          .read<UserCubit>()
-                                          .state
-                                          .userData!,
-                                    ),
+                                    (expense) {
+                                      return ExpenseTile(
+                                        expense: expense,
+                                        expenseGroup: getExpenseGroupForExpense(
+                                          expense.expenseGroupId,
+                                          context,
+                                        ),
+                                        currentUser: currentUser,
+                                      );
+                                    },
                                   ),
                                   const SizedBox(height: 80),
                                 ],

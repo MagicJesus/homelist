@@ -51,23 +51,10 @@ class AuthCubit extends Cubit<AuthState> {
     emit(
       state.copyWith(authStatus: Status.loading),
     );
-    final result = await _authRepository.logIn(
+    await _authRepository.logIn(
       email: email,
       password: password,
     );
-
-    if (result?.user != null) {
-      emit(
-        state.copyWith(
-          isAuthenticated: true,
-          authStatus: Status.loaded,
-        ),
-      );
-    } else {
-      emit(
-        state.copyWith(authStatus: Status.error),
-      );
-    }
   }
 
   Future<void> _getUserData(User user) async {

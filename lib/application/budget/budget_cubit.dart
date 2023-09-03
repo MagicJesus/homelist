@@ -52,15 +52,15 @@ class BudgetCubit extends Cubit<BudgetCubitState> {
     );
   }
 
-  Future<void> listenToAllExpenseGroupsStream(
+  void listenToAllExpenseGroupsStream(
     UserData currentUser,
-  ) async {
+  ) {
     if (_allExpenseGroupsStreamSubscription != null) {
       _allExpenseGroupsStreamSubscription!.cancel();
     }
 
-    final stream =
-        await _expensesRepository.getAllExpenseGroupsStream(currentUser);
+    final stream = _expensesRepository.getAllExpenseGroupsStream(currentUser);
+
     _currentExpenseGroupStreamSubscription = stream.listen(
       (allExpenseGroups) {
         List<Expense> allCurrentUserExpenses = [];

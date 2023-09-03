@@ -33,6 +33,8 @@ class _NavigationScreenState extends State<NavigationScreen> {
   @override
   void initState() {
     super.initState();
+    print(context.read<UserCubit>().state.userData);
+    final userId = context.read<UserCubit>().state.userData!.id;
     context.read<SharedListCubit>().loadUserListsStream(
           context.read<UserCubit>().state.userData!.id,
         );
@@ -54,10 +56,10 @@ class _NavigationScreenState extends State<NavigationScreen> {
               body: PageView(
                 controller: pageController,
                 physics: const NeverScrollableScrollPhysics(),
-                children: [
-                  const ListsScreen(),
+                children: const [
+                  ListsScreen(),
                   BudgetScreen(),
-                  const CalendarScreen(),
+                  CalendarScreen(),
                 ],
               ),
               floatingActionButton: FloatingActionButton(
@@ -120,7 +122,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
                             );
                       }
                       if (index == BottomNavPage.budget.getPageIndex()) {
-                        await context
+                        context
                             .read<BudgetCubit>()
                             .listenToAllExpenseGroupsStream(
                               context.read<UserCubit>().state.userData!,

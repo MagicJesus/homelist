@@ -31,10 +31,13 @@ class ExpensesRepository {
         );
   }
 
-  Future<Stream<List<ExpenseGroup>>> getAllExpenseGroupsStream(
+  Stream<List<ExpenseGroup>> getAllExpenseGroupsStream(
     UserData currentUser,
-  ) async {
-    return _expenseGroupsCollection.snapshots().map(
+  ) {
+    return _expenseGroupsCollection
+        .where('members', arrayContains: currentUser.toJson())
+        .snapshots()
+        .map(
           (expenseGroupQuerySnapshot) => expenseGroupQuerySnapshot.docs
               .map(
                 (expenseGroup) => ExpenseGroup.fromJson(
