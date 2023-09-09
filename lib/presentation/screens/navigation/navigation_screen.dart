@@ -33,8 +33,6 @@ class _NavigationScreenState extends State<NavigationScreen> {
   @override
   void initState() {
     super.initState();
-    print(context.read<UserCubit>().state.userData);
-    final userId = context.read<UserCubit>().state.userData!.id;
     context.read<SharedListCubit>().loadUserListsStream(
           context.read<UserCubit>().state.userData!.id,
         );
