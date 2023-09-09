@@ -60,11 +60,11 @@ class _EmptyWidget extends StatelessWidget {
   String _getLabel() {
     switch (listsType) {
       case ListsType.todo:
-        return "No Todo Lists Yet :C";
+        return "No Todo Lists Yet";
       case ListsType.shopping:
-        return "No Shopping Lists Yet :C";
+        return "No Shopping Lists Yet";
       case ListsType.shared:
-        return '"No Shared Lists Yet :C"';
+        return 'No Shared Lists Yet';
     }
   }
 

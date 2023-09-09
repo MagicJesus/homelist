@@ -24,6 +24,12 @@ class _ListItemWidgetState extends State<ListItemWidget> {
     isCompleted = widget.listItem.completed;
   }
 
+  @override
+  void didUpdateWidget(covariant ListItemWidget oldWidget) {
+    isCompleted = widget.listItem.completed;
+    super.didUpdateWidget(oldWidget);
+  }
+
   void _deleteItem(BuildContext context) {
     context.read<SharedListCubit>().removeListItem(widget.listItem);
   }
