@@ -8,28 +8,30 @@ import 'package:homelist/repositories/firestore/firestore_repository.dart';
 import 'package:homelist/repositories/firestore/users_repository.dart';
 
 class UserCubit extends Cubit<UserCubitState> {
-  final FirestoreRepository _firestoreRepository;
-  final UsersRepository _usersRepository;
-
-  late StreamSubscription firebaseUserStreamSubscription;
-
   UserCubit(
     this._firestoreRepository,
     this._usersRepository,
   ) : super(UserCubitState.initial()) {
-    firebaseUserStreamSubscription =
-        _firestoreRepository.userDataStream.stream.listen((UserData? userData) {
-      if (userData != null) {
-        emit(
-          state.copyWith(
-            userData: userData,
-          ),
-        );
-      }
-    }, onError: (e) {
-      log(e.toString());
-    });
+    _firebaseUserStreamSubscription =
+        _firestoreRepository.userDataStream.stream.listen(
+      (UserData? userData) {
+        if (userData != null) {
+          emit(
+            state.copyWith(
+              userData: userData,
+            ),
+          );
+        }
+      },
+      onError: (Object e) {
+        log(e.toString());
+      },
+    );
   }
+  final FirestoreRepository _firestoreRepository;
+  final UsersRepository _usersRepository;
+
+  late StreamSubscription<UserData?> _firebaseUserStreamSubscription;
 
   Future<void> getUserData(String uid) async {
     await _firestoreRepository.getUserData(uid);
@@ -46,5 +48,11 @@ class UserCubit extends Cubit<UserCubitState> {
         state.copyWith(usersToShare: event),
       );
     });
+  }
+
+  @override
+  Future<void> close() {
+    _firebaseUserStreamSubscription.cancel();
+    return super.close();
   }
 }

@@ -7,6 +7,7 @@ import 'package:homelist/models/list/list_item.dart';
 import 'package:homelist/models/user/user.dart';
 
 class FirestoreRepository {
+  FirestoreRepository();
   final database = FirebaseFirestore.instance;
   final _listsCollection = FirebaseFirestore.instance.collection(
     _listsCollectionKey,
@@ -19,12 +20,10 @@ class FirestoreRepository {
   static const String _usersCollectionKey = 'users';
   static const String _listsCollectionKey = 'lists';
 
-  FirestoreRepository();
-
   Future<void> createUser(UserData userData) async {
     try {
       final ref = database.collection(_usersCollectionKey).doc(userData.id);
-      ref.set(userData.toJson());
+      await ref.set(userData.toJson());
       await ref.get().then(
             (value) => log(
               value.data().toString(),
@@ -118,7 +117,7 @@ class FirestoreRepository {
     try {
       final ref = database.collection(_listsCollectionKey).doc();
       final finalList = newList.copyWith(id: ref.id);
-      ref.set(finalList.toJson());
+      await ref.set(finalList.toJson());
       await ref.get().then(
             (value) => log(
               value.data().toString(),
@@ -138,7 +137,7 @@ class FirestoreRepository {
           .doc(
             currentList.id,
           );
-      database.runTransaction(
+      await database.runTransaction(
         (transaction) {
           return transaction.get(currentListDocumentRef).then(
             (currentListDocument) {
@@ -172,14 +171,15 @@ class FirestoreRepository {
             currentList.id,
           );
 
-      database.runTransaction(
+      await database.runTransaction(
         (transaction) {
           return transaction.get(currentListDocumentRef).then(
             (currentListDocument) {
-              List items = currentListDocument.get('items') as List;
+              final items = currentListDocument.get('items')
+                  as List<Map<String, Object?>>;
               final castItems = items
                   .map(
-                    (e) => ListItem.fromJson(e),
+                    ListItem.fromJson,
                   )
                   .toList();
 
@@ -226,17 +226,19 @@ class FirestoreRepository {
           currentList.id,
         );
 
-    database.runTransaction(
+    await database.runTransaction(
       (transaction) {
         return transaction.get(currentListDocumentRef).then(
           (currentListDocument) {
-            List items = currentListDocument.get('items') as List;
+            final items =
+                currentListDocument.get('items') as List<Map<String, Object?>>;
+
             final castItems = items
                 .map(
-                  (e) => ListItem.fromJson(e),
+                  ListItem.fromJson,
                 )
-                .toList();
-            castItems.remove(itemToDelete);
+                .toList()
+              ..remove(itemToDelete);
 
             final itemsToUpdate = castItems.map(
               (e) => e.toJson(),
@@ -264,12 +266,12 @@ class FirestoreRepository {
           .doc(
             currentList.id,
           );
-      database.runTransaction(
+      await database.runTransaction(
         (transaction) {
           return transaction.get(currentListDocumentRef).then(
             (currentListDocument) {
               final currentList = SharedList.fromJson(
-                currentListDocument.data() as Map<String, Object?>,
+                currentListDocument.data()!,
               );
 
               final updatedAllowedUsersList = [

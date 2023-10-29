@@ -20,11 +20,11 @@ class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
 
   final emailController = TextEditingController.fromValue(
-    const TextEditingValue(text: ''),
+    const TextEditingValue(),
   );
 
   final passwordController = TextEditingController.fromValue(
-    const TextEditingValue(text: ''),
+    const TextEditingValue(),
   );
 
   @override
@@ -46,7 +46,7 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+        padding: const EdgeInsets.symmetric(horizontal: 16),
         child: Form(
           key: _formKey,
           child: Column(
@@ -117,13 +117,13 @@ class _LoginScreenState extends State<LoginScreen> {
                               if (value != null) {
                                 context
                                     .read<AuthCubit>()
-                                    .setStaySignedIn(value);
+                                    .setStaySignedIn(value: value);
                               }
                             },
                           );
                         },
                       ),
-                      const Text("Remember credentials?"),
+                      const Text('Remember credentials?'),
                     ],
                   ),
                 ],
@@ -139,11 +139,11 @@ class _LoginScreenState extends State<LoginScreen> {
                           password: passwordController.text,
                         );
                     final prefs = PreferencesController.preferencesInstance;
-                    prefs.setString(
+                    await prefs.setString(
                       LoginScreen._savedEmailPrefsKey,
                       emailController.text,
                     );
-                    prefs.setString(
+                    await prefs.setString(
                       LoginScreen._savedPasswordPrefsKey,
                       passwordController.text,
                     );
@@ -164,7 +164,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               ),
                             ]
                           : [
-                              const Text("Log In"),
+                              const Text('Log In'),
                               const SizedBox(
                                 width: 8,
                               ),
@@ -182,7 +182,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   context.read<AuthCubit>().signUp();
                 },
                 child: Text(
-                  "Sign Up",
+                  'Sign Up',
                   style: Theme.of(context)
                       .textTheme
                       .labelSmall!

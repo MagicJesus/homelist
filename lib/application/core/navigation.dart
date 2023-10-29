@@ -5,10 +5,10 @@ import 'package:go_router/go_router.dart';
 import 'package:homelist/presentation/constants.dart';
 import 'package:homelist/presentation/screens/budget/expense_details_screen.dart';
 import 'package:homelist/presentation/screens/budget/expense_group_screen.dart';
-import 'package:homelist/presentation/screens/navigation/navigation_screen.dart';
 import 'package:homelist/presentation/screens/lists/list_details_screen.dart';
 import 'package:homelist/presentation/screens/login/log_in_screen.dart';
 import 'package:homelist/presentation/screens/login/sign_up_screen.dart';
+import 'package:homelist/presentation/screens/navigation/navigation_screen.dart';
 import 'package:homelist/presentation/widgets/budget/add_expense_form.dart';
 
 class NavigationService {
@@ -21,8 +21,8 @@ class NavigationService {
   static late GoRouter _router;
 
   static void initRouter({
-    required auth,
-    required signUp,
+    required bool auth,
+    required bool signUp,
   }) {
     _router = _createRouter(auth: auth, signUp: signUp);
   }

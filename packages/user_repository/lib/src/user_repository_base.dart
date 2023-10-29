@@ -1,10 +1,9 @@
+// ignore_for_file: public_member_api_docs
+
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:homelist/models/user/user.dart';
+import 'package:user_repository/user_repository.dart';
 
 class UsersRepository {
-  UsersRepository();
-
-  final database = FirebaseFirestore.instance;
   final _usersCollection = FirebaseFirestore.instance.collection(
     _usersCollectionKey,
   );

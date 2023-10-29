@@ -77,6 +77,16 @@ class _AddListItemFormState extends State<AddListItemForm> {
                     child: IconsHelper.getIcon(IconNames.dairy),
                   ),
                 ),
+                DropdownMenuItem<IconNames>(
+                  value: IconNames.todo,
+                  child: ConstrainedBox(
+                    constraints: const BoxConstraints(
+                      maxHeight: 50,
+                      maxWidth: 50,
+                    ),
+                    child: IconsHelper.getIcon(IconNames.todo),
+                  ),
+                ),
               ],
               onChanged: (value) {
                 if (value != null) {

@@ -53,12 +53,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
               Container(
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: Colors.amber.shade400,
+                  color: Theme.of(context).colorScheme.secondaryContainer,
                 ),
                 width: 144,
                 height: 144,
-                child: Image.network(
-                    'https://pngfre.com/wp-content/uploads/1653590437470-661x1024.png'),
+                child: const Icon(
+                  Icons.account_circle,
+                  size: 128,
+                ),
               ),
               const SizedBox(
                 height: 24,

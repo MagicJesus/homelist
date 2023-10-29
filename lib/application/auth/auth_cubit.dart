@@ -83,18 +83,20 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
-  void setStaySignedIn(bool value) {
-    final prefs = PreferencesController.preferencesInstance;
-    prefs.setBool(_staySignedInPrefsKey, value);
+  void setStaySignedIn({required bool value}) {
+    PreferencesController.preferencesInstance
+        .setBool(_staySignedInPrefsKey, value);
     emit(state.copyWith(staySignedIn: value));
   }
 
   void setUserData() {}
 
   void logOut() {
-    emit(state.copyWith(
-      isAuthenticated: false,
-    ));
+    emit(
+      state.copyWith(
+        isAuthenticated: false,
+      ),
+    );
     _firebaseUserStreamSubscription.cancel();
   }
 
@@ -112,7 +114,6 @@ class AuthCubit extends Cubit<AuthState> {
     required String firstName,
     required String lastName,
   }) async {
-    log('$firstName, $lastName, $email, $password');
     emit(
       state.copyWith(authStatus: Status.loading),
     );

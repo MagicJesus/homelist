@@ -50,7 +50,7 @@ class HomeListAppBar extends StatelessWidget implements PreferredSizeWidget {
                 await context.read<AuthCubit>().signOut();
               },
               icon: const Icon(
-                Icons.account_circle_rounded,
+                Icons.logout,
               ),
             )
           ],

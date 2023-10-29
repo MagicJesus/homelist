@@ -13,6 +13,8 @@ class IconsHelper {
         return Assets.icons.fruits.image(fit: BoxFit.contain);
       case IconNames.dairy:
         return Assets.icons.dairyProducts.image(fit: BoxFit.contain);
+      case IconNames.todo:
+        return Assets.icons.todo.image(fit: BoxFit.contain);
       default:
         return Assets.icons.vegetables.image(fit: BoxFit.contain);
     }
