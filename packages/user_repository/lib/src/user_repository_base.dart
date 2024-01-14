@@ -25,28 +25,36 @@ class GetUsersToShareStreamFailure extends UsersRepositoryGeneralFailure {
 }
 
 class UsersRepository {
-  final _usersCollection = FirebaseFirestore.instance.collection(
+  final CollectionReference<Map<String, dynamic>> _usersCollection =
+      FirebaseFirestore.instance.collection(
     _usersCollectionKey,
   );
 
   static const String _usersCollectionKey = 'users';
 
-  final StreamController<UserData?> userDataStream = StreamController();
+  final StreamController<UserData?> userDataStream =
+      StreamController<UserData?>();
 
   Future<void> createUser(UserData userData) async {
     try {
-      final ref = _usersCollection.doc(userData.id);
+      final DocumentReference<Map<String, dynamic>> ref =
+          _usersCollection.doc(userData.id);
       await ref.set(userData.toJson());
-      await ref.get().then((value) => log(value.data().toString()));
+      await ref.get().then(
+            (DocumentSnapshot<Map<String, dynamic>> value) => log(
+              value.data().toString(),
+            ),
+          );
     } on FirebaseException catch (e, stackTrace) {
       Error.throwWithStackTrace(CreateUserFailure(e), stackTrace);
     }
   }
 
   Future<void> getUserData(String uid) async {
-    final ref = _usersCollection.doc(uid);
-    final userRef = await ref.get();
-    final userData = userRef.data();
+    final DocumentReference<Map<String, dynamic>> ref =
+        _usersCollection.doc(uid);
+    final DocumentSnapshot<Map<String, dynamic>> userRef = await ref.get();
+    final Map<String, dynamic>? userData = userRef.data();
 
     if (userData != null) {
       userDataStream.add(
@@ -62,17 +70,17 @@ class UsersRepository {
     return _usersCollection
         .where(
           'id',
-          whereNotIn: [
+          whereNotIn: <Object?>[
             currentUserId,
             ...usersToExclude,
           ],
         )
         .snapshots()
         .map(
-          (querySnapshot) {
+          (QuerySnapshot<Map<String, dynamic>> querySnapshot) {
             return querySnapshot.docs.map(
-              (userData) {
-                final user = UserData.fromJson(
+              (QueryDocumentSnapshot<Map<String, dynamic>> userData) {
+                final UserData user = UserData.fromJson(
                   userData.data(),
                 );
 
