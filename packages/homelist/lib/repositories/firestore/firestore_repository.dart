@@ -129,7 +129,8 @@ class FirestoreRepository {
         (Transaction transaction) {
           return transaction.get(currentListDocumentRef).then(
             (DocumentSnapshot<Map<String, dynamic>> currentListDocument) {
-              final List items = currentListDocument.get('items') as List;
+              final List<dynamic> items =
+                  currentListDocument.get('items') as List<dynamic>;
               items.add(
                 newListItem.toJson(),
               );
