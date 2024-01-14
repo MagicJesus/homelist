@@ -1,5 +1,5 @@
 /build
-.dart_tool/*
-.idea/*
+.dart_tool/
+.idea/
 pubspec.lock
 packages/user_repository/.flutter-plugins-dependencies
