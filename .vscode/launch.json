@@ -5,16 +5,10 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "homelist",
+      "name": "Homelist Debug",
       "request": "launch",
       "type": "dart",
       "program": "./packages/homelist/lib/main.dart"
-    },
-    {
-      "name": "homelist",
-      "cwd": "packages\\homelist",
-      "request": "launch",
-      "type": "dart"
     },
     {
       "name": "homelist (profile mode)",

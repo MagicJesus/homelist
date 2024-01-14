@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
-import 'package:user_repository/user_repository.dart';
 
 class CalendarScreen extends StatefulWidget {
   const CalendarScreen({super.key});
@@ -28,7 +27,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
         onDaySelected: changeCurrentDay,
         focusedDay: _focusedDay,
         calendarFormat: CalendarFormat.month,
-        selectedDayPredicate: (day) {
+        selectedDayPredicate: (DateTime day) {
           return isSameDay(_selectedDay, day);
         },
         firstDay: DateTime.now().subtract(const Duration(days: 365)),
