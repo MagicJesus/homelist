@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:homelist/models/user/user.dart';
+import 'package:user_repository/user_repository.dart';
 
 class UserTile extends StatelessWidget {
   const UserTile({
-    super.key,
     required this.userData,
+    super.key,
     this.displayName = true,
   });
 
@@ -14,7 +14,7 @@ class UserTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.all(8),
       child: Column(
         children: [
           CircleAvatar(

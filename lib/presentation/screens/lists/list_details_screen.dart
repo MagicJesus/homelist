@@ -3,11 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:homelist/application/shared_lists/shared_list_cubit.dart';
 import 'package:homelist/application/shared_lists/shared_list_cubit_state.dart';
 import 'package:homelist/application/user/user_cubit.dart';
-import 'package:homelist/models/user/user.dart';
 import 'package:homelist/presentation/widgets/common/homelist_appbar.dart';
 import 'package:homelist/presentation/widgets/lists/add_list_item_form.dart';
 import 'package:homelist/presentation/widgets/lists/list_item_widget.dart';
 import 'package:homelist/presentation/widgets/lists/share_to_users_dialog.dart';
+import 'package:user_repository/user_repository.dart';
 
 class ListDetailsScreen extends StatefulWidget {
   const ListDetailsScreen({
@@ -62,7 +62,6 @@ class _ListDetailsScreenState extends State<ListDetailsScreen> {
                 : [],
           ),
           body: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Expanded(
                 child: ListView.separated(
@@ -92,7 +91,7 @@ class _ListDetailsScreenState extends State<ListDetailsScreen> {
                 height: 12,
               ),
               Padding(
-                padding: const EdgeInsets.all(32.0),
+                padding: const EdgeInsets.all(32),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -105,7 +104,7 @@ class _ListDetailsScreenState extends State<ListDetailsScreen> {
                           },
                         );
                       },
-                      child: const Text("Add item"),
+                      child: const Text('Add item'),
                     ),
                   ],
                 ),

@@ -5,8 +5,8 @@ import 'package:homelist/application/shared_lists/shared_list_cubit_state.dart';
 import 'package:homelist/application/status.dart';
 import 'package:homelist/models/list/list.dart';
 import 'package:homelist/models/list/list_item.dart';
-import 'package:homelist/models/user/user.dart';
 import 'package:homelist/repositories/firestore/firestore_repository.dart';
+import 'package:user_repository/user_repository.dart';
 
 class SharedListCubit extends Cubit<SharedListCubitState> {
   SharedListCubit(this._firestoreRepository)
@@ -15,10 +15,10 @@ class SharedListCubit extends Cubit<SharedListCubitState> {
         );
 
   final FirestoreRepository _firestoreRepository;
-  StreamSubscription? _allListsSubscription;
-  StreamSubscription? _sharedListsSubscription;
-  StreamSubscription? _currentListSubscription;
-  StreamSubscription? _usersToShareSubscription;
+  StreamSubscription<List<SharedList>>? _allListsSubscription;
+  StreamSubscription<List<SharedList>>? _sharedListsSubscription;
+  StreamSubscription<SharedList?>? _currentListSubscription;
+  StreamSubscription<List<UserData>>? _usersToShareSubscription;
 
   void changeCurrentList(SharedList newList) {
     emit(
@@ -35,12 +35,14 @@ class SharedListCubit extends Cubit<SharedListCubitState> {
   Future<void> loadUserListsStream(String userId) async {
     emit(state.copyWith(allListsStatus: Status.loading));
     if (_allListsSubscription != null) {
-      _allListsSubscription!.cancel();
+      await _allListsSubscription!.cancel();
     }
 
-    final listsStream = await _firestoreRepository.getUserListsStream(userId);
+    final Stream<List<SharedList>> listsStream =
+        await _firestoreRepository.getUserListsStream(userId);
+
     _allListsSubscription = listsStream.listen(
-      (event) {
+      (List<SharedList> event) {
         emit(
           state.copyWith(
             allListsStatus: Status.loaded,
@@ -55,13 +57,14 @@ class SharedListCubit extends Cubit<SharedListCubitState> {
     emit(state.copyWith(sharedListsStatus: Status.loading));
 
     if (_sharedListsSubscription != null) {
-      _sharedListsSubscription!.cancel();
+      await _sharedListsSubscription!.cancel();
     }
 
-    final sharedListsStream =
+    final Stream<List<SharedList>> sharedListsStream =
         await _firestoreRepository.getSharedListsStream(userId);
 
-    _sharedListsSubscription = sharedListsStream.listen((event) {
+    _sharedListsSubscription =
+        sharedListsStream.listen((List<SharedList> event) {
       emit(
         state.copyWith(
           sharedListsStatus: Status.loaded,
@@ -74,15 +77,16 @@ class SharedListCubit extends Cubit<SharedListCubitState> {
   Future<void> loadCurrentListStream() async {
     emit(state.copyWith(currentListStatus: Status.loading));
     if (_currentListSubscription != null) {
-      _currentListSubscription!.cancel();
+      await _currentListSubscription!.cancel();
     }
 
-    final currentListStream = _firestoreRepository.getCurrentListStream(
+    final Stream<SharedList?> currentListStream =
+        _firestoreRepository.getCurrentListStream(
       state.currentList!.id!,
     );
 
     _currentListSubscription = currentListStream.listen(
-      (event) {
+      (SharedList? event) {
         emit(
           state.copyWith(
             currentListStatus: Status.loaded,
@@ -95,16 +99,17 @@ class SharedListCubit extends Cubit<SharedListCubitState> {
 
   Future<void> loadUsersToShareStream(String currentUserId) async {
     if (_usersToShareSubscription != null) {
-      _usersToShareSubscription!.cancel();
+      await _usersToShareSubscription!.cancel();
     }
 
-    final usersToShareStream = _firestoreRepository.getUsersToShareStream(
+    final Stream<List<UserData>> usersToShareStream =
+        _firestoreRepository.getUsersToShareStream(
       currentUserId,
       state.currentList!,
     );
 
     _usersToShareSubscription = usersToShareStream.listen(
-      (event) {
+      (List<UserData> event) {
         emit(
           state.copyWith(
             usersToShare: event,
@@ -115,7 +120,7 @@ class SharedListCubit extends Cubit<SharedListCubitState> {
   }
 
   Future<void> shareListToUsers(List<UserData> usersToShareWith) async {
-    _firestoreRepository.shareListToUsers(
+    await _firestoreRepository.shareListToUsers(
       state.currentList!,
       usersToShareWith,
     );
@@ -129,12 +134,12 @@ class SharedListCubit extends Cubit<SharedListCubitState> {
     emit(
       state.copyWith(allListsStatus: Status.loading),
     );
-    final newList = SharedList(
+    final SharedList newList = SharedList(
       ownerId: ownerId,
       title: title,
-      items: [],
+      items: <ListItem>[],
       type: listType,
-      allowedUsersIds: [],
+      allowedUsersIds: <String>[],
     );
     await _firestoreRepository.createList(newList);
   }

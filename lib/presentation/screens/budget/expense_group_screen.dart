@@ -4,27 +4,29 @@ import 'package:go_router/go_router.dart';
 import 'package:homelist/application/budget/budget_cubit.dart';
 import 'package:homelist/application/budget/budget_cubit_state.dart';
 import 'package:homelist/application/user/user_cubit.dart';
-import 'package:homelist/models/user/user.dart';
+import 'package:homelist/models/expenses/expense/expense.dart';
+import 'package:homelist/models/expenses/expense_group/expense_group.dart';
 import 'package:homelist/presentation/widgets/budget/add_expense_form.dart';
 import 'package:homelist/presentation/widgets/budget/expense_tile.dart';
 import 'package:homelist/presentation/widgets/common/homelist_appbar.dart';
 import 'package:homelist/presentation/widgets/common/user_tile.dart';
 import 'package:homelist/presentation/widgets/lists/share_to_users_dialog.dart';
+import 'package:user_repository/user_repository.dart';
 
 class ExpenseGroupScreen extends StatelessWidget {
   const ExpenseGroupScreen({super.key});
 
-  static const routeName = '/expense_group_screen';
+  static const String routeName = '/expense_group_screen';
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<BudgetCubit, BudgetCubitState>(
-      builder: (context, state) {
-        final currentExpenseGroup = state.currentExpenseGroup!;
+      builder: (BuildContext context, BudgetCubitState state) {
+        final ExpenseGroup currentExpenseGroup = state.currentExpenseGroup!;
         return Scaffold(
           appBar: HomeListAppBar(
             title: currentExpenseGroup.groupName,
-            actions: const [],
+            actions: const <Widget>[],
           ),
           floatingActionButton: FloatingActionButton(
             onPressed: () {
@@ -40,10 +42,10 @@ class ExpenseGroupScreen extends StatelessWidget {
             width: MediaQuery.of(context).size.width,
           ),
           body: Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.all(16),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
+              children: <Widget>[
                 Text(
                   'Group Members:',
                   style: Theme.of(context)
@@ -54,19 +56,19 @@ class ExpenseGroupScreen extends StatelessWidget {
                 SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   child: Row(
-                    children: [
+                    children: <Widget>[
                       ...currentExpenseGroup.members.map(
                         (UserData userData) => UserTile(
                           userData: userData,
                         ),
                       ),
                       Column(
-                        children: [
+                        children: <Widget>[
                           ElevatedButton(
                             onPressed: () {
-                              showDialog(
+                              showDialog<ShareToUsersDialog>(
                                 context: context,
-                                builder: (context) {
+                                builder: (BuildContext context) {
                                   return ShareToUsersDialog(
                                     onShare: (List<UserData> usersToShare) {
                                       context
@@ -110,7 +112,7 @@ class ExpenseGroupScreen extends StatelessWidget {
                   height: 8,
                 ),
                 ...currentExpenseGroup.expenses.map(
-                  (expense) => ExpenseTile(
+                  (Expense expense) => ExpenseTile(
                     expense: expense,
                     expenseGroup: currentExpenseGroup,
                     currentUser: context.read<UserCubit>().state.userData!,

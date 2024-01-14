@@ -5,16 +5,16 @@ import 'package:homelist/application/budget/budget_cubit.dart';
 import 'package:homelist/helpers/expeses_helper.dart';
 import 'package:homelist/models/expenses/expense/expense.dart';
 import 'package:homelist/models/expenses/expense_group/expense_group.dart';
-import 'package:homelist/models/user/user.dart';
 import 'package:homelist/presentation/constants.dart';
 import 'package:homelist/presentation/screens/budget/expense_details_screen.dart';
+import 'package:user_repository/user_repository.dart';
 
 class ExpenseTile extends StatelessWidget {
   const ExpenseTile({
-    super.key,
     required this.expense,
     required this.expenseGroup,
     required this.currentUser,
+    super.key,
   });
 
   final Expense expense;
@@ -39,7 +39,7 @@ class ExpenseTile extends StatelessWidget {
 
   Widget getCurrentUserShareInExpense() {
     final userShare = ExpensesHelper.userShare(expense, currentUser.id);
-    bool isLender = userShare > 0;
+    var isLender = userShare > 0;
     return _UserShareWidget(isLender: isLender, amount: userShare);
   }
 
@@ -71,7 +71,7 @@ class ExpenseTile extends StatelessWidget {
       child: Card(
         color: Theme.of(context).colorScheme.background,
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(16),
           child: Row(
             children: [
               Column(

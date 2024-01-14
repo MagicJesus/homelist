@@ -1,17 +1,16 @@
 import 'dart:async';
-import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:homelist/application/auth/auth_state.dart';
 import 'package:homelist/application/core/preferences.dart';
 import 'package:homelist/application/status.dart';
-import 'package:homelist/models/user/user.dart';
 import 'package:homelist/repositories/auth/auth_repository.dart';
-import 'package:homelist/repositories/firestore/firestore_repository.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:user_repository/user_repository.dart';
 
 class AuthCubit extends Cubit<AuthState> {
-  AuthCubit(this._firestoreRepository, this._authRepository)
+  AuthCubit(this._usersRepository, this._authRepository)
       : super(
           const AuthState(
             isAuthenticated: false,
@@ -40,9 +39,9 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   final String _staySignedInPrefsKey = 'staySignedIn';
-  final FirestoreRepository _firestoreRepository;
+  final UsersRepository _usersRepository;
   final AuthRepository _authRepository;
-  late final StreamSubscription _firebaseUserStreamSubscription;
+  late final StreamSubscription<User?> _firebaseUserStreamSubscription;
 
   Future<void> authenticate({
     required String email,
@@ -58,7 +57,7 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   Future<void> _getUserData(User user) async {
-    await _firestoreRepository.getUserData(user.uid);
+    await _usersRepository.getUserData(user.uid);
     emit(
       state.copyWith(
         isAuthenticated: true,
@@ -74,8 +73,8 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   void initialiseStaySignedIn() {
-    final prefs = PreferencesController.preferencesInstance;
-    final ssi = prefs.getBool('staySignedIn');
+    final SharedPreferences prefs = PreferencesController.preferencesInstance;
+    final bool? ssi = prefs.getBool('staySignedIn');
     if (ssi == null) {
       prefs.setBool(_staySignedInPrefsKey, false);
     } else {
@@ -118,18 +117,18 @@ class AuthCubit extends Cubit<AuthState> {
       state.copyWith(authStatus: Status.loading),
     );
     try {
-      final userData =
+      final UserCredential? userData =
           await _authRepository.createUserWithEmailAndPassword(email, password);
-      final newUser = UserData(
+      final UserData newUser = UserData(
         id: userData!.user!.uid,
         firstName: firstName,
         lastName: lastName,
         email: email,
       );
-      await _firestoreRepository.createUser(newUser);
+      await _usersRepository.createUser(newUser);
       await authenticate(email: email, password: password);
-    } catch (e) {
-      log(e.toString());
+    } catch (e, stackTrace) {
+      addError(e, stackTrace);
     }
   }
 }

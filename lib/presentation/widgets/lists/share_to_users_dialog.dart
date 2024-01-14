@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:homelist/application/user/user_cubit.dart';
 import 'package:homelist/application/user/user_cubit_state.dart';
 import 'package:homelist/generated/assets.gen.dart';
-import 'package:homelist/models/user/user.dart';
+import 'package:user_repository/user_repository.dart';
 
 class ShareToUsersDialog extends StatefulWidget {
   const ShareToUsersDialog({
@@ -47,7 +47,7 @@ class _ShareToUsersDialogState extends State<ShareToUsersDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text("Find Users"),
+      title: const Text('Find Users'),
       actions: [
         ElevatedButton(
           onPressed: selectedUsers.isEmpty
@@ -64,7 +64,7 @@ class _ShareToUsersDialogState extends State<ShareToUsersDialog> {
         mainAxisSize: MainAxisSize.min,
         children: [
           BlocBuilder<UserCubit, UserCubitState>(
-            builder: ((context, state) {
+            builder: (context, state) {
               final userListResults = state.usersToShare;
               return SingleChildScrollView(
                 child: Column(
@@ -151,7 +151,7 @@ class _ShareToUsersDialogState extends State<ShareToUsersDialog> {
                   ],
                 ),
               );
-            }),
+            },
           ),
         ],
       ),

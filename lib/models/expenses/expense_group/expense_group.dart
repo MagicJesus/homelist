@@ -1,6 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:homelist/models/expenses/expense/expense.dart';
-import 'package:homelist/models/user/user.dart';
+import 'package:user_repository/user_repository.dart';
 
 part 'expense_group.freezed.dart';
 part 'expense_group.g.dart';
