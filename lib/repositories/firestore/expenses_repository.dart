@@ -4,17 +4,16 @@ import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:homelist/models/expenses/expense/expense.dart';
 import 'package:homelist/models/expenses/expense_group/expense_group.dart';
-import 'package:homelist/models/user/user.dart';
+import 'package:user_repository/user_repository.dart';
 
 class ExpensesRepository {
+  ExpensesRepository();
   final database = FirebaseFirestore.instance;
   final _expenseGroupsCollection = FirebaseFirestore.instance.collection(
     _expenseGroupsCollectionKey,
   );
 
   static const String _expenseGroupsCollectionKey = 'expenseGroups';
-
-  ExpensesRepository();
 
   Future<Stream<ExpenseGroup>> getCurrentExpenseGroupStream(
     ExpenseGroup currentExpenseGroup,
@@ -53,8 +52,8 @@ class ExpensesRepository {
         .where('members', arrayContains: currentUser.toJson())
         .get();
 
-    List<ExpenseGroup> expenseGroups = [];
-    for (var docSnapshot in querySnapshot.docs) {
+    var expenseGroups = <ExpenseGroup>[];
+    for (final docSnapshot in querySnapshot.docs) {
       expenseGroups.add(
         ExpenseGroup.fromJson(
           docSnapshot.data(),
@@ -76,7 +75,7 @@ class ExpensesRepository {
           .doc(
             currentExpenseGroup.id,
           );
-      database.runTransaction(
+      await database.runTransaction(
         (transaction) {
           return transaction.get(currentExpenseGroupDocumentRef).then(
             (_) {
@@ -122,7 +121,7 @@ class ExpensesRepository {
       ...newExpenseGroup.members.map((member) => member.toJson())
     ];
 
-    newExpenseGroupDocument
+    await newExpenseGroupDocument
         .set(
           jsonObject,
         )
@@ -139,19 +138,18 @@ class ExpensesRepository {
       currentExpenseGroup.id,
     );
 
-    database.runTransaction(
+    await database.runTransaction(
       (transaction) => transaction.get(currentExpenseGroupRef).then(
         (currentExpenseGroupSnapshot) {
           final expenseGroupObject = ExpenseGroup.fromJson(
             currentExpenseGroupSnapshot.data() as Map<String, Object?>,
           );
 
-          List<Map<String, dynamic>> expenses =
-              [...expenseGroupObject.expenses, newExpense]
-                  .map(
-                    (expense) => expense.toJson(),
-                  )
-                  .toList();
+          var expenses = [...expenseGroupObject.expenses, newExpense]
+              .map(
+                (expense) => expense.toJson(),
+              )
+              .toList();
 
           transaction.update(currentExpenseGroupRef, {
             'expenses': expenses,

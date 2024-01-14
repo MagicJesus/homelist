@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:homelist/application/budget/budget_cubit.dart';
 import 'package:homelist/helpers/expeses_helper.dart';
-import 'package:homelist/models/user/user.dart';
 import 'package:homelist/presentation/widgets/common/homelist_appbar.dart';
 import 'package:homelist/presentation/widgets/common/user_tile.dart';
+import 'package:user_repository/user_repository.dart';
 
 class ExpenseDetailsScreen extends StatelessWidget {
   const ExpenseDetailsScreen({
@@ -24,14 +24,13 @@ class ExpenseDetailsScreen extends StatelessWidget {
         title: expense.title,
       ),
       body: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(8),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Row(
               children: [
                 Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.all(8),
                   child: UserTile(
                     userData: lender,
                     displayName: false,
@@ -39,33 +38,31 @@ class ExpenseDetailsScreen extends StatelessWidget {
                 ),
                 RichText(
                   text: TextSpan(
-                      text: '${lender.firstName} paid ',
-                      style:
-                          Theme.of(context).textTheme.headlineSmall!.copyWith(
-                                fontWeight: FontWeight.bold,
-                              ),
-                      children: [
-                        TextSpan(
-                          text: expense.amount.toStringAsFixed(2),
-                          style: Theme.of(context)
-                              .textTheme
-                              .headlineLarge!
-                              .copyWith(
-                                fontWeight: FontWeight.bold,
-                              ),
-                          children: [
-                            TextSpan(
-                              text: ' PLN',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .headlineSmall!
-                                  .copyWith(
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                            ),
-                          ],
+                    text: '${lender.firstName} paid ',
+                    style: Theme.of(context).textTheme.headlineSmall!.copyWith(
+                          fontWeight: FontWeight.bold,
                         ),
-                      ]),
+                    children: [
+                      TextSpan(
+                        text: expense.amount.toStringAsFixed(2),
+                        style:
+                            Theme.of(context).textTheme.headlineLarge!.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                        children: [
+                          TextSpan(
+                            text: ' PLN',
+                            style: Theme.of(context)
+                                .textTheme
+                                .headlineSmall!
+                                .copyWith(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),

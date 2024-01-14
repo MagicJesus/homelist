@@ -1,14 +1,12 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:homelist/application/status.dart';
 import 'package:homelist/models/list/list.dart';
-import 'package:homelist/models/user/user.dart';
+import 'package:user_repository/user_repository.dart';
 
 part 'shared_list_cubit_state.freezed.dart';
 
 @freezed
 class SharedListCubitState with _$SharedListCubitState {
-  SharedListCubitState._();
-
   factory SharedListCubitState({
     required List<SharedList> allLists,
     required List<SharedList> sharedLists,
@@ -18,6 +16,7 @@ class SharedListCubitState with _$SharedListCubitState {
     required Status sharedListsStatus,
     required Status currentListStatus,
   }) = _SharedListCubitState;
+  SharedListCubitState._();
 
   factory SharedListCubitState.initialState() {
     return SharedListCubitState(

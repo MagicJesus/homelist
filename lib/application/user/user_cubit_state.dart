@@ -1,5 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:homelist/models/user/user.dart';
+import 'package:user_repository/user_repository.dart';
 
 part 'user_cubit_state.freezed.dart';
 

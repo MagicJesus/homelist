@@ -3,17 +3,14 @@ import 'dart:developer';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:homelist/application/user/user_cubit_state.dart';
-import 'package:homelist/models/user/user.dart';
-import 'package:homelist/repositories/firestore/firestore_repository.dart';
-import 'package:homelist/repositories/firestore/users_repository.dart';
+import 'package:user_repository/user_repository.dart';
 
 class UserCubit extends Cubit<UserCubitState> {
   UserCubit(
-    this._firestoreRepository,
     this._usersRepository,
   ) : super(UserCubitState.initial()) {
     _firebaseUserStreamSubscription =
-        _firestoreRepository.userDataStream.stream.listen(
+        _usersRepository.userDataStream.stream.listen(
       (UserData? userData) {
         if (userData != null) {
           emit(
@@ -28,13 +25,13 @@ class UserCubit extends Cubit<UserCubitState> {
       },
     );
   }
-  final FirestoreRepository _firestoreRepository;
+
   final UsersRepository _usersRepository;
 
   late StreamSubscription<UserData?> _firebaseUserStreamSubscription;
 
   Future<void> getUserData(String uid) async {
-    await _firestoreRepository.getUserData(uid);
+    await _usersRepository.getUserData(uid);
   }
 
   Future<void> getUsersToShareStream(List<String> usersToExclude) async {

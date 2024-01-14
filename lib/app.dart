@@ -12,7 +12,7 @@ import 'package:homelist/presentation/constants.dart';
 import 'package:homelist/repositories/auth/auth_repository.dart';
 import 'package:homelist/repositories/firestore/expenses_repository.dart';
 import 'package:homelist/repositories/firestore/firestore_repository.dart';
-import 'package:homelist/repositories/firestore/users_repository.dart';
+import 'package:user_repository/user_repository.dart';
 
 class HomeList extends StatelessWidget {
   const HomeList({super.key});
@@ -23,7 +23,7 @@ class HomeList extends StatelessWidget {
       providers: [
         BlocProvider<AuthCubit>(
           create: (context) => AuthCubit(
-            getIt<FirestoreRepository>(),
+            getIt<UsersRepository>(),
             getIt<AuthRepository>(),
           ),
         ),
@@ -33,7 +33,6 @@ class HomeList extends StatelessWidget {
         ),
         BlocProvider<UserCubit>(
           create: (context) => UserCubit(
-            getIt<FirestoreRepository>(),
             getIt<UsersRepository>(),
           ),
           lazy: false,
@@ -49,25 +48,27 @@ class HomeList extends StatelessWidget {
           ),
         ),
       ],
-      child: Builder(builder: (context) {
-        NavigationService.initRouter(
-          auth: context.select<AuthCubit, bool>(
-            (cubit) => cubit.state.authStatus == Status.loaded,
-          ),
-          signUp: context.select<AuthCubit, bool>(
-            (cubit) => cubit.state.signUp,
-          ),
-        );
-        final router = NavigationService.router;
-        return MaterialApp.router(
-          title: 'HomeList',
-          theme: appTheme,
-          debugShowCheckedModeBanner: false,
-          routeInformationParser: router.routeInformationParser,
-          routeInformationProvider: router.routeInformationProvider,
-          routerDelegate: router.routerDelegate,
-        );
-      }),
+      child: Builder(
+        builder: (context) {
+          NavigationService.initRouter(
+            auth: context.select<AuthCubit, bool>(
+              (cubit) => cubit.state.authStatus == Status.loaded,
+            ),
+            signUp: context.select<AuthCubit, bool>(
+              (cubit) => cubit.state.signUp,
+            ),
+          );
+          final router = NavigationService.router;
+          return MaterialApp.router(
+            title: 'HomeList',
+            theme: appTheme,
+            debugShowCheckedModeBanner: false,
+            routeInformationParser: router.routeInformationParser,
+            routeInformationProvider: router.routeInformationProvider,
+            routerDelegate: router.routerDelegate,
+          );
+        },
+      ),
     );
   }
 }

@@ -4,7 +4,7 @@ import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:homelist/models/list/list.dart';
 import 'package:homelist/models/list/list_item.dart';
-import 'package:homelist/models/user/user.dart';
+import 'package:user_repository/user_repository.dart';
 
 class FirestoreRepository {
   FirestoreRepository();
@@ -15,32 +15,9 @@ class FirestoreRepository {
   final _usersCollection = FirebaseFirestore.instance.collection(
     _usersCollectionKey,
   );
-  final StreamController<UserData?> userDataStream = StreamController();
 
   static const String _usersCollectionKey = 'users';
   static const String _listsCollectionKey = 'lists';
-
-  Future<void> createUser(UserData userData) async {
-    try {
-      final ref = database.collection(_usersCollectionKey).doc(userData.id);
-      await ref.set(userData.toJson());
-      await ref.get().then(
-            (value) => log(
-              value.data().toString(),
-            ),
-          );
-    } catch (e) {
-      log(e.toString());
-    }
-  }
-
-  Future<void> getUserData(String uid) async {
-    final ref = database.collection(_usersCollectionKey).doc(uid);
-    final userData = await ref.get();
-    userDataStream.add(
-      UserData.fromJson(userData.data() as Map<String, Object?>),
-    );
-  }
 
   Future<Stream<List<SharedList>>> getUserListsStream(String ownerId) async {
     return _listsCollection
