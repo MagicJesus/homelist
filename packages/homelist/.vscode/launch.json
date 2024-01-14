@@ -5,27 +5,18 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "homelist",
-      "request": "launch",
-      "type": "dart",
-      "program": "./packages/homelist/lib/main.dart"
-    },
-    {
-      "name": "homelist",
-      "cwd": "packages\\homelist",
+      "name": "Homelist",
       "request": "launch",
       "type": "dart"
     },
     {
-      "name": "homelist (profile mode)",
-      "cwd": "packages\\homelist",
+      "name": "Homelist (profile mode)",
       "request": "launch",
       "type": "dart",
       "flutterMode": "profile"
     },
     {
-      "name": "homelist (release mode)",
-      "cwd": "packages\\homelist",
+      "name": "Homelist (release mode)",
       "request": "launch",
       "type": "dart",
       "flutterMode": "release"
